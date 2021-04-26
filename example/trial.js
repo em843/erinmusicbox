@@ -47,7 +47,7 @@ for (var i = firstNote; i < events.length-1; i++)
 // for each note in track chunk
     // display small circle in canvas
     // use timedelta and note value to determine position
-
+ 
 });
 }
 
