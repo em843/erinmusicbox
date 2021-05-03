@@ -48,6 +48,7 @@ function onLoad(midiData) {
         var firstNote;
         var events = obj.track[1].event;
 
+        // Get rid of non-note info
         for (var i = 0; i < events.length; i++) {
             console.log("Checking for the first note...");
             if (Array.isArray(events[i].data)) { // Once we find a note, break the loop.
