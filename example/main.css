@@ -1,0 +1,23 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+   
+  }
+  
+
+
+
+/*
+Discarded:
+
+ border-left-style: solid;
+    border-left-width: 0.5px;
+    border-top-style: solid;
+    border-top-width: .5px;
+    border-right-width: .5px;
+    border-right-style: solid;
+    border-bottom-width: .5px;
+    border-bottom-style: solid;
+
+  */
+

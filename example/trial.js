@@ -10,7 +10,6 @@ I think the solution is to have two separate methods, placeNote and createNote.
 
 
 short term
-TODO:
 TODO: Figure out difference between drawCircle x y parameters and circle.x + circle.y
 TODO: Initialize grid
 TODO: Figure out proportion formulas for placing notes
@@ -33,6 +32,7 @@ function onLoad(midiData) {
         // initialize note grid
         //var shape = new createjs.Shape();
         //shape.graphics.lineTo(10, 0);
+        
         
         /*
         for (var i = 0; i < 10; i++)
@@ -61,9 +61,11 @@ function onLoad(midiData) {
 
         for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
             var currEvent = events[i];
+            var xSum = 0;
             if (currEvent.data[1] !=0 ) { // If it's a 'note on' event, place it; otherwise ignore it
                 console.log(currEvent);
                 //console.log("Value: " + currEvent.data[0]);
+                xSum += currEvent[0]; // Add deltaTime to next note's x position
                 placeNote(currEvent.data[0], currEvent[0], stage)
             }
         }
@@ -72,10 +74,11 @@ function onLoad(midiData) {
     }
 
 
-    function placeNote(value, deltaTime, stage){
-        var yPosition = value; // change to calculated formula once you find one that works
+    function placeNote(noteValue, notePlacement, stage){
+        var yPosition = noteValue; // change to calculated formula once you find one that works
+        var xPosition = notePlacement; // change to calculated formula once you find one that works
         var circle = new createjs.Shape();
-        circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, yPosition, 4); // change this to xPosition when you figure it out
+        circle.graphics.beginFill("DeepSkyBlue").drawCircle(100, yPosition, 4); // change this to xPosition when you figure it out
         circle.x = 100;
         circle.y = 100;
         stage.addChild(circle);
