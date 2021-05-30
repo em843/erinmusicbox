@@ -1,8 +1,22 @@
-.wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-   
-  }
+
+body{
+  margin: 60px
+}
+
+h1 {
+  font-family: Arial, Helvetica, sans-serif
+
+}
+
+canvas{
+  border: 1px solid black;
+  background: mintcream;
+  /* mintcream, #D3FCE8*/
+}
+
+source{
+  margin: 20px;
+}
   
 
 
