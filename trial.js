@@ -19,10 +19,12 @@ TODO: Add support for multiple tracks
 */
 
 
-
-
-
-
+// Define grid parameters globally
+p = 40; // grid padding
+gw = 700; // grid width
+gh = 280; // grid height
+bw = 40; // box width
+bh = 20; // box height
 
 
 function onLoad(midiData) {
@@ -35,8 +37,8 @@ function onLoad(midiData) {
     canvas.height = 500;
     var c = canvas.getContext('2d');
 
-    // Define accepted notes (for 15 note box)
-    
+    // Define accepted note values (for 15 note box)
+    var validNotes = [48, 50, 52, 53, 55, 57, 59, 60, 62, 64, 65, 67, 69, 71, 72]
 
     // Draw grid
     gridColor = "black" // Grid line color
@@ -70,16 +72,35 @@ function onLoad(midiData) {
         for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
             var currEvent = events[i];
             var xSum = 0;
+            var omittedNotes = 0;
             if (currEvent.data[1] !=0 ) { // If it's a 'note on' event, place it; otherwise ignore it
-                if(currEvent.data[0])
+                rowNum = searchFor(currEvent.data[0], validNotes)
+                if(rowNum != -1) { // If the note is within a 15 note box range
                     console.log(currEvent);
                     console.log("deltaTime: " + currEvent.deltaTime);
-                    xSum += currEvent.deltaTime; // Add deltaTime to next note's x position
-                    placeNote(c, xSum, currEvent.data[0], noteColor)
+                    // Determine xpos (add deltaTime to next note's x position)
+                    xSum += currEvent.deltaTime; 
+                    placeNote(c, xSum, rowNum, noteColor)
+                }
+                else {
+                    console.log("Cannot place note.")
+                    omittedNotes++;
+                }
             }
+        } 
+
+        if (omittedNotes > 0){
+            // Display text on canvas:
+            c.font = "18px Arial";
+            c.fillStyle = letterColor;
+            c.fillText("Warning: " + omittedNotes + " notes omitted.", 40, 400);
         }
+        
     
     });
+
+    
+    
 }
 
 function drawGrid(c, gridColor, letterColor){
@@ -90,20 +111,16 @@ function drawGrid(c, gridColor, letterColor){
     c.font = "18px Arial";
     c.fillStyle = letterColor;
     for (var i = 0; i < noteLetters.length; i+=1){
-        var y = i * 20 + 47
-        c.fillText(noteLetters[i], 20, y);
+        var y = i * bh + (p + 7)
+        c.fillText(noteLetters[i], bh, y);
     }
     
-    p = 40; // padding
-    gw = 700; // grid width
-    gh = 281; // grid height
-
     c.beginPath();
-    for (var x = 0; x < gw; x+=43) {
+    for (var x = 0; x < gw+1; x+=bw) {
         c.moveTo(0.5 + x + p, p);
         c.lineTo(0.5 + x + p, gh + p);
     }
-    for (var y = 0; y < gh; y+=20) {
+    for (var y = 0; y < gh+1; y+=bh) {
         c.moveTo(p, 0.5 + y + p);
         c.lineTo(gw + p, 0.5 + y + p);
     }
@@ -115,8 +132,8 @@ function drawGrid(c, gridColor, letterColor){
 function placeNote(c, notePlacement, noteValue, noteColor){
     console.log(notePlacement)
     console.log(noteValue)
-    var xpos = notePlacement; // change to calculated formula once you find one that works
-    var ypos = noteValue; // change to calculated formula once you find one that works
+    var xpos = notePlacement + p; // change to calculated formula once you find one that works
+    var ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
     console.log("Xpos: " + xpos);
     console.log("Ypos: " + ypos);
     drawCircle(c, xpos, ypos, 7, noteColor)
@@ -144,10 +161,19 @@ function drawCircle(ctx, x, y, radius, fill) {
       ctx.fillStyle = fill
       ctx.fill()
     }
-  }
+}
 
-
-
+/* Searches a sorted array for the item.
+Will eventually implement binary search but I am lazy
+*/
+function searchFor(item, array){
+    for (var i = 0; i < array.length; i++){
+        if (array[i] == item){
+            return i; // item found
+        }
+    }
+    return -1; // item not found
+}
 
 
 /* Discarded code:
