@@ -18,6 +18,27 @@ long term
 TODO: Add support for multiple tracks
 */
 
+
+var stage = new Rune({
+    container: "body",
+    width: 500,
+    height: 400
+});
+
+// initialize note grid
+
+
+stage.line(0, 0, 0, 294);
+stage.line(44, 0, 44, 294);
+
+
+
+var i;
+for (i = 0; i < 5; i++){
+}
+stage.draw()
+
+
 function onLoad(midiData) {
     console.log("load successful");
     
@@ -25,11 +46,13 @@ function onLoad(midiData) {
     // the file selection.
     let source = document.getElementById("filereader");
 
+
     MidiParser.parse(source, function (obj) {
         console.log(obj);
-        var stage = new createjs.Stage("demoCanvas");
+        
+        
 
-        // initialize note grid
+
         //var shape = new createjs.Shape();
         //shape.graphics.lineTo(10, 0);
         
@@ -75,6 +98,14 @@ function onLoad(midiData) {
 
 
     function placeNote(noteValue, notePlacement, stage){
+
+
+
+       
+
+
+        
+       /*
         var yPosition = noteValue; // change to calculated formula once you find one that works
         var xPosition = notePlacement; // change to calculated formula once you find one that works
         var circle = new createjs.Shape();
@@ -84,6 +115,7 @@ function onLoad(midiData) {
         stage.addChild(circle);
         stage.update();
         //console.log("Note should be visible on screen.");
+        */
     }
 
 
