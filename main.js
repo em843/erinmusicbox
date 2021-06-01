@@ -18,14 +18,16 @@ long term
 TODO: Add support for multiple tracks
 */
 
-
+// Define canvas parameters
+var cw = window.innerWidth*3;
+var ch = 360;
 // Define grid parameters 
 var p = 40; // grid padding
 var gw = 3000; // deafult grid width
 var gh = 280; // grid height
 var bw = 40; // box width
 var bh = 20; // box height
-var dt = 240 // delta time value for one box
+var dt = 240; // delta time value for one box
 // Define note parameters
 var fontSize = 18; // note letter font size
 var nrad = 7; // note circle radius
@@ -44,8 +46,8 @@ function onLoad() {
     // Create canvas
     var canvas = document.querySelector('canvas');
     console.log(canvas)
-    canvas.width = window.innerWidth*3;
-    canvas.height = 500;
+    canvas.width = cw;
+    canvas.height = ch;
     var c = canvas.getContext('2d');
 
     // Draw initial grid (for aesthetic purposes)
@@ -65,8 +67,8 @@ function onLoad() {
         var omittedNotes = 0;       
 
         // Re-initialize canvas
-        canvas.width = window.innerWidth*3;
-        canvas.height = 500;
+        canvas.width = cw;
+        canvas.height = ch;
         var c = canvas.getContext('2d');
         
         // Redraw grid

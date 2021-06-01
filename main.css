@@ -1,6 +1,7 @@
 
 body{
-  margin: 60px
+  /* margin: 60px; */
+  padding: 60px;
 }
 
 h1 {
@@ -12,14 +13,77 @@ canvas{
   border: 1px solid black;
   background: mintcream;
   /* mintcream, #D3FCE8*/
+
 }
 
 source{
   margin: 20px;
 }
   
+input[type="file"] {
+  display: none;
+}
 
 
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin: 6px;
+  font-family: "Arial";
+}
+
+.custom-file-upload:hover {
+  background: #DEF6F7;
+}
+
+
+ /* Dropdown Button */
+ .dropbtn {
+  background-color: #FFFFFF;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 6px;
+  font-family: "Arial";
+  display: inline-block;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 6px 12px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #DEF6F7}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #DEF6F7;}
 
 /*
 Discarded:
