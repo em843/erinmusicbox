@@ -19,39 +19,58 @@ TODO: Add support for multiple tracks
 */
 
 
-// Define grid parameters globally
-p = 40; // grid padding
-gw = 700; // grid width
-gh = 280; // grid height
-bw = 40; // box width
-bh = 20; // box height
+// Define grid parameters 
+var p = 40; // grid padding
+var gw = 3000; // deafult grid width
+var gh = 280; // grid height
+var bw = 40; // box width
+var bh = 20; // box height
+var dt = 240 // delta time value for one box
+// Define note parameters
+var fontSize = 18; // note letter font size
+var nrad = 7; // note circle radius
+// Define colors/aesthetics
+gridColor = "black" // Grid line color
+letterColor = "black" // Note letter color
+noteColor = "#448097" // Note/hole/circle color
 
+// Define accepted note values (for 15 note box)
+// C4-C6 excluding sharps and flats
+var validNotes = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84]
 
-function onLoad(midiData) {
+function onLoad() {
     console.log("load successful");
 
     // Create canvas
     var canvas = document.querySelector('canvas');
     console.log(canvas)
-    canvas.width = window.innerWidth;
+    canvas.width = window.innerWidth*3;
     canvas.height = 500;
     var c = canvas.getContext('2d');
 
-    // Define accepted note values (for 15 note box)
-    var validNotes = [48, 50, 52, 53, 55, 57, 59, 60, 62, 64, 65, 67, 69, 71, 72]
-
-    // Draw grid
-    gridColor = "black" // Grid line color
-    letterColor = "black" // Note letter color
-    noteColor = "#448097" // Note/hole/circle color
-    drawGrid(c, gridColor, letterColor)
+    // Draw initial grid (for aesthetic purposes)
+    drawGrid(c, gridColor, letterColor, gw)
 
     // Select the INPUT element that will handle the file selection.
     let source = document.getElementById("filereader");
 
     // Begin processing MIDI file
     MidiParser.parse(source, function (obj) {
-        console.log("Object " + obj);
+        console.log("source")
+        console.log(source)
+        console.log("obj")
+        console.log(obj);
+
+        // Count omitted notes
+        var omittedNotes = 0;       
+
+        // Re-initialize canvas
+        canvas.width = window.innerWidth*3;
+        canvas.height = 500;
+        var c = canvas.getContext('2d');
+        
+        // Redraw grid
+        drawGrid(c, gridColor, letterColor, gw)
 
         // Parse notes
         var firstNote;
@@ -68,26 +87,30 @@ function onLoad(midiData) {
         }
 
         // Process/place notes
+        var xsum = 0;
         console.log("Time to process events.");
         for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
+            // Get note event (either on/off)
             var currEvent = events[i];
-            var xSum = 0;
-            var omittedNotes = 0;
-            if (currEvent.data[1] !=0 ) { // If it's a 'note on' event, place it; otherwise ignore it
+            console.log(currEvent);
+            // Add deltaTime to x tracker
+            xsum += (currEvent.deltaTime / dt) * bw; // Increment deltaTime
+            console.log("xsum: " + xsum);
+            // If it's a 'note on' event, place it; otherwise ignore it
+            if (currEvent.type == 9) { 
                 rowNum = searchFor(currEvent.data[0], validNotes)
                 if(rowNum != -1) { // If the note is within a 15 note box range
-                    console.log(currEvent);
-                    console.log("deltaTime: " + currEvent.deltaTime);
-                    // Determine xpos (add deltaTime to next note's x position)
-                    xSum += currEvent.deltaTime; 
-                    placeNote(c, xSum, rowNum, noteColor)
+                    placeNote(c, xsum, rowNum, noteColor);
                 }
                 else {
-                    console.log("Cannot place note.")
+                    console.log("Invalid value " + currEvent.data[0]);
+                    console.log("Cannot place note.");
                     omittedNotes++;
+
                 }
             }
         } 
+        console.log("Omitted: " + omittedNotes)
 
         if (omittedNotes > 0){
             // Display text on canvas:
@@ -103,26 +126,26 @@ function onLoad(midiData) {
     
 }
 
-function drawGrid(c, gridColor, letterColor){
+function drawGrid(c, gridColor, letterColor, gridLen){
     
     var noteLetters = ["C", "D", "E", "F", "G", "A", "B",
                     "C", "D", "E", "F", "G", "A", "B", "C"]
 
-    c.font = "18px Arial";
+    c.font = fontSize+ "px Arial";
     c.fillStyle = letterColor;
-    for (var i = 0; i < noteLetters.length; i+=1){
-        var y = i * bh + (p + 7)
+    for (var i = 0; i < noteLetters.length; i++){
+        var y = gh - (bh*i) + (p + 7)
         c.fillText(noteLetters[i], bh, y);
     }
     
     c.beginPath();
-    for (var x = 0; x < gw+1; x+=bw) {
+    for (var x = 0; x < gridLen+1; x+=bw) {
         c.moveTo(0.5 + x + p, p);
         c.lineTo(0.5 + x + p, gh + p);
     }
     for (var y = 0; y < gh+1; y+=bh) {
         c.moveTo(p, 0.5 + y + p);
-        c.lineTo(gw + p, 0.5 + y + p);
+        c.lineTo(gridLen + p, 0.5 + y + p);
     }
     c.strokeStyle = gridColor;
     c.stroke();
@@ -130,27 +153,13 @@ function drawGrid(c, gridColor, letterColor){
 
 
 function placeNote(c, notePlacement, noteValue, noteColor){
-    console.log(notePlacement)
-    console.log(noteValue)
     var xpos = notePlacement + p; // change to calculated formula once you find one that works
     var ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
-    console.log("Xpos: " + xpos);
-    console.log("Ypos: " + ypos);
-    drawCircle(c, xpos, ypos, 7, noteColor)
+    //console.log("Xpos: " + xpos);
+    //console.log("Ypos: " + ypos);
+    drawCircle(c, xpos, ypos, nrad, noteColor)
 
-
-
-    /*
-    var yPosition = noteValue; // change to calculated formula once you find one that works
-    var xPosition = notePlacement; // change to calculated formula once you find one that works
-    var circle = new createjs.Shape();
-    circle.graphics.beginFill("DeepSkyBlue").drawCircle(100, yPosition, 4); // change this to xPosition when you figure it out
-    circle.x = 100;
-    circle.y = 100;
-    stage.addChild(circle);
-    stage.update();
-    //console.log("Note should be visible on screen.");
-    */
+    console.log("Note with value " + noteValue + " should be visible on screen.");
 }
 
 
@@ -174,19 +183,3 @@ function searchFor(item, array){
     }
     return -1; // item not found
 }
-
-
-/* Discarded code:
-
-        var xPosition;
-        var xSum;
-        if (typeof xSum === 'undefined') { // if this is the first note placed
-            xPosition = 0;
-            console.log("First note x position set.")
-        }
-        else {
-            xPosition = xSum + Math.floor(deltaTime/4);
-        } 
-        xSum = xPosition;
-
-*/
