@@ -55,11 +55,11 @@ function onLoad() {
     console.log("load successful");
 
     // Define canvas
-    var canvas = document.querySelector('canvas');
+    let canvas = document.querySelector('canvas');
     console.log(canvas)
     canvas.width = cw;
     canvas.height = ch;
-    var c = canvas.getContext('2d');
+    let c = canvas.getContext('2d');
     cxt = c;
 
     // Draw initial grid (for aesthetic purposes)
@@ -81,11 +81,7 @@ function onLoad() {
         // Make midi object global
         midiObject = obj;
 
-        var dt = 240; // delta time value for one box (default = 240)
-        // 320 for 2/3 spacing MBM
-        // TODO: make this more understandable in code and configure for MBM and online sequencer
-
-        var stripLength = processNotes(obj, c, dt, bw, validNotes15)
+        let stripLength = processNotes(obj, c, sp, validNotes15)
         
         c.globalCompositeOperation='destination-over';
 
@@ -101,11 +97,11 @@ function onLoad() {
 function drawGrid(c, gridColor, gridLen){
     console.log("drawing grid...")
     c.beginPath();
-    for (var x = 0; x < gridLen+1; x+=bw) {
+    for (let x = 0; x < gridLen+1; x+=bw) {
         c.moveTo(0.5 + x + p, p);
         c.lineTo(0.5 + x + p, gh + p);
     }
-    for (var y = 0; y < gh+1; y+=bh) {
+    for (let y = 0; y < gh+1; y+=bh) {
         c.moveTo(p, 0.5 + y + p);
         c.lineTo(gridLen + p, 0.5 + y + p);
     }
@@ -116,12 +112,12 @@ function drawGrid(c, gridColor, gridLen){
 
 // Processes all notes. Returns length of song in boxes.
 function processNotes(midiObject, c, sp, validNotes) {
-    var firstNote;
-    var events = midiObject.track[1].event;
-    var omittedNotes = 0; // Count omitted notes
+    let firstNote;
+    let events = midiObject.track[1].event;
+    let omittedNotes = 0; // Count omitted notes
 
     // Get rid of non-note info
-    for (var i = 0; i < events.length; i++) {
+    for (let i = 0; i < events.length; i++) {
         console.log("Checking for the first note...");
         if (Array.isArray(events[i].data)) { // Once we find a note, break the loop.
             firstNote = i;
@@ -129,11 +125,11 @@ function processNotes(midiObject, c, sp, validNotes) {
             break;
         }
     }
-    var xsum = 0;
+    let xsum = 0;
     console.log("Time to process events.");
-    for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
+    for (let i = firstNote; i < events.length-1; i++) { // For each note in track chunk
         // Get note event (either on/off)
-        var currEvent = events[i];
+        let currEvent = events[i];
         console.log(currEvent);
         // Add deltaTime to x tracker
         xsum += (currEvent.deltaTime / sp) * bw; // Increment deltaTime
@@ -163,14 +159,10 @@ function processNotes(midiObject, c, sp, validNotes) {
     return xsum;
 }
 
-
 function placeNote(c, notePlacement, noteValue, noteColor){
-    var xpos = notePlacement + p; // change to calculated formula once you find one that works
-    var ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
-    //console.log("Xpos: " + xpos);
-    //console.log("Ypos: " + ypos);
+    let xpos = notePlacement + p; // change to calculated formula once you find one that works
+    let ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
     drawCircle(c, xpos, ypos, nrad, noteColor)
-
     console.log("Note with value " + noteValue + " should be visible on screen.");
 }
 
@@ -188,7 +180,7 @@ function drawCircle(ctx, x, y, radius, fill) {
 Will eventually implement binary search but I am lazy
 */
 function searchFor(item, array){
-    for (var i = 0; i < array.length; i++){
+    for (let i = 0; i < array.length; i++){
         if (array[i] == item){
             return i; // item found
         }
@@ -220,13 +212,13 @@ function drawMeasures(ml) {
 }
 
 function drawLetters(c, letterColor) {
-    var noteLetters = ["C", "D", "E", "F", "G", "A", "B",
+    let noteLetters = ["C", "D", "E", "F", "G", "A", "B",
                     "C", "D", "E", "F", "G", "A", "B", "C"]
 
     c.font = fontSize+ "px Arial";
     c.fillStyle = letterColor;
-    for (var i = 0; i < noteLetters.length; i++){
-        var y = gh - (bh*i) + (p + 7)
+    for (let i = 0; i < noteLetters.length; i++){
+        let y = gh - (bh*i) + (p + 7)
         c.fillText(noteLetters[i], bh, y);
     }
 }
