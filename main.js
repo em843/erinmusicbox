@@ -14,6 +14,7 @@ TODO: Wrap on page so it's not one long strip
 TODO: Save to PDF button
 TODO: Fix spacing dropdown so it actually works
 TODO: Create your own function in place of eval()
+TODO: Add a type of object (div class?) for warnings like omissions and not having support for 20 notes
 
 long term
 TODO: Add support for multiple tracks
@@ -40,8 +41,8 @@ noteColor = "#448097" // Note/hole/circle color
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
 let validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
-let validNotes20 = [];
-let validNotes30 = [];
+let validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
+let validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
 // Define global variables
 let midiObject;
 let ctx;
@@ -271,7 +272,7 @@ function setBoxType() {
     canvas.height = ch;
     let c = canvas.getContext('2d');
 
-    stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
+    stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
     
     c.globalCompositeOperation='destination-over';
     // Redraw grid
