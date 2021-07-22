@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>erinmusicbox - Home</title>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
     <script src="https://colxi.info/midi-parser-js/src/main.js"></script>
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -16,6 +16,24 @@
     </label> 
     <input type="file" id="filereader"/>
 
+    <div class="dropdown-select">
+      <label for="boxType">Box Type:</label>
+      <select name="" id="boxType" onchange="setBoxType()" autocomplete="off">
+        <option value="15">Kikkerland 15 note</option>
+        <option value="20">Grand Illusions 20 note</option>
+        <option value="30">Grand Illusions 30 note</option>
+      </select> 
+    </div>
+
+    <div class="dropdown-select">
+      <label for="measures">Measures:</label>
+      <select name="" id="measures" onchange="setMeasureLength()" autocomplete="off">
+        <option value="3">3/4</option>
+        <option selected value="4">4/4</option>
+        <option value="0">Off</option>
+      </select> 
+    </div>
+
     <div class="dropdown-select"> 
       <label for="spacing">Note spacing:</label>
       <select name="" id="spacing" onchange="setSpacing()" autocomplete="off">
@@ -26,19 +44,6 @@
         <option value="2">Sparser</option>
       </select> 
     </div>
-
-    <div class="dropdown-select">
-      <label for="measures">Time signature:</label>
-      <select name="" id="measures" onchange="drawMeasures()" autocomplete="off">
-        <option value="3">3/4</option>
-        <option selected value="4">4/4</option>
-        <option value="0">Off</option>
-      </select> 
-    </div>
-
     <canvas></canvas>
-    <script src="main.js"></script>
-      
-    
 </body>
 </html

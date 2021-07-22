@@ -1,11 +1,11 @@
 
 html { overflow-x: scroll; }
 
-
 body{
   /* margin: 60px; */
   padding: 60px;
   overflow-x: scroll;
+  height: 100%;
 }
 
 h1 {
