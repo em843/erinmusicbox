@@ -46,7 +46,7 @@ let validNotes30 = [];
 let midiObject;
 let ctx;
 let canvas = document.querySelector('canvas');
-let sp = document.getElementById("spacing").value;
+let sp = eval(document.getElementById("spacing").value);
 let ml = parseInt(document.getElementById("measures").value * 2);
 let mbt = parseInt(document.getElementById("boxType").value);
 let validNotes;
@@ -144,7 +144,6 @@ function processNotes(midiObject, c, sp, validNotes) {
             break;
         }
     }
-
     let xsum = 0;
     console.log("Time to process events.");
     for (let i = firstNote; i < events.length-1; i++) { // For each note in track chunk
@@ -169,9 +168,8 @@ function processNotes(midiObject, c, sp, validNotes) {
             }
         }
     } 
-    console.log("Omitted: " + omittedNotes)
-
     if (omittedNotes > 0){
+        console.log("Omitted: " + omittedNotes)
         // Display text on canvas:
         c.font = "18px Arial";
         c.fillStyle = letterColor;
@@ -181,14 +179,10 @@ function processNotes(midiObject, c, sp, validNotes) {
     return xsum;
 }
 
-
 function placeNote(c, notePlacement, noteValue, noteColor){
     let xpos = notePlacement + p; // change to calculated formula once you find one that works
     let ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
-    //console.log("Xpos: " + xpos);
-    //console.log("Ypos: " + ypos);
     drawCircle(c, xpos, ypos, nrad, noteColor)
-
     console.log("Note with value " + noteValue + " should be visible on screen.");
 }
 
@@ -241,12 +235,13 @@ function setSpacing() {
 // Set measure length
 function setMeasureLength() {
     ml = parseInt(document.getElementById("measures").value) * 2;
-    console.log("Measure length:")
-    console.log(ml);
+    console.log("Measure length: " + ml)
     drawMeasures(ml);
 }
+// Draw measures
 function drawMeasures(ml) {
     console.log("drawing measures of length " + ml)
+    // TODO: Make measures go
 }
 
 function drawLetters(c, letterColor) {
