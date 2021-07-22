@@ -13,54 +13,71 @@ TODO: Figure out why dropdown label triggers the hover event
 TODO: Wrap on page so it's not one long strip
 TODO: Save to PDF button
 TODO: Fix spacing dropdown so it actually works
+TODO: Create your own function in place of eval()
 
 long term
 TODO: Add support for multiple tracks
+TODO: Figure out CSS inches relations for printing
+
 */
 
 // Define canvas parameters
-var cw = window.innerWidth*8;
-var ch = 360;
+let cw = window.innerWidth*8;
+let ch = 360;
 // Define grid parameters 
-var p = 40; // grid padding
-var gw = 10500; // default grid width
-var gh = 280; // grid height
-var bw = 40; // box width
-var bh = 20; // box height
+let p = 40; // grid padding
+let gw = 10500; // default grid width
+let gh = 280; // grid height
+let bw = 40; // box width
+let bh = 20; // box height
 // Define note parameters
-var fontSize = 18; // note letter font size
-var nrad = 7; // note circle radius
+let fontSize = 18; // note letter font size
+let nrad = 7; // note circle radius
 // Define colors/aesthetics
 gridColor = "black" // Grid line color
 letterColor = "black" // Note letter color
 noteColor = "#448097" // Note/hole/circle color
-
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
-var validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84]
+let validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
+let validNotes20 = [];
+let validNotes30 = [];
+// Define global variables
+let midiObject;
+let ctx;
+let canvas = document.querySelector('canvas');
+let sp = document.getElementById("spacing").value;
+let ml = parseInt(document.getElementById("measures").value * 2);
+let mbt = parseInt(document.getElementById("boxType").value);
+let validNotes;
+
+function setValidNotes(mbt) {
+    if (mbt == 15) {
+        validNotes = validNotes15
+    }
+    else if (mbt == 20) {
+        validNotes = validNotes20
+    }
+    else if (mbt == 30) {
+        validNotes = validNotes30
+    }
+}
+setValidNotes(mbt)
 
 function onLoad() {
     console.log("load successful");
 
-    // Background color
-    // Add behind elements.
-    // c.globalCompositeOperation = 'destination-over'
-    // Now draw!
-    //c.fillStyle = "mintcream";
-    //c.fillRect(0, 0, canvas.width, canvas.height);
-
     // Define canvas
-    var canvas = document.querySelector('canvas');
     console.log(canvas)
     canvas.width = cw;
     canvas.height = ch;
-    var c = canvas.getContext('2d');
+    let c = canvas.getContext('2d');
+    ctx = c;
 
     // Draw initial grid (for aesthetic purposes)
     drawLetters(c, letterColor)
     drawGrid(c, gridColor, gw)
     // Draw measures
-    var ml = 8 // hard-coding this for now
     drawMeasures(ml)
 
     // Select the INPUT element that will handle the file selection.
@@ -72,25 +89,24 @@ function onLoad() {
         console.log(source)
         console.log("obj")
         console.log(obj);
+        // Set obj to global variable
+        midiObject = obj;
 
-        // // Re-initialize canvas
-        // canvas.width = cw;
-        // canvas.height = ch;
-        // var c = canvas.getContext('2d');
+        // Re-initialize canvas
+        canvas.width = cw;
+        canvas.height = ch;
+        let c = canvas.getContext('2d');
 
-        var dt = 240; // delta time value for one box (default = 240)
-        // 320 for 2/3 spacing MBM
-        // TODO: make this more understandable in code and configure for MBM and online sequencer
-
-        var stripLength = processNotes(obj, c, dt, bw, validNotes15)
+        let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
         
         c.globalCompositeOperation='destination-over';
 
         // Redraw grid
         drawGrid(c, gridColor, (stripLength * bw) + ml)
+        drawLetters(c, letterColor)
 
         // Draw measures
-        drawMeasures()
+        drawMeasures(ml)
     
     });
 }
@@ -98,11 +114,11 @@ function onLoad() {
 function drawGrid(c, gridColor, gridLen){
     console.log("drawing grid...")
     c.beginPath();
-    for (var x = 0; x < gridLen+1; x+=bw) {
+    for (let x = 0; x < gridLen+1; x+=bw) {
         c.moveTo(0.5 + x + p, p);
         c.lineTo(0.5 + x + p, gh + p);
     }
-    for (var y = 0; y < gh+1; y+=bh) {
+    for (let y = 0; y < gh+1; y+=bh) {
         c.moveTo(p, 0.5 + y + p);
         c.lineTo(gridLen + p, 0.5 + y + p);
     }
@@ -112,13 +128,15 @@ function drawGrid(c, gridColor, gridLen){
 }
 
 // Processes all notes. Returns length of song in boxes.
-function processNotes(midiObject, c, sp, bw, validNotes) {
-    var firstNote;
-    var events = midiObject.track[1].event;
-    var omittedNotes = 0; // Count omitted notes
+function processNotes(midiObject, c, sp, validNotes) {
+    console.log("Valid notes:")
+    console.log(validNotes)
+    let firstNote;
+    let events = midiObject.track[1].event;
+    let omittedNotes = 0; // Count omitted notes
 
     // Get rid of non-note info
-    for (var i = 0; i < events.length; i++) {
+    for (let i = 0; i < events.length; i++) {
         console.log("Checking for the first note...");
         if (Array.isArray(events[i].data)) { // Once we find a note, break the loop.
             firstNote = i;
@@ -127,13 +145,14 @@ function processNotes(midiObject, c, sp, bw, validNotes) {
         }
     }
 
-    var xsum = 0;
+    let xsum = 0;
     console.log("Time to process events.");
-    for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
+    for (let i = firstNote; i < events.length-1; i++) { // For each note in track chunk
         // Get note event (either on/off)
-        var currEvent = events[i];
+        let currEvent = events[i];
         console.log(currEvent);
         // Add deltaTime to x tracker
+        console.log(xsum + " = " + currEvent.deltaTime + " / " + sp + " * " + bw)
         xsum += (currEvent.deltaTime / sp) * bw; // Increment deltaTime
         console.log("xsum: " + xsum);
         // If it's a 'note on' event, place it; otherwise ignore it
@@ -164,8 +183,8 @@ function processNotes(midiObject, c, sp, bw, validNotes) {
 
 
 function placeNote(c, notePlacement, noteValue, noteColor){
-    var xpos = notePlacement + p; // change to calculated formula once you find one that works
-    var ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
+    let xpos = notePlacement + p; // change to calculated formula once you find one that works
+    let ypos = noteValue*-bh + (gh + 2*bh); // change to calculated formula once you find one that works
     //console.log("Xpos: " + xpos);
     //console.log("Ypos: " + ypos);
     drawCircle(c, xpos, ypos, nrad, noteColor)
@@ -187,7 +206,7 @@ function drawCircle(ctx, x, y, radius, fill) {
 Will eventually implement binary search but I am lazy
 */
 function searchFor(item, array){
-    for (var i = 0; i < array.length; i++){
+    for (let i = 0; i < array.length; i++){
         if (array[i] == item){
             return i; // item found
         }
@@ -197,26 +216,74 @@ function searchFor(item, array){
 
 // Set spacing in between notes
 function setSpacing() {
-    var sp = document.getElementById("spacing").value;
-    processNotes(obj, c, (1/sp) * 240, bw, validNotes15) // 240 is default value for MBM midi files
-    //TODO: Figure out the logic for calling this function... should i reload the page??? idk
+    console.log("Spacing before: " + sp)
+    sp = eval(document.getElementById("spacing").value);
+    console.log("Spacing: " + sp)
+    if (!midiObject) {
+        console.log("Please select a MIDI file");
+        return;
+    }
+    // Re-initialize canvas
+    canvas.width = cw;
+    canvas.height = ch;
+    let c = canvas.getContext('2d');
+    stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
+    c.globalCompositeOperation='destination-over';
+    // Redraw grid
+    drawGrid(c, gridColor, (stripLength * bw) + ml)
+    drawLetters(c, letterColor)
+
+    // Draw measures
+    drawMeasures(ml)
+    console.log("Spacing: " + sp)
 }
 
 // Set measure length
-function drawMeasures() {
-    var ml = document.getElementById("measures").value * 2;
+function setMeasureLength() {
+    ml = parseInt(document.getElementById("measures").value) * 2;
+    console.log("Measure length:")
+    console.log(ml);
+    drawMeasures(ml);
+}
+function drawMeasures(ml) {
     console.log("drawing measures of length " + ml)
 }
 
-
 function drawLetters(c, letterColor) {
-    var noteLetters = ["C", "D", "E", "F", "G", "A", "B",
+    let noteLetters = ["C", "D", "E", "F", "G", "A", "B",
                     "C", "D", "E", "F", "G", "A", "B", "C"]
 
     c.font = fontSize+ "px Arial";
     c.fillStyle = letterColor;
-    for (var i = 0; i < noteLetters.length; i++){
-        var y = gh - (bh*i) + (p + 7)
+    for (let i = 0; i < noteLetters.length; i++){
+        let y = gh - (bh*i) + (p + 7)
         c.fillText(noteLetters[i], bh, y);
     }
+}
+
+function setBoxType() {
+    console.log("starting...")
+    mbt = parseInt(document.getElementById("boxType").value);
+    console.log("Box Type: " + mbt)
+    setValidNotes(mbt)
+    if (!midiObject) {
+        console.log("Please select a MIDI file");
+        return;
+    }
+
+    // Re-initialize canvas
+    canvas.width = cw;
+    canvas.height = ch;
+    let c = canvas.getContext('2d');
+
+    stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
+    
+    c.globalCompositeOperation='destination-over';
+    // Redraw grid
+    drawGrid(c, gridColor, (stripLength * bw) + ml)
+    drawLetters(c, letterColor)
+
+    // Draw measures
+    drawMeasures(ml)
+    
 }
