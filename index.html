@@ -16,14 +16,25 @@
     </label> 
     <input type="file" id="filereader"/>
 
-    <div class="dropdown">
-        <button class="dropbtn">Change note spacing</button>
-        <div class="dropdown-content">
-          <a href="#">Dense</a>
-          <a href="#">Normal</a>
-          <a href="#">Sparse</a>
-        </div>
-      </div> 
+    <div class="dropdown-select"> 
+      <label for="spacing">Note spacing:</label>
+      <select name="" id="spacing" onchange="setSpacing()" autocomplete="off">
+        <option value="1/2">Denser</option>
+        <option value="2/3">Dense</option>
+        <option selected value="1">Normal</option>
+        <option value="3/2">Sparse</option>
+        <option value="2">Sparser</option>
+      </select> 
+    </div>
+
+    <div class="dropdown-select">
+      <label for="measures">Time signature:</label>
+      <select name="" id="measures" onchange="drawMeasures()" autocomplete="off">
+        <option value="3">3/4</option>
+        <option selected value="4">4/4</option>
+        <option value="0">Off</option>
+      </select> 
+    </div>
 
     <canvas></canvas>
     <script src="main.js"></script>

@@ -1,7 +1,11 @@
 
+html { overflow-x: scroll; }
+
+
 body{
   /* margin: 60px; */
   padding: 60px;
+  overflow-x: scroll;
 }
 
 h1 {
@@ -13,7 +17,6 @@ canvas{
   border: 1px solid black;
   background: mintcream;
   /* mintcream, #D3FCE8*/
-
 }
 
 source{
@@ -56,6 +59,7 @@ input[type="file"] {
 .dropdown {
   position: relative;
   display: inline-block;
+  margin: 10px;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -85,6 +89,19 @@ input[type="file"] {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #DEF6F7;}
 
+.dropdown-select {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+
+
+
+
+
+
+
 /*
 Discarded:
 
@@ -98,4 +115,5 @@ Discarded:
     border-bottom-style: solid;
 
   */
+
 

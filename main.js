@@ -5,29 +5,28 @@ Modified: 4/21/21 parse events in MIDI data
 Modified: 4/26/21 display multiple shapes on canvas
 
 WHERE YOU LEFT OFF:
-Trying to figure out a solution for placeNotes() with xPosition, xSum and deltaTime.
-I think the solution is to have two separate methods, placeNote and createNote.
-
-
+Need to fix logic for passing parameters for setSpacing function so I can make that dropdown work
+           
 short term
-TODO: Figure out difference between drawCircle x y parameters and circle.x + circle.y
-TODO: Initialize grid
 TODO: Figure out proportion formulas for placing notes
+TODO: Figure out why dropdown label triggers the hover event
+TODO: Wrap on page so it's not one long strip
+TODO: Save to PDF button
+TODO: Fix spacing dropdown so it actually works
 
 long term
 TODO: Add support for multiple tracks
 */
 
 // Define canvas parameters
-var cw = window.innerWidth*3;
+var cw = window.innerWidth*8;
 var ch = 360;
 // Define grid parameters 
 var p = 40; // grid padding
-var gw = 3000; // deafult grid width
+var gw = 10500; // default grid width
 var gh = 280; // grid height
 var bw = 40; // box width
 var bh = 20; // box height
-var dt = 240; // delta time value for one box
 // Define note parameters
 var fontSize = 18; // note letter font size
 var nrad = 7; // note circle radius
@@ -38,12 +37,19 @@ noteColor = "#448097" // Note/hole/circle color
 
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
-var validNotes = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84]
+var validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84]
 
 function onLoad() {
     console.log("load successful");
 
-    // Create canvas
+    // Background color
+    // Add behind elements.
+    // c.globalCompositeOperation = 'destination-over'
+    // Now draw!
+    //c.fillStyle = "mintcream";
+    //c.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Define canvas
     var canvas = document.querySelector('canvas');
     console.log(canvas)
     canvas.width = cw;
@@ -51,7 +57,11 @@ function onLoad() {
     var c = canvas.getContext('2d');
 
     // Draw initial grid (for aesthetic purposes)
-    drawGrid(c, gridColor, letterColor, gw)
+    drawLetters(c, letterColor)
+    drawGrid(c, gridColor, gw)
+    // Draw measures
+    var ml = 8 // hard-coding this for now
+    drawMeasures(ml)
 
     // Select the INPUT element that will handle the file selection.
     let source = document.getElementById("filereader");
@@ -63,83 +73,30 @@ function onLoad() {
         console.log("obj")
         console.log(obj);
 
-        // Count omitted notes
-        var omittedNotes = 0;       
+        // // Re-initialize canvas
+        // canvas.width = cw;
+        // canvas.height = ch;
+        // var c = canvas.getContext('2d');
 
-        // Re-initialize canvas
-        canvas.width = cw;
-        canvas.height = ch;
-        var c = canvas.getContext('2d');
+        var dt = 240; // delta time value for one box (default = 240)
+        // 320 for 2/3 spacing MBM
+        // TODO: make this more understandable in code and configure for MBM and online sequencer
+
+        var stripLength = processNotes(obj, c, dt, bw, validNotes15)
         
+        c.globalCompositeOperation='destination-over';
+
         // Redraw grid
-        drawGrid(c, gridColor, letterColor, gw)
+        drawGrid(c, gridColor, (stripLength * bw) + ml)
 
-        // Parse notes
-        var firstNote;
-        var events = obj.track[1].event;
-
-        // Get rid of non-note info
-        for (var i = 0; i < events.length; i++) {
-            console.log("Checking for the first note...");
-            if (Array.isArray(events[i].data)) { // Once we find a note, break the loop.
-                firstNote = i;
-                console.log("Found first note at index " + firstNote);
-                break;
-            }
-        }
-
-        // Process/place notes
-        var xsum = 0;
-        console.log("Time to process events.");
-        for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
-            // Get note event (either on/off)
-            var currEvent = events[i];
-            console.log(currEvent);
-            // Add deltaTime to x tracker
-            xsum += (currEvent.deltaTime / dt) * bw; // Increment deltaTime
-            console.log("xsum: " + xsum);
-            // If it's a 'note on' event, place it; otherwise ignore it
-            if (currEvent.type == 9) { 
-                rowNum = searchFor(currEvent.data[0], validNotes)
-                if(rowNum != -1) { // If the note is within a 15 note box range
-                    placeNote(c, xsum, rowNum, noteColor);
-                }
-                else {
-                    console.log("Invalid value " + currEvent.data[0]);
-                    console.log("Cannot place note.");
-                    omittedNotes++;
-
-                }
-            }
-        } 
-        console.log("Omitted: " + omittedNotes)
-
-        if (omittedNotes > 0){
-            // Display text on canvas:
-            c.font = "18px Arial";
-            c.fillStyle = letterColor;
-            c.fillText("Warning: " + omittedNotes + " notes omitted.", 40, 400);
-        }
-        
+        // Draw measures
+        drawMeasures()
     
     });
-
-    
-    
 }
 
-function drawGrid(c, gridColor, letterColor, gridLen){
-    
-    var noteLetters = ["C", "D", "E", "F", "G", "A", "B",
-                    "C", "D", "E", "F", "G", "A", "B", "C"]
-
-    c.font = fontSize+ "px Arial";
-    c.fillStyle = letterColor;
-    for (var i = 0; i < noteLetters.length; i++){
-        var y = gh - (bh*i) + (p + 7)
-        c.fillText(noteLetters[i], bh, y);
-    }
-    
+function drawGrid(c, gridColor, gridLen){
+    console.log("drawing grid...")
     c.beginPath();
     for (var x = 0; x < gridLen+1; x+=bw) {
         c.moveTo(0.5 + x + p, p);
@@ -151,6 +108,58 @@ function drawGrid(c, gridColor, letterColor, gridLen){
     }
     c.strokeStyle = gridColor;
     c.stroke();
+    console.log("grid drawn")
+}
+
+// Processes all notes. Returns length of song in boxes.
+function processNotes(midiObject, c, sp, bw, validNotes) {
+    var firstNote;
+    var events = midiObject.track[1].event;
+    var omittedNotes = 0; // Count omitted notes
+
+    // Get rid of non-note info
+    for (var i = 0; i < events.length; i++) {
+        console.log("Checking for the first note...");
+        if (Array.isArray(events[i].data)) { // Once we find a note, break the loop.
+            firstNote = i;
+            console.log("Found first note at index " + firstNote);
+            break;
+        }
+    }
+
+    var xsum = 0;
+    console.log("Time to process events.");
+    for (var i = firstNote; i < events.length-1; i++) { // For each note in track chunk
+        // Get note event (either on/off)
+        var currEvent = events[i];
+        console.log(currEvent);
+        // Add deltaTime to x tracker
+        xsum += (currEvent.deltaTime / sp) * bw; // Increment deltaTime
+        console.log("xsum: " + xsum);
+        // If it's a 'note on' event, place it; otherwise ignore it
+        if (currEvent.type == 9) { 
+            rowNum = searchFor(currEvent.data[0], validNotes)
+            if(rowNum != -1) { // If the note is within the box's range
+                placeNote(c, xsum, rowNum, noteColor);
+            }
+            else {
+                console.log("Invalid value " + currEvent.data[0]);
+                console.log("Cannot place note.");
+                omittedNotes++;
+
+            }
+        }
+    } 
+    console.log("Omitted: " + omittedNotes)
+
+    if (omittedNotes > 0){
+        // Display text on canvas:
+        c.font = "18px Arial";
+        c.fillStyle = letterColor;
+        c.fillText("Warning: " + omittedNotes + " notes omitted.", 40, 400);
+    }
+    // Return length of song in boxes
+    return xsum;
 }
 
 
@@ -184,4 +193,30 @@ function searchFor(item, array){
         }
     }
     return -1; // item not found
+}
+
+// Set spacing in between notes
+function setSpacing() {
+    var sp = document.getElementById("spacing").value;
+    processNotes(obj, c, (1/sp) * 240, bw, validNotes15) // 240 is default value for MBM midi files
+    //TODO: Figure out the logic for calling this function... should i reload the page??? idk
+}
+
+// Set measure length
+function drawMeasures() {
+    var ml = document.getElementById("measures").value * 2;
+    console.log("drawing measures of length " + ml)
+}
+
+
+function drawLetters(c, letterColor) {
+    var noteLetters = ["C", "D", "E", "F", "G", "A", "B",
+                    "C", "D", "E", "F", "G", "A", "B", "C"]
+
+    c.font = fontSize+ "px Arial";
+    c.fillStyle = letterColor;
+    for (var i = 0; i < noteLetters.length; i++){
+        var y = gh - (bh*i) + (p + 7)
+        c.fillText(noteLetters[i], bh, y);
+    }
 }
