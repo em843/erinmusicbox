@@ -21,6 +21,7 @@ TODO: Add support for multiple tracks
 TODO: Figure out CSS inches relations for printing
 
 */
+let midiParser  = require('midi-parser-js');
 
 // Define canvas parameters
 const cw = window.innerWidth*8;
@@ -85,7 +86,7 @@ function onLoad() {
     let source = document.getElementById("filereader");
 
     // Begin processing MIDI file
-    MidiParser.parse(source, function (obj) {
+    midiParser.parse(source, function (obj) {
         console.log("source")
         console.log(source)
         console.log("obj")
