@@ -44,8 +44,8 @@ const validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84
 const validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
 const validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
 // Define global variables
-const midiObject;
-const ctx;
+let midiObject;
+let ctx;
 const canvas = document.querySelector('canvas');
 let sp = eval(document.getElementById("spacing").value);
 let ml = parseInt(document.getElementById("measures").value * 2);
@@ -157,7 +157,7 @@ function processNotes(midiObject, c, sp, validNotes) {
         console.log("xsum: " + xsum);
         // If it's a 'note on' event, place it; otherwise ignore it
         if (currEvent.type == 9) { 
-            rowNum = searchFor(currEvent.data[0], validNotes)
+            const rowNum = searchFor(currEvent.data[0], validNotes)
             if(rowNum != -1) { // If the note is within the box's range
                 placeNote(c, xsum, rowNum, noteColor);
             }
