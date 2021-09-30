@@ -22,6 +22,8 @@ TODO: Figure out CSS inches relations for printing
 
 */
 
+//import MidiParser from "node_modules/midi-parser-js/src/midi-parser.js"
+
 // Define canvas parameters
 let cw = window.innerWidth*8;
 let ch = 360;
