@@ -35,9 +35,9 @@ let bh = 20; // box height
 let fontSize = 18; // note letter font size
 let nrad = 7; // note circle radius
 // Define colors/aesthetics
-gridColor = "black" // Grid line color
-letterColor = "black" // Note letter color
-noteColor = "#448097" // Note/hole/circle color
+const gridColor = "black" // Grid line color
+const letterColor = "black" // Note letter color
+const noteColor = "#448097" // Note/hole/circle color
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
 let validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
