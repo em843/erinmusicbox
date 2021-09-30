@@ -21,33 +21,32 @@ TODO: Add support for multiple tracks
 TODO: Figure out CSS inches relations for printing
 
 */
-let midiParser  = require('midi-parser-js');
 
 // Define canvas parameters
-const cw = window.innerWidth*8;
-const ch = 360;
+let cw = window.innerWidth*8;
+let ch = 360;
 // Define grid parameters 
-const p = 40; // grid padding
-const gw = 10500; // default grid width
-const gh = 280; // grid height
-const bw = 40; // box width
-const bh = 20; // box height
+let p = 40; // grid padding
+let gw = 10500; // default grid width
+let gh = 280; // grid height
+let bw = 40; // box width
+let bh = 20; // box height
 // Define note parameters
 let fontSize = 18; // note letter font size
 let nrad = 7; // note circle radius
 // Define colors/aesthetics
-const gridColor = "black" // Grid line color
-const letterColor = "black" // Note letter color
-const noteColor = "#448097" // Note/hole/circle color
+gridColor = "black" // Grid line color
+letterColor = "black" // Note letter color
+noteColor = "#448097" // Note/hole/circle color
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
-const validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
-const validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
-const validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
+let validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
+let validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
+let validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
 // Define global variables
 let midiObject;
 let ctx;
-const canvas = document.querySelector('canvas');
+let canvas = document.querySelector('canvas');
 let sp = eval(document.getElementById("spacing").value);
 let ml = parseInt(document.getElementById("measures").value * 2);
 let mbt = parseInt(document.getElementById("boxType").value);
@@ -86,7 +85,7 @@ function onLoad() {
     let source = document.getElementById("filereader");
 
     // Begin processing MIDI file
-    midiParser.parse(source, function (obj) {
+    MidiParser.parse(source, function (obj) {
         console.log("source")
         console.log(source)
         console.log("obj")
@@ -158,7 +157,7 @@ function processNotes(midiObject, c, sp, validNotes) {
         console.log("xsum: " + xsum);
         // If it's a 'note on' event, place it; otherwise ignore it
         if (currEvent.type == 9) { 
-            const rowNum = searchFor(currEvent.data[0], validNotes)
+            rowNum = searchFor(currEvent.data[0], validNotes)
             if(rowNum != -1) { // If the note is within the box's range
                 placeNote(c, xsum, rowNum, noteColor);
             }
