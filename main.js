@@ -26,7 +26,7 @@ TODO: Figure out CSS inches relations for printing
 
 // Define canvas parameters
 let cw = window.innerWidth*8;
-let ch = 360;
+let ch = 360; //360
 // Define grid parameters 
 let p = 40; // grid padding
 let gw = 10500; // default grid width
@@ -34,7 +34,8 @@ let gh = 280; // grid height
 let bw = 40; // box width
 let bh = 20; // box height
 // Define note parameters
-let fontSize = 18; // note letter font size
+const fontSize = "14"; // note letter font size
+const font = "Arial"
 let nrad = 7; // note circle radius
 // Define colors/aesthetics
 const gridColor = "black" // Grid line color
@@ -42,9 +43,9 @@ const letterColor = "black" // Note letter color
 const noteColor = "#448097" // Note/hole/circle color
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
-let validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
-let validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
-let validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
+const validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
+const validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
+const validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
 // Define global variables
 let midiObject;
 let ctx;
@@ -78,7 +79,7 @@ function onLoad() {
     ctx = c;
 
     // Draw initial grid (for aesthetic purposes)
-    drawLetters(c, letterColor)
+    drawLetters(c, letterColor, mbt)
     drawGrid(c, gridColor, gw)
     // Draw measures
     drawMeasures(ml)
@@ -106,7 +107,7 @@ function onLoad() {
 
         // Redraw grid
         drawGrid(c, gridColor, (stripLength * bw) + ml)
-        drawLetters(c, letterColor)
+        drawLetters(c, letterColor, mbt)
 
         // Draw measures
         drawMeasures(ml)
@@ -174,7 +175,7 @@ function processNotes(midiObject, c, sp, validNotes) {
     if (omittedNotes > 0){
         console.log("Omitted: " + omittedNotes)
         // Display text on canvas:
-        c.font = "18px Arial";
+        c.font = fontSize + "px " + font;
         c.fillStyle = letterColor;
         c.fillText("Warning: " + omittedNotes + " notes omitted.", 40, 400);
     }
@@ -224,12 +225,11 @@ function setSpacing() {
     canvas.width = cw;
     canvas.height = ch;
     let c = canvas.getContext('2d');
-    stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
     c.globalCompositeOperation='destination-over';
-    // Redraw grid
+    // Redraw notes + grid
+    stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
     drawGrid(c, gridColor, (stripLength * bw) + ml)
-    drawLetters(c, letterColor)
-
+    drawLetters(c, letterColor, mbt)
     // Draw measures
     drawMeasures(ml)
     console.log("Spacing: " + sp)
@@ -247,11 +247,26 @@ function drawMeasures(ml) {
     // TODO: Make measures go
 }
 
-function drawLetters(c, letterColor) {
-    let noteLetters = ["C", "D", "E", "F", "G", "A", "B",
+function drawLetters(c, letterColor, mbt) {
+    let noteLetters;
+    if (mbt == 15){
+        noteLetters = ["C", "D", "E", "F", "G", "A", "B",
                     "C", "D", "E", "F", "G", "A", "B", "C"]
+    }
+    else if (mbt == 20){
+        noteLetters = ["C", "D", "E", "F", "G", "A", "B",
+                    "C", "D", "E", "F", "G", "A", "B", 
+                    "C", "D", "E", "F", "G", "A"]
+    }
+    else {
+        noteLetters = ["C", "D", "G", "A", "B",
+                    "C", "D", "E", "F", "F#", "G", "G#", "A", "A#", "B", 
+                    "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
+                    "C", "D", "E"]
+    }
+    
 
-    c.font = fontSize+ "px Arial";
+    c.font = fontSize+ "px " + font;
     c.fillStyle = letterColor;
     for (let i = 0; i < noteLetters.length; i++){
         let y = gh - (bh*i) + (p + 7)
@@ -262,26 +277,38 @@ function drawLetters(c, letterColor) {
 function setBoxType() {
     console.log("starting...")
     mbt = parseInt(document.getElementById("boxType").value);
-    console.log("Box Type: " + mbt)
-    setValidNotes(mbt)
-    if (!midiObject) {
-        console.log("Please select a MIDI file");
-        return;
+    setValidNotes(mbt);
+    if (mbt==15){
+        gh = 280;
     }
-
+    else if (mbt==20){
+        gh = 380;
+    }
+    else {
+        gh = 580;
+    }
+    // Set new canvas height
+    ch = gh + 80;
     // Re-initialize canvas
     canvas.width = cw;
     canvas.height = ch;
-    let c = canvas.getContext('2d');
-
-    stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
-    
+    let c = canvas.getContext('2d');    
     c.globalCompositeOperation='destination-over';
-    // Redraw grid
-    drawGrid(c, gridColor, (stripLength * bw) + ml)
-    drawLetters(c, letterColor)
+    // Check for midi file
+    if (midiObject) {
+        stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes);
+    }
+    else {
+        console.log("Please select a MIDI file");
+        stripLength = cw;
+    }
 
+    // Redraw notes + grid
+    drawGrid(c, gridColor, (stripLength * bw) + ml);
+    console.log("Grid with height " + ch + " drawn")
+    drawLetters(c, letterColor, mbt);
     // Draw measures
-    drawMeasures(ml)
+    drawMeasures(ml);
+    console.log("Box Type: " + mbt);
     
 }
