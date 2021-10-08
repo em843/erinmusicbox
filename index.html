@@ -7,14 +7,17 @@
     <script src="https://colxi.info/midi-parser-js/src/main.js" defer></script>
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
+  </head>
 <body onload="onLoad();">
     <h1>Music Box MIDI Visualizer</h1>
-    
-    <label for="filereader" class="custom-file-upload">
+    <div class="dropdown-select">
+      <label for="filereader" class="click-button">
         Select a MIDI file
-    </label> 
-    <input type="file" id="filereader"/>
+      </label> 
+      <input type="file" id="filereader"/>
+    </div>
+    <button class="click-button" onclick="runDemo()">Try demo file</button>
+    
 
     <div class="dropdown-select">
       <label for="boxType">Box Type:</label>
@@ -47,4 +50,7 @@
 
     <canvas></canvas>
 </body>
-</html
+<footer>
+  Made by <a href="https://bit.ly/erinmusicbox">erinmusicbox,</a> who you can talk to <a href="mailto:erinmusicbox@gmail.com">here.</a>
+</footer>
+</html>

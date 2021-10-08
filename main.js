@@ -312,3 +312,38 @@ function setBoxType() {
     console.log("Box Type: " + mbt);
     
 }
+
+// Parse with demo file
+// HORRIBLE horrible repetition of code here, 
+// but i want to get this demo up and running!
+let runDemo = () => {
+    console.log("Running demo...")
+     // Select the INPUT element that will handle the file selection.
+     let source = "YouAreMySunshine.mid";
+     // Begin processing MIDI file
+     MidiParser.parse(source, function (obj) {
+         console.log("source")
+         console.log(source)
+         console.log("obj")
+         console.log(obj);
+         // Set obj to global variable
+         midiObject = obj;
+ 
+         // Re-initialize canvas
+         canvas.width = cw;
+         canvas.height = ch;
+         let c = canvas.getContext('2d');
+ 
+         let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
+         
+         c.globalCompositeOperation='destination-over';
+ 
+         // Redraw grid
+         drawGrid(c, gridColor, (stripLength * bw) + ml)
+         drawLetters(c, letterColor, mbt)
+ 
+         // Draw measures
+         drawMeasures(ml)
+     
+     });
+}
