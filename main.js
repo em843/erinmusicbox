@@ -32,7 +32,9 @@ let gh = 280; // grid height
 let bw = 40; // box width
 let bh = 20; // box height
 // Define note parameters
-const fontSize = "14"; // note letter font size
+const nlFontSize = "14"; // note letter font size
+const mFontSize = "16"; // measure number font size
+const fontSize = "18"; // normal text font size
 const font = "Arial"
 let nrad = 7; // note circle radius
 // Define colors/aesthetics
@@ -52,6 +54,7 @@ let sp = eval(document.getElementById("spacing").value);
 let ml = parseInt(document.getElementById("measures").value * 2);
 let mbt = parseInt(document.getElementById("boxType").value);
 let validNotes;
+let stripLength; // length of song in lines (so, number of lines used (i think))
 
 function setValidNotes(mbt) {
     if (mbt == 15) {
@@ -76,11 +79,12 @@ function onLoad() {
     let c = canvas.getContext('2d');
     ctx = c;
 
+    // Draw measures
+    drawMeasures(c, ml);
     // Draw initial grid (for aesthetic purposes)
     drawLetters(c, letterColor, mbt)
     drawGrid(c, gridColor, gw)
-    // Draw measures
-    drawMeasures(ml)
+    
 
     // Select the INPUT element that will handle the file selection.
     let source = document.getElementById("filereader");
@@ -99,16 +103,17 @@ function onLoad() {
         canvas.height = ch;
         let c = canvas.getContext('2d');
 
-        let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
+        stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
         
         c.globalCompositeOperation='destination-over';
 
+        // Draw measures
+        drawMeasures(c, ml);
         // Redraw grid
         drawGrid(c, gridColor, (stripLength * bw) + ml)
         drawLetters(c, letterColor, mbt)
 
-        // Draw measures
-        drawMeasures(ml)
+        
     
     });
 }
@@ -177,7 +182,8 @@ function processNotes(midiObject, c, sp, validNotes) {
         c.fillStyle = letterColor;
         c.fillText("Warning: " + omittedNotes + " notes omitted.", 40, 400);
     }
-    // Return length of song in boxes
+    // Old comment: Return length of song in boxes 
+    // However, I'm pretty sure this returns the last x pixel position on the canvas.
     return xsum;
 }
 
@@ -229,20 +235,57 @@ function setSpacing() {
     drawGrid(c, gridColor, (stripLength * bw) + ml)
     drawLetters(c, letterColor, mbt)
     // Draw measures
-    drawMeasures(ml)
-    console.log("Spacing: " + sp)
+    drawMeasures(c, ml);
+    console.log("Spacing: " + sp);
 }
 
 // Set measure length
 function setMeasureLength() {
     ml = parseInt(document.getElementById("measures").value) * 2;
-    console.log("Measure length: " + ml)
-    drawMeasures(ml);
+    // Re-initialize canvas
+    canvas.width = cw;
+    canvas.height = ch;
+    let c = canvas.getContext('2d');
+    c.globalCompositeOperation='destination-over';
+    // Redraw notes + grid
+    if (midiObject) {
+        stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
+        drawGrid(c, gridColor, (stripLength * bw) + ml)
+    }
+    else {
+        console.log("Please select a MIDI file");
+        drawGrid(c, gridColor, gw);
+    }
+    drawLetters(c, letterColor, mbt);
+    // Draw measures
+    drawMeasures(c, ml);
+    console.log("Measure length: " + ml);
 }
 // Draw measures
-function drawMeasures(ml) {
-    console.log("drawing measures of length " + ml)
-    // TODO: Make measures go
+// TODO: Make measures go
+function drawMeasures(c, ml) {
+    if (ml <= 0){
+        return;
+    }
+    if (!stripLength) {
+        stripLength = gw
+    }
+    let y = gh + (1.5 * p);
+    let measureP = ml * bw // length, in pixels, of a measure
+    c.beginPath();
+    c.font = mFontSize+ "px " + font;
+    for (let i = 0; i < stripLength/measureP; i++) {
+        c.fillStyle = "black";
+        c.fillText(i + 1, p + i*measureP, y);
+        if (i % 2 == 0) {
+            c.fillStyle = "#FDFFFE";
+        }
+        else {
+            c.fillStyle = "#EBF7FE";
+        }
+        c.fillRect(p + i*measureP, p, measureP, gh);
+    }
+    console.log("drawing measures of length " + ml + " until measure " + stripLength/measureP)
 }
 
 function drawLetters(c, letterColor, mbt) {
@@ -264,7 +307,7 @@ function drawLetters(c, letterColor, mbt) {
     }
     
 
-    c.font = fontSize+ "px " + font;
+    c.font = nlFontSize+ "px " + font;
     c.fillStyle = letterColor;
     for (let i = 0; i < noteLetters.length; i++){
         let y = gh - (bh*i) + (p + 7)
@@ -306,7 +349,7 @@ function setBoxType() {
     console.log("Grid with height " + ch + " drawn")
     drawLetters(c, letterColor, mbt);
     // Draw measures
-    drawMeasures(ml);
+    drawMeasures(c, ml);
     console.log("Box Type: " + mbt);
     
 }
@@ -355,8 +398,8 @@ let runDemo = () => {
                 drawLetters(c, letterColor, mbt)
 
                 // Draw measures
-                drawMeasures(ml)
-    });
+                drawMeasures(c, ml);
+            });
         }
       });
 }

@@ -15,11 +15,11 @@ h1 {
 
 canvas{
   border: 1px solid black;
-  background: mintcream;
-  /* mintcream, #D3FCE8*/
+  background: #FDFFFE;
+  /* mintcream, #D3FCE8 or #FDFFFE*/
 }
 
-source{
+source {
   margin: 20px;
 }
   
@@ -82,7 +82,9 @@ input[type="file"] {
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #DEF6F7}
+.dropdown-content a:hover {
+  background-color: #DEF6F7;
+}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
