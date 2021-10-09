@@ -112,15 +112,13 @@ function onLoad() {
         // Redraw grid
         drawGrid(c, gridColor, (stripLength * bw) + ml)
         drawLetters(c, letterColor, mbt)
-
-        
-    
     });
 }
 
 function drawGrid(c, gridColor, gridLen){
     console.log("drawing grid...")
     c.beginPath();
+    c.strokeStyle = gridColor;
     for (let x = 0; x < gridLen+1; x+=bw) {
         c.moveTo(0.5 + x + p, p);
         c.lineTo(0.5 + x + p, gh + p);
@@ -129,7 +127,6 @@ function drawGrid(c, gridColor, gridLen){
         c.moveTo(p, 0.5 + y + p);
         c.lineTo(gridLen + p, 0.5 + y + p);
     }
-    c.strokeStyle = gridColor;
     c.stroke();
     console.log("grid drawn")
 }
@@ -247,6 +244,9 @@ function setMeasureLength() {
     canvas.height = ch;
     let c = canvas.getContext('2d');
     c.globalCompositeOperation='destination-over';
+    // Draw measures
+    drawMeasures(c, ml);
+    console.log("Measure length: " + ml);
     // Redraw notes + grid
     if (midiObject) {
         stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
@@ -257,9 +257,6 @@ function setMeasureLength() {
         drawGrid(c, gridColor, gw);
     }
     drawLetters(c, letterColor, mbt);
-    // Draw measures
-    drawMeasures(c, ml);
-    console.log("Measure length: " + ml);
 }
 // Draw measures
 // TODO: Make measures go
@@ -277,13 +274,10 @@ function drawMeasures(c, ml) {
     for (let i = 0; i < stripLength/measureP; i++) {
         c.fillStyle = "black";
         c.fillText(i + 1, p + i*measureP, y);
-        if (i % 2 == 0) {
-            c.fillStyle = "#FDFFFE";
-        }
-        else {
+        if (i % 2 == 1) {
             c.fillStyle = "#EBF7FE";
+            c.fillRect(p + i*measureP, p, measureP, gh);
         }
-        c.fillRect(p + i*measureP, p, measureP, gh);
     }
     console.log("drawing measures of length " + ml + " until measure " + stripLength/measureP)
 }
@@ -343,15 +337,13 @@ function setBoxType() {
         console.log("Please select a MIDI file");
         stripLength = cw;
     }
-
+    // Draw measures
+    drawMeasures(c, ml);
     // Redraw notes + grid
     drawGrid(c, gridColor, (stripLength * bw) + ml);
     console.log("Grid with height " + ch + " drawn")
     drawLetters(c, letterColor, mbt);
-    // Draw measures
-    drawMeasures(c, ml);
     console.log("Box Type: " + mbt);
-    
 }
 
 // Parse with demo file
@@ -392,13 +384,11 @@ let runDemo = () => {
                 let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
                 
                 c.globalCompositeOperation='destination-over';
-
+                // Draw measures
+                drawMeasures(c, ml);
                 // Redraw grid
                 drawGrid(c, gridColor, (stripLength * bw) + ml)
                 drawLetters(c, letterColor, mbt)
-
-                // Draw measures
-                drawMeasures(c, ml);
             });
         }
       });
