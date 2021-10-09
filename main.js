@@ -22,8 +22,6 @@ TODO: Figure out CSS inches relations for printing
 
 */
 
-//import MidiParser from "node_modules/midi-parser-js/src/midi-parser.js"
-
 // Define canvas parameters
 let cw = window.innerWidth*8;
 let ch = 360; //360
@@ -316,34 +314,49 @@ function setBoxType() {
 // Parse with demo file
 // HORRIBLE horrible repetition of code here, 
 // but i want to get this demo up and running!
+getTxt = function (){
+
+    $.ajax({
+      url:'text.txt',
+      success: function (data){
+        //parse your data here
+        //you can split into lines using data.split('\n') 
+        //an use regex functions to effectively parse it
+      }
+    });
+  }
 let runDemo = () => {
     console.log("Running demo...")
      // Select the INPUT element that will handle the file selection.
-     let source = "YouAreMySunshine.mid";
-     // Begin processing MIDI file
-     MidiParser.parse(source, function (obj) {
-         console.log("source")
-         console.log(source)
-         console.log("obj")
-         console.log(obj);
-         // Set obj to global variable
-         midiObject = obj;
- 
-         // Re-initialize canvas
-         canvas.width = cw;
-         canvas.height = ch;
-         let c = canvas.getContext('2d');
- 
-         let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
-         
-         c.globalCompositeOperation='destination-over';
- 
-         // Redraw grid
-         drawGrid(c, gridColor, (stripLength * bw) + ml)
-         drawLetters(c, letterColor, mbt)
- 
-         // Draw measures
-         drawMeasures(ml)
-     
-     });
+     let midiFile = "YouAreMySunshine.mid";
+     $.ajax({
+        url: midiFile,
+        success: function (data){
+            let encodedFile = btoa(unescape(encodeURIComponent(data)))
+          // Begin processing MIDI file
+            console.log(encodedFile)
+            MidiParser.parse(encodedFile, function (obj) {
+                console.log("obj")
+                console.log(obj);
+                // Set obj to global variable
+                midiObject = obj;
+
+                // Re-initialize canvas
+                canvas.width = cw;
+                canvas.height = ch;
+                let c = canvas.getContext('2d');
+
+                let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
+                
+                c.globalCompositeOperation='destination-over';
+
+                // Redraw grid
+                drawGrid(c, gridColor, (stripLength * bw) + ml)
+                drawLetters(c, letterColor, mbt)
+
+                // Draw measures
+                drawMeasures(ml)
+    });
+        }
+      });
 }
