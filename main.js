@@ -349,14 +349,14 @@ function setBoxType() {
     drawMeasures(c, ml);
 }
 
-// Gets param from URL
-function getParameter(paramName) {
-    let parameters = new URLSearchParams(window.location.search);
-    return parameters.get(paramName)
-}
+// // Gets param from URL
+// function getParameter(paramName) {
+//     let parameters = new URLSearchParams(window.location.search);
+//     return parameters.get(paramName)
+// }
 
-// Sets param in URL
-function setParameter(paramName, paramValue) {
-    let parameters = new URLSearchParams(window.location.search);
-    return parameters.set(paramName, paramValue)
-}
+// // Sets param in URL
+// function setParameter(paramName, paramValue) {
+//     let parameters = new URLSearchParams(window.location.search);
+//     return parameters.set(paramName, paramValue)
+// }
