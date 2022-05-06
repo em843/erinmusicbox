@@ -25,27 +25,34 @@ TODO: Figure out CSS inches relations for printing
 // Define canvas parameters
 let cw = window.innerWidth*8;
 let ch = 360; //360
+
 // Define grid parameters 
 let p = 40; // grid padding
 let gw = 10500; // default grid width
 let gh = 280; // grid height
 let bw = 40; // box width
 let bh = 20; // box height
+
 // Define note parameters
 const nlFontSize = "14"; // note letter font size
 const mFontSize = "16"; // measure number font size
 const fontSize = "18"; // normal text font size
 const font = "Arial"
 let nrad = 7; // note circle radius
+
 // Define colors/aesthetics
 const gridColor = "black" // Grid line color
 const letterColor = "black" // Note letter color
 const noteColor = "#448097" // Note/hole/circle color
+// measureColor1: defined in the css file
+const measureColor2 = "#EBF7FE"
+
 // Define accepted note values (for 15 note box)
 // C4-C6 excluding sharps and flats
 const validNotes15 = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84];
 const validNotes20 = validNotes15.concat([86, 88, 89, 91, 93]);
 const validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 88];
+
 // Define global variables
 let midiObject;
 let ctx;
@@ -236,7 +243,10 @@ function setSpacing() {
     console.log("Spacing: " + sp);
 }
 
-// Set measure length
+// Reinitialize strip
+// function
+
+// Set measure lengths
 function setMeasureLength() {
     ml = parseInt(document.getElementById("measures").value) * 2;
     // Re-initialize canvas
@@ -259,7 +269,6 @@ function setMeasureLength() {
     drawLetters(c, letterColor, mbt);
 }
 // Draw measures
-// TODO: Make measures go
 function drawMeasures(c, ml) {
     if (ml <= 0){
         return;
@@ -275,7 +284,7 @@ function drawMeasures(c, ml) {
         c.fillStyle = "black";
         c.fillText(i + 1, p + i*measureP, y);
         if (i % 2 == 1) {
-            c.fillStyle = "#EBF7FE";
+            c.fillStyle = measureColor2;
             c.fillRect(p + i*measureP, p, measureP, gh);
         }
     }

@@ -1,0 +1,23 @@
+{
+  "name": "midi-visualizer",
+  "version": "1.0.0",
+  "description": "March 2021 - Present",
+  "main": "main.js",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "lite-server": "^2.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/em843/midi-visualizer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/em843/midi-visualizer/issues"
+  },
+  "homepage": "https://github.com/em843/midi-visualizer#readme"
+}
