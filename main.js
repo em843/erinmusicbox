@@ -55,8 +55,7 @@ const validNotes30 = [48, 50, 55, 57, 59, 60, 62, 64, 65, 66, 67, 68, 69, 70, 71
 
 // Define global variables
 let midiObject;
-let ctx;
-let canvas = document.querySelector('canvas');
+let canvas = document.querySelector("canvas");
 let sp = eval(document.getElementById("spacing").value);
 let ml = parseInt(document.getElementById("measures").value * 2);
 let mbt = parseInt(document.getElementById("boxType").value);
@@ -73,34 +72,40 @@ function setValidNotes(mbt) {
     else if (mbt == 30) {
         validNotes = validNotes30
     }
-}
+};
 setValidNotes(mbt)
+
+function initializeCanvas(canvas) {
+    canvas.width = cw;
+    canvas.height = ch;
+    let c = canvas.getContext('2d');
+    // Not sure if we want this for the initial drawing or not:
+    c.globalCompositeOperation='destination-over';
+    return c
+}
 
 function onLoad() {
     console.log("load successful");
 
     // Define canvas
     console.log(canvas)
-    canvas.width = cw;
-    canvas.height = ch;
-    let c = canvas.getContext('2d');
-    ctx = c;
+    c = initializeCanvas(canvas)
 
-    // Draw measures
-    drawMeasures(c, ml);
     // Draw initial grid (for aesthetic purposes)
     drawLetters(c, letterColor, mbt)
     drawGrid(c, gridColor, gw)
+    // Draw measures
+    drawMeasures(c, ml);
     
 
     // Select the INPUT element that will handle the file selection.
     let source = document.getElementById("filereader");
-
+    
     // Begin processing MIDI file
     MidiParser.parse(source, function (obj) {
-        console.log("source")
-        console.log(source)
-        console.log("obj")
+        console.log("source");
+        console.log(source);
+        console.log("obj");
         console.log(obj);
         // Set obj to global variable
         midiObject = obj;
@@ -111,14 +116,15 @@ function onLoad() {
         let c = canvas.getContext('2d');
 
         stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
-        
+
         c.globalCompositeOperation='destination-over';
 
-        // Draw measures
-        drawMeasures(c, ml);
         // Redraw grid
         drawGrid(c, gridColor, (stripLength * bw) + ml)
         drawLetters(c, letterColor, mbt)
+
+        // Draw measures
+        drawMeasures(c, ml);
     });
 }
 
@@ -199,12 +205,12 @@ function placeNote(c, notePlacement, noteValue, noteColor){
 }
 
 
-function drawCircle(ctx, x, y, radius, fill) {
-    ctx.beginPath()
-    ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
+function drawCircle(c, x, y, radius, fill) {
+    c.beginPath()
+    c.arc(x, y, radius, 0, 2 * Math.PI, false)
     if (fill) {
-      ctx.fillStyle = fill
-      ctx.fill()
+      c.fillStyle = fill
+      c.fill()
     }
 }
 
@@ -230,10 +236,7 @@ function setSpacing() {
         return;
     }
     // Re-initialize canvas
-    canvas.width = cw;
-    canvas.height = ch;
-    let c = canvas.getContext('2d');
-    c.globalCompositeOperation='destination-over';
+    c = initializeCanvas(canvas)
     // Redraw notes + grid
     stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
     drawGrid(c, gridColor, (stripLength * bw) + ml)
@@ -243,20 +246,11 @@ function setSpacing() {
     console.log("Spacing: " + sp);
 }
 
-// Reinitialize strip
-// function
-
 // Set measure lengths
 function setMeasureLength() {
     ml = parseInt(document.getElementById("measures").value) * 2;
     // Re-initialize canvas
-    canvas.width = cw;
-    canvas.height = ch;
-    let c = canvas.getContext('2d');
-    c.globalCompositeOperation='destination-over';
-    // Draw measures
-    drawMeasures(c, ml);
-    console.log("Measure length: " + ml);
+    c = initializeCanvas(canvas)
     // Redraw notes + grid
     if (midiObject) {
         stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes)
@@ -267,6 +261,9 @@ function setMeasureLength() {
         drawGrid(c, gridColor, gw);
     }
     drawLetters(c, letterColor, mbt);
+    // Draw measures
+    drawMeasures(c, ml);
+    console.log("Measure length: " + ml);
 }
 // Draw measures
 function drawMeasures(c, ml) {
@@ -334,10 +331,7 @@ function setBoxType() {
     // Set new canvas height
     ch = gh + 80;
     // Re-initialize canvas
-    canvas.width = cw;
-    canvas.height = ch;
-    let c = canvas.getContext('2d');    
-    c.globalCompositeOperation='destination-over';
+    c = initializeCanvas(canvas)
     // Check for midi file
     if (midiObject) {
         stripLength = processNotes(midiObject, c, (1/sp) * 240, validNotes);
@@ -346,59 +340,23 @@ function setBoxType() {
         console.log("Please select a MIDI file");
         stripLength = cw;
     }
-    // Draw measures
-    drawMeasures(c, ml);
     // Redraw notes + grid
     drawGrid(c, gridColor, (stripLength * bw) + ml);
     console.log("Grid with height " + ch + " drawn")
     drawLetters(c, letterColor, mbt);
     console.log("Box Type: " + mbt);
+    // Draw measures
+    drawMeasures(c, ml);
 }
 
-// Parse with demo file
-// HORRIBLE horrible repetition of code here, 
-// but i want to get this demo up and running!
-getTxt = function (){
+// Gets param from URL
+function getParameter(paramName) {
+    let parameters = new URLSearchParams(window.location.search);
+    return parameters.get(paramName)
+}
 
-    $.ajax({
-      url:'text.txt',
-      success: function (data){
-        //parse your data here
-        //you can split into lines using data.split('\n') 
-        //an use regex functions to effectively parse it
-      }
-    });
-  }
-let runDemo = () => {
-    console.log("Running demo...")
-     // Select the INPUT element that will handle the file selection.
-     let midiFile = "YouAreMySunshine.mid";
-     $.ajax({
-        url: midiFile,
-        success: function (data){
-            let encodedFile = btoa(unescape(encodeURIComponent(data)))
-          // Begin processing MIDI file
-            console.log(encodedFile)
-            MidiParser.parse(encodedFile, function (obj) {
-                console.log("obj")
-                console.log(obj);
-                // Set obj to global variable
-                midiObject = obj;
-
-                // Re-initialize canvas
-                canvas.width = cw;
-                canvas.height = ch;
-                let c = canvas.getContext('2d');
-
-                let stripLength = processNotes(obj, c, (1/sp) * 240, validNotes)
-                
-                c.globalCompositeOperation='destination-over';
-                // Draw measures
-                drawMeasures(c, ml);
-                // Redraw grid
-                drawGrid(c, gridColor, (stripLength * bw) + ml)
-                drawLetters(c, letterColor, mbt)
-            });
-        }
-      });
+// Sets param in URL
+function setParameter(paramName, paramValue) {
+    let parameters = new URLSearchParams(window.location.search);
+    return parameters.set(paramName, paramValue)
 }
