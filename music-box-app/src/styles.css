@@ -1,0 +1,121 @@
+html { overflow-x: scroll; }
+
+body{
+  /* margin: 60px; */
+  padding: 60px;
+  overflow-x: scroll;
+  height: 100%
+}
+
+h1 {
+  font-family: Arial, Helvetica, sans-serif
+  /* font-family: 'Open Sans', sans-serif; */
+}
+
+canvas{
+  border: 1px solid black;
+  background: #FDFFFE;
+  /* mintcream, #D3FCE8 or #FDFFFE*/
+}
+
+source {
+  margin: 20px;
+}
+  
+input[type="file"] {
+  display: none;
+}
+
+
+
+.click-button {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin: 6px;
+  font-family: "Arial";
+  background: #FFFFFF
+}
+
+.click-button:hover {
+  background: #DEF6F7;
+}
+
+
+ /* Dropdown Button */
+ .dropbtn {
+  background-color: #FFFFFF;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 6px;
+  font-family: "Arial";
+  display: inline-block;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 6px 12px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #DEF6F7;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #DEF6F7;}
+
+.dropdown-select {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+
+
+
+
+
+
+
+/*
+Discarded:
+
+ border-left-style: solid;
+    border-left-width: 0.5px;
+    border-top-style: solid;
+    border-top-width: .5px;
+    border-right-width: .5px;
+    border-right-style: solid;
+    border-bottom-width: .5px;
+    border-bottom-style: solid;
+
+  */
+
+
