@@ -6,6 +6,8 @@
 /out-tsc
 /bazel-out
 /.angular
+/music-box-app/.angular
+/music-box-app/node_modules
 
 # Node
 /node_modules
