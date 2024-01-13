@@ -40,26 +40,6 @@
   <p>Measure Length: {{ ml }}</p>
 </div> -->
 
-<div>
-  <button (click)="toggleEditSongInfo()">{{ buttonText }}</button>
-  <button
-    (click)="clearSongInfo()"
-    [disabled]="title === ''"
-    *ngIf="showEditSongTitle"
-  >
-    Clear song info
-  </button>
-</div>
-<div *ngIf="showEditSongTitle">
-  <label for="songTitle">Song Title:</label>
-  <input id="songTitle" [(ngModel)]="title" />
-  <label for="artist">Artist:</label>
-  <input id="artist" [(ngModel)]="artist" />
-  <button id="save" (click)="saveSongInfo()" [disabled]="title === ''">
-    Save
-  </button>
-</div>
-
 <canvas #myCanvas></canvas>
 
 <div>

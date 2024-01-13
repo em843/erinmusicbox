@@ -46,10 +46,6 @@ export class MidiVisualizerComponent {
   public mbt: number;
   public ml: number;
   private stripLength: number;
-  public showEditSongTitle: boolean;
-  public buttonText: string;
-  public title: string;
-  public artist: string;
   public form: FormGroup;
   constructor(
     private readonly midiService: MidiVisualizerService,
@@ -61,10 +57,6 @@ export class MidiVisualizerComponent {
     this.stripLength = gw; // TODO
     this.gh = 280;
     this.ch = 360;
-    this.showEditSongTitle = false;
-    this.buttonText = 'Edit song title';
-    this.title = '';
-    this.artist = '';
   }
   submitted = false;
 
@@ -149,52 +141,6 @@ export class MidiVisualizerComponent {
 
   ngAfterViewInit() {}
 
-  toggleEditSongInfo() {
-    if (this.showEditSongTitle) {
-      this.showEditSongTitle = false;
-      this.buttonText = 'Edit song title';
-    } else {
-      this.showEditSongTitle = true;
-      this.buttonText = 'Cancel';
-    }
-  }
-
-  saveSongInfo() {
-    this.toggleEditSongInfo();
-    this.writeSongInfo();
-  }
-
-  clearSongInfo() {
-    this.title = '';
-    this.artist = '';
-    let context = this.getContext();
-    context.fillStyle = '#FDFFFE';
-    context.fillRect(bh * 2, 0, 500, bh * 2);
-  }
-
-  writeSongInfo() {
-    let context = this.getContext();
-    context.globalCompositeOperation = 'source-over';
-    context.font = '18px Arial';
-    context.fillStyle = '#FDFFFE';
-    context.fillRect(bh * 2, 0, 500, bh * 2);
-    context.fillStyle = '#000000';
-    if (this.title !== '') {
-      if (this.artist !== '') {
-        // Fill in title and artist
-        context.fillText(
-          '"' + this.title + '"' + ' by ' + this.artist,
-          bh * 2,
-          bh * 1.25
-        );
-      } else {
-        // Fill in title
-        context.fillText('"' + this.title + '"', bh * 2, bh * 1.25);
-      }
-    }
-    console.log('Song info saved.');
-  }
-
   getContext() {
     return this.canvas.nativeElement.getContext(
       '2d'
@@ -206,7 +152,6 @@ export class MidiVisualizerComponent {
     this.drawLetters(context, this.mbt);
     this.drawGrid(context, gridColor, gw);
     this.drawMeasures(context, this.ml, this.stripLength);
-    this.writeSongInfo();
   }
 
   // Functions
