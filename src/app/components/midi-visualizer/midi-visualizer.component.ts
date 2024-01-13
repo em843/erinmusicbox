@@ -188,6 +188,7 @@ export class MidiVisualizerComponent {
     context.stroke();
     console.log('grid drawn');
   }
+  
   drawLetters(context: CanvasRenderingContext2D, mbt: number) {
     let noteLetters;
     if (mbt == 15) {
@@ -204,6 +205,7 @@ export class MidiVisualizerComponent {
       context.fillText(noteLetters[i], bh, y);
     }
   }
+
   drawMeasures(
     context: CanvasRenderingContext2D,
     ml: number,

@@ -1,33 +1,7 @@
-import { ElementRef, Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MidiObject } from 'src/app/interfaces/midi-object.interface';
-// import { MidiObject } from 'src/app/interfaces/midiObject.interface';
-// import { parse } from 'midi-parser-js';
 import * as MidiParser from 'midi-parser-js';
-import {
-  cw,
-  // ch,
-  p,
-  gw,
-  // gh,
-  bw,
-  bh,
-  //   nrad,
-  validNotes15,
-  validNotes20,
-  validNotes30,
-  letterColor,
-  gridColor,
-  noteColor,
-  measureColor2,
-  nlFontSize,
-  mFontSize,
-  fontSize,
-  font,
-  noteLetters15,
-  noteLetters20,
-  noteLetters30,
-  deltaMagic,
-} from './name.const';
+import { bw, deltaMagic } from './name.const';
 import { Note } from 'src/app/interfaces/note.interface';
 import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
 
@@ -51,16 +25,20 @@ export class MidiVisualizerService {
     this.stripLength = 0;
   }
 
-  // params: midi object
-  // return: note layout object
+  /*
+  Params: 
+  fileSource: MIDI file from Music Box Maniacs
+  validNotes: list of valid notes (15, 20, or 30 note box)
+  onNotesParsed: callback function. What happens after processing is finished
+
+  Returns: a NoteLayout object containing all Note objects for the tune
+  */
   parseMidi(
     fileSource: HTMLInputElement,
     validNotes: number[],
     onNotesParsed: (noteLayout: NoteLayout) => void
   ) {
-    console.log(fileSource);
     // Begin processing MIDI file
-    // let midiParser = require('midi-parser-js');
     MidiParser.parse(fileSource, (midiObject: MidiObject) => {
       console.log('source');
       console.log(fileSource);
@@ -110,7 +88,6 @@ export class MidiVisualizerService {
                 xPositionBoxes: this.xBoxes,
                 noteValue: rowNum,
               });
-              // this.placeNote(c, this.xPixels, rowNum, noteColor);
             } else {
               console.log('Invalid value ' + currEvent.data[0]);
               console.log('Cannot place note.');
@@ -138,16 +115,4 @@ export class MidiVisualizerService {
     }
     return -1; // item not found
   }
-
-  // // Gets param from URL
-  // function getParameter(paramName) {
-  //     let parameters = new URLSearchParams(window.location.search);
-  //     return parameters.get(paramName)
-  // }
-
-  // // Sets param in URL
-  // function setParameter(paramName, paramValue) {
-  //     let parameters = new URLSearchParams(window.location.search);
-  //     return parameters.set(paramName, paramValue)
-  // }
 }
