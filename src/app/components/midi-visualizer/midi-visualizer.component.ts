@@ -45,6 +45,7 @@ export class MidiVisualizerComponent {
   private validNotes: number[];
   private gh: number;
   private ch: number;
+  public omittedMessage: string;
   public mbt: number;
   public ml: number;
   public sp: number;
@@ -95,6 +96,7 @@ export class MidiVisualizerComponent {
     this.drawLetters(context, this.mbt);
     this.drawMeasures(context, this.ml, this.stripLength);
     this.drawGrid(context, gridColor, this.stripLength);
+    this.omittedMessage = '';
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
@@ -164,15 +166,9 @@ export class MidiVisualizerComponent {
     }
     console.log('done');
     if (noteLayout.omittedNoteCount > 0) {
+      this.omittedMessage =
+        'Warning: ' + noteLayout.omittedNoteCount + ' notes omitted.';
       console.log('Omitted: ' + noteLayout.omittedNoteCount);
-      // Display text on canvas: TODO don't do this. Display text on screen instead
-      context.font = fontSize + 'px ' + font;
-      context.fillStyle = letterColor;
-      context.fillText(
-        'Warning: ' + noteLayout.omittedNoteCount + ' notes omitted.',
-        40,
-        400 // TODO fix. this doesnt display
-      );
     }
   }
 

@@ -33,14 +33,11 @@
     <option value="2">2x</option>
   </select>
 </div>
-<!-- 
-<div>
-  <p>Box Type: {{ mbt }}</p>
-  <p>Note Spacing:</p>
-  <p>Measure Length: {{ ml }}</p>
-</div> -->
 
 <canvas #myCanvas></canvas>
+<div *ngIf="omittedMessage">
+  <p>{{ omittedMessage }}</p>
+</div>
 
 <div>
   Made by <a href="https://bit.ly/erinmusicbox">erinmusicbox.</a>
