@@ -67,7 +67,7 @@ export class MidiVisualizerService {
       console.log(midiObject);
       console.log('Valid notes:');
       console.log(validNotes);
-      let firstNote!: number;
+      let firstNote: number = -1
       let events = midiObject.track[1].event;
 
       // Get rid of non-note info
@@ -81,10 +81,12 @@ export class MidiVisualizerService {
           firstNote = i;
           console.log('Found first note at index ' + firstNote);
           break;
-        } else {
-          throw Error('No notes found');
-        }
+        } 
       }
+      if (firstNote == -1) {
+        throw Error('No notes found');
+      }
+  
       for (let i = firstNote; i < events.length - 1; i++) {
         // For each note in track chunk
         // Get note event (either on/off)
