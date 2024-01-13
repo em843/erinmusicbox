@@ -82,6 +82,29 @@ export class MidiVisualizerComponent {
     this.listenForMidiFile();
   }
 
+  getContext() {
+    return this.canvas.nativeElement.getContext(
+      '2d'
+    ) as CanvasRenderingContext2D;
+  }
+
+  initVisualizer() {
+    let context = this.initializeCanvas(this.canvas.nativeElement);
+    this.drawLetters(context, this.mbt);
+    this.drawGrid(context, gridColor, gw);
+    this.drawMeasures(context, this.ml, this.stripLength);
+  }
+
+  initializeCanvas(canvas: HTMLCanvasElement) {
+    console.log('init canvas');
+    console.log(canvas);
+    canvas.width = cw;
+    canvas.height = this.ch;
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    context.globalCompositeOperation = 'destination-over';
+    return context;
+  }
+
   onSubmit(): void {
     console.log(this.form);
     this.submitted = true;
@@ -140,32 +163,6 @@ export class MidiVisualizerComponent {
     context.arc(x, y, nrad, 0, 2 * Math.PI, false);
     context.fillStyle = noteColor;
     context.fill();
-  }
-
-  ngAfterViewInit() {}
-
-  getContext() {
-    return this.canvas.nativeElement.getContext(
-      '2d'
-    ) as CanvasRenderingContext2D;
-  }
-
-  initVisualizer() {
-    let context = this.initializeCanvas(this.canvas.nativeElement);
-    this.drawLetters(context, this.mbt);
-    this.drawGrid(context, gridColor, gw);
-    this.drawMeasures(context, this.ml, this.stripLength);
-  }
-
-  // Functions
-  initializeCanvas(canvas: HTMLCanvasElement) {
-    console.log('init canvas');
-    console.log(canvas);
-    canvas.width = cw;
-    canvas.height = this.ch;
-    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    context.globalCompositeOperation = 'destination-over';
-    return context;
   }
 
   // Canvas component TODO (refactor someday?)
