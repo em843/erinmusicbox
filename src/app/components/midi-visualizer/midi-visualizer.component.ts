@@ -15,7 +15,7 @@ import {
   // gh,
   bw,
   bh,
-  //   nrad,
+  nrad,
   validNotes15,
   validNotes20,
   validNotes30,
@@ -103,41 +103,43 @@ export class MidiVisualizerComponent {
     ) as any as HTMLInputElement;
     this.midiService.parseMidi(variable, this.validNotes, (noteLayout) => {
       console.log(noteLayout);
-      // place notes
+      // Place notes
+      const notes = noteLayout.notes;
+      for (let i = 0; i < notes.length; i++) {
+        let note = notes[i];
+        this.placeNote(note.xPositionBoxes, note.noteValue); //TODO why does this display under grid?
+      }
+      console.log('done');
+      if (noteLayout.omittedNoteCount > 0) {
+        console.log('Omitted: ' + noteLayout.omittedNoteCount);
+        // Display text on canvas:
+        const context = this.getContext();
+        context.font = fontSize + 'px ' + font;
+        context.fillStyle = letterColor;
+        context.fillText(
+          'Warning: ' + noteLayout.omittedNoteCount + ' notes omitted.',
+          40,
+          400 // TODO this doesnt display correctly
+        );
+      }
     });
-    // if (variable.files) {
-    //   if (variable.files.length) {
-    //     console.log(variable.files);
-    //     this.midiService.parse(variable.files[0], this.validNotes);
-    //   }
-    // }
   }
-  // placeNote(c, notePlacement, noteValue, noteColor) {
-  //   let xpos = notePlacement + p; // change to calculated formula once you find one that works
-  //   let ypos = noteValue * -bh + (gh + 2 * bh); // change to calculated formula once you find one that works
-  //   drawCircle(c, xpos, ypos, nrad, noteColor);
-  //   console.log(
-  //     'Note with value ' + noteValue + ' should be visible on screen.'
-  //   );
-  // }
 
-  // drawCircle(c, x, y, radius, fill) {
-  //   c.beginPath();
-  //   c.arc(x, y, radius, 0, 2 * Math.PI, false);
-  //   if (fill) {
-  //     c.fillStyle = fill;
-  //     c.fill();
-  //   }
-  // }
+  placeNote(notePlacement: number, noteValue: number) {
+    let xpos = notePlacement + p; // change to calculated formula once you find one that works
+    let ypos = noteValue * -bh + (this.gh + 2 * bh); // change to calculated formula once you find one that works
+    this.drawCircle(xpos, ypos, this.getContext());
+    console.log(
+      'Note with value ' + noteValue + ' should be visible on screen.'
+    );
+  }
 
-  // // TODO: This needs to go somewhere
-  // if (this.omittedNotes > 0) {
-  //   console.log('Omitted: ' + this.omittedNotes);
-  //   // Display text on canvas:
-  //   c.font = fontSize + 'px ' + font;
-  //   c.fillStyle = letterColor;
-  //   c.fillText('Warning: ' + this.omittedNotes + ' notes omitted.', 40, 400);
-  // }
+  drawCircle(x: number, y: number, context: CanvasRenderingContext2D) {
+    context.beginPath();
+    context.arc(x, y, nrad, 0, 2 * Math.PI, false);
+    context.fillStyle = noteColor;
+    context.fill();
+  }
 
   ngAfterViewInit() {}
 
