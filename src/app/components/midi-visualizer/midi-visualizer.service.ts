@@ -25,6 +25,15 @@ export class MidiVisualizerService {
     this.stripLength = 0;
   }
 
+  resetValues() {
+    this.omittedNoteCount = 0;
+    this.xPixels = 0;
+    this.xBoxes = 0;
+    this.noteArray = [];
+    this.source = '';
+    this.stripLength = 0;
+  }
+
   /*
   Params: 
   fileSource: MIDI file from Music Box Maniacs
@@ -53,16 +62,13 @@ export class MidiVisualizerService {
     validNotes: number[],
     onNotesParsed: (noteLayout: NoteLayout) => void
   ) {
-    console.log('obj');
-    console.log(midiObject);
-    console.log('Valid notes:');
-    console.log(validNotes);
+    this.resetValues();
     let firstNote: number = -1;
     let events = midiObject.track[1].event;
 
     // Get rid of non-note info
     for (let i = 0; i < events.length; i++) {
-      console.log('Checking for the first note...');
+      // Checking for the first note...
       let data = events[i].data;
       if (typeof data === 'string') {
         this.source = data;
@@ -78,16 +84,15 @@ export class MidiVisualizerService {
     }
 
     for (let i = firstNote; i < events.length - 1; i++) {
-      // For each note in track chunk
-      // Get note event (either on/off)
+      // For each note in track chunk, get note event (either on/off)
       let currEvent = events[i];
       console.log(currEvent);
       // Add deltaTime to x tracker
       // Increment xPixels
-      this.xPixels += (currEvent.deltaTime / deltaMagic) * bw; // Increment deltaTime
+      this.xPixels += (currEvent.deltaTime / deltaMagic) * bw; 
       console.log('xSum: ' + this.xPixels);
       // Increment xBoxes
-      this.xBoxes += currEvent.deltaTime / deltaMagic; // Increment deltaTime
+      this.xBoxes += currEvent.deltaTime / deltaMagic;
       console.log('xBoxesSum: ' + this.xBoxes);
       // If it's a 'note on' event, place it; otherwise ignore it
       if (currEvent.type == 9) {

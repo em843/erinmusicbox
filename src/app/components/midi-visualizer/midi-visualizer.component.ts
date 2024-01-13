@@ -174,10 +174,7 @@ export class MidiVisualizerComponent {
     let xpos = notePlacement * bw + p; // change to calculated formula once you find one that works
     let ypos = noteValue * -bh + (this.gh + 2 * bh); // change to calculated formula once you find one that works
     this.drawCircle(xpos, ypos, this.getContext());
-    console.log('xpos: ' + xpos);
-    console.log(
-      'Note with value ' + noteValue + ' should be visible on screen.'
-    );
+    // console.log('xpos: ' + xpos);
   }
 
   drawCircle(x: number, y: number, context: CanvasRenderingContext2D) {
@@ -275,7 +272,7 @@ export class MidiVisualizerComponent {
     } else {
       this.gh = 580;
     }
-    
+
     // Set new canvas height
     this.ch = this.gh + 80;
     this.initVisualizer();
