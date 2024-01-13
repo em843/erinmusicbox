@@ -28,81 +28,91 @@ export class MidiVisualizerService {
   /*
   Params: 
   fileSource: MIDI file from Music Box Maniacs
+
+  Returns: a NoteLayout object containing all Note objects for the tune
+  */
+  parseMidi(fileSource: HTMLInputElement): Promise<MidiObject> {
+    return new Promise((resolve, reject) => {
+      MidiParser.parse(fileSource, (midiObject: MidiObject) => {
+        resolve(midiObject);
+      });
+      // You might also want to handle potential errors by calling reject()
+    });
+  }
+
+  /*
+  Params: 
+  midiObject: Parsed MIDI object from MidiParser
   validNotes: list of valid notes (15, 20, or 30 note box)
   onNotesParsed: callback function. What happens after processing is finished
 
   Returns: a NoteLayout object containing all Note objects for the tune
   */
-  parseMidi(
-    fileSource: HTMLInputElement,
+  processMidi(
+    midiObject: any, // TODO type?
     validNotes: number[],
     onNotesParsed: (noteLayout: NoteLayout) => void
   ) {
-    // Begin processing MIDI file
-    MidiParser.parse(fileSource, (midiObject: MidiObject) => {
-      console.log('source');
-      console.log(fileSource);
-      console.log('obj');
-      console.log(midiObject);
-      console.log('Valid notes:');
-      console.log(validNotes);
-      let firstNote: number = -1;
-      let events = midiObject.track[1].event;
+    console.log('obj');
+    console.log(midiObject);
+    console.log('Valid notes:');
+    console.log(validNotes);
+    let firstNote: number = -1;
+    let events = midiObject.track[1].event;
 
-      // Get rid of non-note info
-      for (let i = 0; i < events.length; i++) {
-        console.log('Checking for the first note...');
-        let data = events[i].data;
-        if (typeof data === 'string') {
-          this.source = data;
-        } else if (Array.isArray(data)) {
-          // Once we find a note, break the loop.
-          firstNote = i;
-          console.log('Found first note at index ' + firstNote);
-          break;
-        }
+    // Get rid of non-note info
+    for (let i = 0; i < events.length; i++) {
+      console.log('Checking for the first note...');
+      let data = events[i].data;
+      if (typeof data === 'string') {
+        this.source = data;
+      } else if (Array.isArray(data)) {
+        // Once we find a note, break the loop.
+        firstNote = i;
+        console.log('Found first note at index ' + firstNote);
+        break;
       }
-      if (firstNote == -1) {
-        throw Error('No notes found');
-      }
+    }
+    if (firstNote == -1) {
+      throw Error('No notes found');
+    }
 
-      for (let i = firstNote; i < events.length - 1; i++) {
-        // For each note in track chunk
-        // Get note event (either on/off)
-        let currEvent = events[i];
-        console.log(currEvent);
-        // Add deltaTime to x tracker
-        // Increment xPixels
-        this.xPixels += (currEvent.deltaTime / deltaMagic) * bw; // Increment deltaTime
-        console.log('xSum: ' + this.xPixels);
-        // Increment xBoxes
-        this.xBoxes += currEvent.deltaTime / deltaMagic; // Increment deltaTime
-        console.log('xBoxesSum: ' + this.xBoxes);
-        // If it's a 'note on' event, place it; otherwise ignore it
-        if (currEvent.type == 9) {
-          if (Array.isArray(currEvent.data)) {
-            let rowNum = this.searchFor(currEvent.data[0], validNotes);
-            if (rowNum != -1) {
-              // If the note is within the box's range
-              this.noteArray.push({
-                xPositionBoxes: this.xBoxes,
-                yPositionBoxes: rowNum,
-              });
-            } else {
-              console.log('Invalid value ' + currEvent.data[0]);
-              console.log('Cannot place note.');
-              this.omittedNoteCount++;
-            }
+    for (let i = firstNote; i < events.length - 1; i++) {
+      // For each note in track chunk
+      // Get note event (either on/off)
+      let currEvent = events[i];
+      console.log(currEvent);
+      // Add deltaTime to x tracker
+      // Increment xPixels
+      this.xPixels += (currEvent.deltaTime / deltaMagic) * bw; // Increment deltaTime
+      console.log('xSum: ' + this.xPixels);
+      // Increment xBoxes
+      this.xBoxes += currEvent.deltaTime / deltaMagic; // Increment deltaTime
+      console.log('xBoxesSum: ' + this.xBoxes);
+      // If it's a 'note on' event, place it; otherwise ignore it
+      if (currEvent.type == 9) {
+        if (Array.isArray(currEvent.data)) {
+          let rowNum = this.searchFor(currEvent.data[0], validNotes);
+          if (rowNum != -1) {
+            // If the note is within the box's range
+            this.noteArray.push({
+              xPositionBoxes: this.xBoxes,
+              yPositionBoxes: rowNum,
+            });
+          } else {
+            console.log('Invalid value ' + currEvent.data[0]);
+            console.log('Cannot place note.');
+            this.omittedNoteCount++;
           }
         }
       }
-      this.stripLength = this.xPixels;
-      onNotesParsed({
-        notes: this.noteArray,
-        omittedNoteCount: this.omittedNoteCount,
-        source: this.source,
-        stripLength: this.stripLength,
-      });
+    }
+    this.stripLength = this.xPixels;
+    onNotesParsed({
+      notes: this.noteArray,
+      omittedNoteCount: this.omittedNoteCount,
+      source: this.source,
+      stripLength: this.stripLength,
     });
   }
 

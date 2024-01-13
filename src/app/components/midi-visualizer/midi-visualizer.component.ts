@@ -40,10 +40,10 @@ import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
 // @Injectable()
 export class MidiVisualizerComponent {
   // Properties
+  private midiObject: any; // TODO type
   private validNotes: number[];
   private gh: number;
   private ch: number;
-  //   private midiObject: any;
   public mbt: number;
   public ml: number;
   private stripLength: number;
@@ -121,17 +121,32 @@ export class MidiVisualizerComponent {
   }
 
   listenForMidiFile() {
-    const variable = document.getElementById(
+    const fileSource = document.getElementById(
       'filereader'
     ) as any as HTMLInputElement;
-    this.midiService.parseMidi(variable, this.validNotes, (noteLayout) => {
-      console.log(noteLayout);
-      // Redraw grid
-      this.stripLength = noteLayout.stripLength;
-      this.initVisualizer();
-      // Place notes
-      this.placeNotes(noteLayout);
-    });
+    // TODO some verification so that we know it's MIDI (and from MBM if that matters)
+    // Get MIDI object
+    this.midiService
+      .parseMidi(fileSource)
+      .then((midiObject) => {
+        // Process MIDI
+        this.midiObject = midiObject;
+        this.midiService.processMidi(
+          this.midiObject,
+          this.validNotes,
+          (noteLayout) => {
+            console.log(noteLayout);
+            // Redraw grid
+            this.stripLength = noteLayout.stripLength;
+            this.initVisualizer();
+            // Place notes
+            this.placeNotes(noteLayout);
+          }
+        );
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during parsing
+      });
   }
 
   placeNotes(noteLayout: NoteLayout) {
@@ -260,9 +275,26 @@ export class MidiVisualizerComponent {
     } else {
       this.gh = 580;
     }
+    
     // Set new canvas height
     this.ch = this.gh + 80;
     this.initVisualizer();
+    if (this.midiObject) {
+      // Reprocess MIDI for new box type
+      this.midiService.processMidi(
+        this.midiObject,
+        this.validNotes,
+        (noteLayout) => {
+          console.log(noteLayout);
+          // Redraw grid
+          this.stripLength = noteLayout.stripLength;
+          this.initVisualizer();
+          // Place notes
+          this.placeNotes(noteLayout);
+          console.log('done placing notes for new box type.');
+        }
+      );
+    }
   }
   // Set measure lengths
   setMeasureLength() {
