@@ -8,6 +8,7 @@ export const gw: number = 10500; // default grid width
 // export const gh: number = 280; // grid height
 export const bw: number = 40; // box width
 export const bh: number = 20; // box height
+export const deltaMagic: number = 240
 
 // Define note parameters
 export const nlFontSize = '14'; // note letter font size

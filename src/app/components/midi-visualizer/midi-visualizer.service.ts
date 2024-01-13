@@ -26,6 +26,7 @@ import {
   noteLetters15,
   noteLetters20,
   noteLetters30,
+  deltaMagic,
 } from './name.const';
 import { Note } from 'src/app/interfaces/note.interface';
 import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
@@ -94,13 +95,11 @@ export class MidiVisualizerService {
         console.log(currEvent);
         // Add deltaTime to x tracker
         // Increment xPixels
-        console.log(this.xPixels + ' = ' + currEvent.deltaTime + ' / ' + bw);
-        this.xPixels += currEvent.deltaTime * bw; // Increment deltaTime // used to divide deltaTime by sp
-        console.log('xPixels: ' + this.xPixels);
+        this.xPixels += (currEvent.deltaTime / deltaMagic) * bw; // Increment deltaTime
+        console.log('xSum: ' + this.xPixels);
         // Increment xBoxes
-        console.log(this.xBoxes + ' = ' + currEvent.deltaTime);
-        this.xBoxes += currEvent.deltaTime; // Increment deltaTime
-        console.log('xBoxes: ' + this.xBoxes);
+        this.xBoxes += currEvent.deltaTime / deltaMagic; // Increment deltaTime
+        console.log('xBoxesSum: ' + this.xBoxes);
         // If it's a 'note on' event, place it; otherwise ignore it
         if (currEvent.type == 9) {
           if (Array.isArray(currEvent.data)) {

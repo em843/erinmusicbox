@@ -126,9 +126,10 @@ export class MidiVisualizerComponent {
   }
 
   placeNote(notePlacement: number, noteValue: number) {
-    let xpos = notePlacement + p; // change to calculated formula once you find one that works
+    let xpos = notePlacement * bw + p; // change to calculated formula once you find one that works
     let ypos = noteValue * -bh + (this.gh + 2 * bh); // change to calculated formula once you find one that works
     this.drawCircle(xpos, ypos, this.getContext());
+    console.log('xpos: ' + xpos);
     console.log(
       'Note with value ' + noteValue + ' should be visible on screen.'
     );
