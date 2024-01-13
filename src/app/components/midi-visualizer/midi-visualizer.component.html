@@ -25,12 +25,12 @@
 
 <div class="dropdown-select">
   <label for="spacing">Note spacing: </label>
-  <select name="" id="spacing" onchange="setSpacing()">
-    <option value="1/2">Denser</option>
-    <option value="2/3">Dense</option>
-    <option selected value="1">Normal</option>
-    <option value="3/2">Sparse</option>
-    <option value="2">Sparser</option>
+  <select name="" id="spacing" (change)="setSpacing()" #spacing>
+    <option value="0.5">0.5x</option>
+    <option value="0.67">0.67x</option>
+    <option selected value="1">1x</option>
+    <option value="1.5">1.5x</option>
+    <option value="2">2x</option>
   </select>
 </div>
 <!-- 

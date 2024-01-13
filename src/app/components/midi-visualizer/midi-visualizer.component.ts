@@ -47,6 +47,7 @@ export class MidiVisualizerComponent {
   private ch: number;
   public mbt: number;
   public ml: number;
+  public sp: number;
   private stripLength: number;
   public form: FormGroup;
   constructor(
@@ -59,6 +60,7 @@ export class MidiVisualizerComponent {
     this.stripLength = gw; // TODO
     this.gh = 280;
     this.ch = 360;
+    this.sp = 1;
   }
   submitted = false;
 
@@ -68,10 +70,8 @@ export class MidiVisualizerComponent {
   boxType!: ElementRef<HTMLSelectElement>;
   @ViewChild('measures', { static: true })
   measures!: ElementRef<HTMLSelectElement>;
-  // @ViewChild('filereader', { static: true })
-  // midiSource!: ElementRef;
   @ViewChild('spacing', { static: true })
-  sp!: ElementRef<number>;
+  spacing!: ElementRef<HTMLSelectElement>;
 
   // Draw initial grid (for aesthetic purposes)
   ngOnInit(): void {
@@ -136,19 +136,23 @@ export class MidiVisualizerComponent {
           this.midiObject,
           this.validNotes,
           (noteLayout) => {
-            this.noteLayout = noteLayout;
-            console.log(noteLayout);
-            // Redraw grid
-            this.stripLength = noteLayout.stripLength;
-            this.initVisualizer();
-            // Place notes
-            this.placeNotes(noteLayout);
+            this.redrawNoteStrip(noteLayout);
           }
         );
       })
       .catch((error) => {
         // Handle any errors that occurred during parsing
       });
+  }
+
+  redrawNoteStrip(noteLayout: NoteLayout) {
+    console.log(noteLayout);
+    this.noteLayout = noteLayout;
+    // Redraw grid
+    this.stripLength = noteLayout.stripLength;
+    this.initVisualizer();
+    // Place notes
+    this.placeNotes(noteLayout);
   }
 
   placeNotes(noteLayout: NoteLayout) {
@@ -173,7 +177,7 @@ export class MidiVisualizerComponent {
   }
 
   placeNote(notePlacement: number, noteValue: number) {
-    let xpos = notePlacement * bw + p; // change to calculated formula once you find one that works
+    let xpos = notePlacement * bw * this.sp + p; // change to calculated formula once you find one that works
     let ypos = noteValue * -bh + (this.gh + 2 * bh); // change to calculated formula once you find one that works
     this.drawCircle(xpos, ypos, this.getContext());
     // console.log('xpos: ' + xpos);
@@ -284,12 +288,7 @@ export class MidiVisualizerComponent {
         this.midiObject,
         this.validNotes,
         (noteLayout) => {
-          console.log(noteLayout);
-          // Redraw grid
-          this.stripLength = noteLayout.stripLength;
-          this.initVisualizer();
-          // Place notes
-          this.placeNotes(noteLayout);
+          this.redrawNoteStrip(noteLayout);
           console.log('done placing notes for new box type.');
         }
       );
@@ -310,27 +309,22 @@ export class MidiVisualizerComponent {
     } else {
       this.initVisualizer();
     }
-
-    // Note Layout component (TODO: refactor)
-    // Set spacing in between notes
-    // setSpacing() {
-    // console.log('Spacing before: ' + sp);
-    // sp = eval(document.getElementById('spacing').value);
-    // console.log('Spacing: ' + sp);
-    // if (!midiObject) {
-    //   console.log('Please select a MIDI file');
-    //   return;
-    // }
-    // // Re-initialize canvas
-    // c = initializeCanvas(canvas);
-    // // Redraw notes + grid
-    // stripLength = processNotes(midiObject, c, (1 / sp) * 240, validNotes);
-    // this.drawGrid(c, gridColor, stripLength * bw + ml);
-    // this.drawLetters(c, mbt);
-    // // Draw measures
-    // this.drawMeasures(context, this.ml, this.stripLength);
-    // console.log('Spacing: ' + sp);
   }
 
-  // // Training functions
+  // Note Layout component (TODO: refactor)
+  // Set spacing in between notes
+  setSpacing() {
+    this.sp = parseFloat(this.spacing.nativeElement.value);
+    console.log('Spacing: ' + this.sp);
+    if (this.noteLayout) {
+      // Redraw grid
+      this.stripLength = this.noteLayout.stripLength;
+      this.initVisualizer();
+      // Place notes
+      this.placeNotes(this.noteLayout);
+      console.log('done placing notes after new measure length.');
+    }
+  }
 }
+
+// // Training functions
