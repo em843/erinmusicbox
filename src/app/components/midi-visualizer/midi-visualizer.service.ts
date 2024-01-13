@@ -86,7 +86,7 @@ export class MidiVisualizerService {
               // If the note is within the box's range
               this.noteArray.push({
                 xPositionBoxes: this.xBoxes,
-                noteValue: rowNum,
+                yPositionBoxes: rowNum,
               });
             } else {
               console.log('Invalid value ' + currEvent.data[0]);
@@ -106,7 +106,11 @@ export class MidiVisualizerService {
   }
 
   /* Searches a sorted array for the item.
-      Will eventually implement binary search but I am lazy */
+      Will eventually implement binary search but I am lazy 
+
+      Returns: INDEX of valid note, NOT midi value of note
+      
+      */
   searchFor(item: number, array: number[]) {
     for (let i = 0; i < array.length; i++) {
       if (array[i] == item) {

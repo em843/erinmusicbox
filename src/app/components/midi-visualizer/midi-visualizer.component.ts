@@ -134,7 +134,7 @@ export class MidiVisualizerComponent {
       const notes = noteLayout.notes;
       for (let i = 0; i < notes.length; i++) {
         let note = notes[i];
-        this.placeNote(note.xPositionBoxes, note.noteValue); //TODO why does this display under grid?
+        this.placeNote(note.xPositionBoxes, note.yPositionBoxes); //TODO why does this display under grid?
       }
       console.log('done');
       if (noteLayout.omittedNoteCount > 0) {
@@ -188,7 +188,7 @@ export class MidiVisualizerComponent {
     context.stroke();
     console.log('grid drawn');
   }
-  
+
   drawLetters(context: CanvasRenderingContext2D, mbt: number) {
     let noteLetters;
     if (mbt == 15) {
