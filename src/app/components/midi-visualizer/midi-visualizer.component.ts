@@ -89,10 +89,10 @@ export class MidiVisualizerComponent {
   }
 
   initVisualizer() {
-    let context = this.initializeCanvas(this.canvas.nativeElement);
+    const context = this.initializeCanvas(this.canvas.nativeElement);
     this.drawLetters(context, this.mbt);
-    this.drawGrid(context, gridColor, gw);
     this.drawMeasures(context, this.ml, this.stripLength);
+    this.drawGrid(context, gridColor, this.stripLength);
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
@@ -101,7 +101,6 @@ export class MidiVisualizerComponent {
     canvas.width = cw;
     canvas.height = this.ch;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    context.globalCompositeOperation = 'destination-over';
     return context;
   }
 
@@ -121,11 +120,16 @@ export class MidiVisualizerComponent {
   }
 
   listenForMidiFile() {
+    const context = this.getContext();
     const variable = document.getElementById(
       'filereader'
     ) as any as HTMLInputElement;
     this.midiService.parseMidi(variable, this.validNotes, (noteLayout) => {
       console.log(noteLayout);
+      // Redraw grid
+      const lastNote = noteLayout.notes[noteLayout.notes.length - 1];
+      this.stripLength = lastNote.xPositionBoxes * bw;
+      this.initVisualizer();
       // Place notes
       const notes = noteLayout.notes;
       for (let i = 0; i < notes.length; i++) {
@@ -135,8 +139,7 @@ export class MidiVisualizerComponent {
       console.log('done');
       if (noteLayout.omittedNoteCount > 0) {
         console.log('Omitted: ' + noteLayout.omittedNoteCount);
-        // Display text on canvas:
-        const context = this.getContext();
+        // Display text on canvas: TODO don't do this. Display text on screen instead
         context.font = fontSize + 'px ' + font;
         context.fillStyle = letterColor;
         context.fillText(
