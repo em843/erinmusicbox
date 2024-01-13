@@ -96,11 +96,12 @@ export class MidiVisualizerService {
           }
         }
       }
-      this.stripLength = this.xBoxes;
+      this.stripLength = this.xPixels;
       onNotesParsed({
         notes: this.noteArray,
         omittedNoteCount: this.omittedNoteCount,
         source: this.source,
+        stripLength: this.stripLength,
       });
     });
   }

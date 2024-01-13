@@ -31,6 +31,7 @@ import {
   noteLetters20,
   noteLetters30,
 } from './name.const';
+import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
 
 @Component({
   selector: 'midi-visualizer',
@@ -120,35 +121,38 @@ export class MidiVisualizerComponent {
   }
 
   listenForMidiFile() {
-    const context = this.getContext();
     const variable = document.getElementById(
       'filereader'
     ) as any as HTMLInputElement;
     this.midiService.parseMidi(variable, this.validNotes, (noteLayout) => {
       console.log(noteLayout);
       // Redraw grid
-      const lastNote = noteLayout.notes[noteLayout.notes.length - 1];
-      this.stripLength = lastNote.xPositionBoxes * bw;
+      this.stripLength = noteLayout.stripLength;
       this.initVisualizer();
       // Place notes
-      const notes = noteLayout.notes;
-      for (let i = 0; i < notes.length; i++) {
-        let note = notes[i];
-        this.placeNote(note.xPositionBoxes, note.yPositionBoxes); //TODO why does this display under grid?
-      }
-      console.log('done');
-      if (noteLayout.omittedNoteCount > 0) {
-        console.log('Omitted: ' + noteLayout.omittedNoteCount);
-        // Display text on canvas: TODO don't do this. Display text on screen instead
-        context.font = fontSize + 'px ' + font;
-        context.fillStyle = letterColor;
-        context.fillText(
-          'Warning: ' + noteLayout.omittedNoteCount + ' notes omitted.',
-          40,
-          400 // TODO this doesnt display correctly
-        );
-      }
+      this.placeNotes(noteLayout);
     });
+  }
+
+  placeNotes(noteLayout: NoteLayout) {
+    const context = this.getContext();
+    const notes = noteLayout.notes;
+    for (let i = 0; i < notes.length; i++) {
+      let note = notes[i];
+      this.placeNote(note.xPositionBoxes, note.yPositionBoxes);
+    }
+    console.log('done');
+    if (noteLayout.omittedNoteCount > 0) {
+      console.log('Omitted: ' + noteLayout.omittedNoteCount);
+      // Display text on canvas: TODO don't do this. Display text on screen instead
+      context.font = fontSize + 'px ' + font;
+      context.fillStyle = letterColor;
+      context.fillText(
+        'Warning: ' + noteLayout.omittedNoteCount + ' notes omitted.',
+        40,
+        400 // TODO fix. this doesnt display
+      );
+    }
   }
 
   placeNote(notePlacement: number, noteValue: number) {
@@ -234,6 +238,7 @@ export class MidiVisualizerComponent {
         stripLength / measureP
     );
   }
+
   setValidNotes(mbt: number) {
     if (mbt == 15) {
       this.validNotes = validNotes15;
