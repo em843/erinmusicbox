@@ -41,6 +41,7 @@ import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
 export class MidiVisualizerComponent {
   // Properties
   private midiObject: any; // TODO type
+  private noteLayout: NoteLayout;
   private validNotes: number[];
   private gh: number;
   private ch: number;
@@ -135,6 +136,7 @@ export class MidiVisualizerComponent {
           this.midiObject,
           this.validNotes,
           (noteLayout) => {
+            this.noteLayout = noteLayout;
             console.log(noteLayout);
             // Redraw grid
             this.stripLength = noteLayout.stripLength;
@@ -298,12 +300,20 @@ export class MidiVisualizerComponent {
     console.log('set measure length');
     console.log(this.measures);
     this.ml = parseInt(this.measures.nativeElement.value);
-    this.initVisualizer();
-  }
+    if (this.noteLayout) {
+      // Redraw grid
+      this.stripLength = this.noteLayout.stripLength;
+      this.initVisualizer();
+      // Place notes
+      this.placeNotes(this.noteLayout);
+      console.log('done placing notes after new measure length.');
+    } else {
+      this.initVisualizer();
+    }
 
-  // Note Layout component (TODO: refactor)
-  // Set spacing in between notes
-  setSpacing() {
+    // Note Layout component (TODO: refactor)
+    // Set spacing in between notes
+    // setSpacing() {
     // console.log('Spacing before: ' + sp);
     // sp = eval(document.getElementById('spacing').value);
     // console.log('Spacing: ' + sp);
