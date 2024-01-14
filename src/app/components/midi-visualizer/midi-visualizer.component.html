@@ -1,7 +1,7 @@
 <h1>Music Box MIDI Visualizer</h1>
 <div class="dropdown-select">
   <label for="filereader" class="click-button"> Select a MIDI file </label>
-  <input type="file" id="filereader" />
+  <input type="file" id="filereader" (change)="listenForMidiFile($event)" />
 </div>
 <button class="click-button" onclick="runDemo()">Try demo file</button>
 
@@ -34,9 +34,17 @@
   </select>
 </div>
 
+<div *ngIf="fileName">
+  <p>File: {{ fileName }}</p>
+</div>
+
+<div *ngIf="badFileMessage">
+  <p>Bad MIDI file. Please select another file with the extension ".mid".</p>
+</div>
+
 <canvas #myCanvas></canvas>
-<div *ngIf="omittedMessage">
-  <p>{{ omittedMessage }}</p>
+<div *ngIf="omittedNoteCount > 0">
+  <p>Warning: {{ omittedNoteCount }} notes omitted.</p>
 </div>
 
 <div>

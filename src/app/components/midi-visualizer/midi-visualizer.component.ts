@@ -45,7 +45,9 @@ export class MidiVisualizerComponent {
   private validNotes: number[];
   private gh: number;
   private ch: number;
-  public omittedMessage: string;
+  public fileName: string;
+  public omittedNoteCount: number;
+  public badFileMessage: boolean;
   public mbt: number;
   public ml: number;
   public sp: number;
@@ -88,7 +90,6 @@ export class MidiVisualizerComponent {
     this.drawLetters(context, this.mbt);
     this.drawMeasures(context, this.ml, this.stripLength);
     this.drawGrid(context, gridColor, this.stripLength);
-    this.omittedMessage = '';
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
@@ -104,28 +105,55 @@ export class MidiVisualizerComponent {
     return this.form.controls;
   }
 
-  listenForMidiFile() {
-    const fileSource = document.getElementById(
-      'filereader'
-    ) as any as HTMLInputElement;
-    // TODO some verification so that we know it's MIDI (and from MBM if that matters)
-    // Get MIDI object
-    this.midiService
-      .parseMidi(fileSource)
-      .then((midiObject) => {
-        // Process MIDI
-        this.midiObject = midiObject;
-        this.midiService.processMidi(
-          this.midiObject,
-          this.validNotes,
-          (noteLayout) => {
-            this.redrawNoteStrip(noteLayout);
-          }
-        );
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during parsing
-      });
+  /*
+  Listens for MIDI file but is also called when file input changes. 
+  This allows the callback to run both for the initial file and all subsequent files. 
+  (Yes, it's a little jank, but it works.)
+  */
+  async listenForMidiFile(event?: Event) {
+    let input;
+    if (event) {
+      input = event.target as HTMLInputElement;
+    } else {
+      input = document.getElementById('filereader') as any as HTMLInputElement;
+    }
+    // if (this.validateMidiFile(input)) {
+    try {
+      console.log('try');
+      // Get MIDI object
+      this.midiService
+        .parseMidi(input)
+        .then((midiObject) => {
+          console.log('the blocK');
+          // Process MIDI
+          this.midiObject = midiObject;
+          this.midiService.processMidi(
+            this.midiObject,
+            this.validNotes,
+            (noteLayout) => {
+              this.redrawNoteStrip(noteLayout);
+            }
+          );
+        })
+        .catch((error) => {
+          console.log('Error parsing MIDI: ' + error);
+          // Handle any errors that occurred during parsing
+        });
+    } catch (error) {
+      console.log('Error parsing MIDI: ' + error);
+      // Handle any errors
+    }
+    // }
+  }
+
+  validateMidiFile(input: HTMLInputElement): boolean {
+    if (input.files) {
+      const file = input.files[0];
+      return file.type === 'audio/midi' || file.name.endsWith('.mid');
+    } else {
+      this.badFileMessage = true;
+      return false;
+    }
   }
 
   redrawNoteStrip(noteLayout: NoteLayout) {
@@ -139,25 +167,18 @@ export class MidiVisualizerComponent {
   }
 
   placeNotes(noteLayout: NoteLayout) {
-    const context = this.getContext();
     const notes = noteLayout.notes;
     for (let i = 0; i < notes.length; i++) {
       let note = notes[i];
       this.placeNote(note.xPositionBoxes, note.yPositionBoxes);
     }
-    console.log('done');
-    if (noteLayout.omittedNoteCount > 0) {
-      this.omittedMessage =
-        'Warning: ' + noteLayout.omittedNoteCount + ' notes omitted.';
-      console.log('Omitted: ' + noteLayout.omittedNoteCount);
-    }
+    this.omittedNoteCount = noteLayout.omittedNoteCount;
   }
 
   placeNote(notePlacement: number, noteValue: number) {
     let xpos = notePlacement * bw * this.sp + p; // change to calculated formula once you find one that works
     let ypos = noteValue * -bh + (this.gh + 2 * bh); // change to calculated formula once you find one that works
     this.drawCircle(xpos, ypos, this.getContext());
-    // console.log('xpos: ' + xpos);
   }
 
   drawCircle(x: number, y: number, context: CanvasRenderingContext2D) {
