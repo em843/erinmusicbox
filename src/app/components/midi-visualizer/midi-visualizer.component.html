@@ -34,6 +34,14 @@
   </select>
 </div>
 
+<div class="dropdown-select">
+  <label for="guidelines">Guidelines: </label>
+  <select id="guidelines" (change)="setGuidelines()" #guidelines>
+    <option selected value="true">On</option>
+    <option value="false">Off</option>
+  </select>
+</div>
+
 <div *ngIf="fileName">
   <p>File: {{ fileName }}</p>
 </div>

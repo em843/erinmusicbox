@@ -47,6 +47,7 @@ export class MidiVisualizerComponent {
   private validNotes: number[];
   private gh: number;
   private ch: number;
+  private guidelinesOn: boolean;
   public fileName: string;
   public omittedNoteCount: number;
   public wrongFileExtensionMessage: boolean;
@@ -65,6 +66,7 @@ export class MidiVisualizerComponent {
     this.gh = 280;
     this.ch = 360;
     this.sp = 1;
+    this.guidelinesOn = true;
   }
   submitted = false;
 
@@ -76,6 +78,8 @@ export class MidiVisualizerComponent {
   measures!: ElementRef<HTMLSelectElement>;
   @ViewChild('spacing', { static: true })
   spacing!: ElementRef<HTMLSelectElement>;
+  @ViewChild('guidelines', { static: true })
+  guidelines!: ElementRef<HTMLSelectElement>;
 
   // Draw initial grid (for aesthetic purposes)
   ngOnInit(): void {
@@ -93,7 +97,7 @@ export class MidiVisualizerComponent {
     const context = this.initializeCanvas(this.canvas.nativeElement);
     this.drawLetters(context, this.mbt);
     this.drawMeasures(context, this.ml, this.stripLength);
-    this.drawGrid(context, gridColor, gridColor2, this.stripLength);
+    this.drawGrid(context, gridColor, this.stripLength);
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
@@ -216,7 +220,6 @@ export class MidiVisualizerComponent {
   drawGrid(
     context: CanvasRenderingContext2D,
     gridColor: string,
-    gridColor2: string,
     gridLen: number
   ) {
     console.log('drawing grid...');
@@ -233,7 +236,16 @@ export class MidiVisualizerComponent {
       context.lineTo(gridLen + p, 0.5 + y + p);
     }
     context.stroke();
-    // Guidelines for each box type
+    if (this.guidelinesOn) {
+      this.drawGuidelines(context, gridLen);
+    }
+    console.log('grid drawn');
+  }
+
+  /*
+  Guidelines for each box type for ease of punching.
+  */
+  drawGuidelines(context: CanvasRenderingContext2D, gridLen: number) {
     context.beginPath();
     context.strokeStyle = gridColor2;
     context.lineWidth = guidelineWidth;
@@ -252,9 +264,9 @@ export class MidiVisualizerComponent {
         context.lineTo(gridLen + p, 0.5 + y + p);
       }
     } else if (this.mbt == 30) {
+      // Not sure what guidelines to do for 30 note yet
     }
     context.stroke();
-    console.log('grid drawn');
   }
 
   drawLetters(context: CanvasRenderingContext2D, mbt: number) {
@@ -369,6 +381,13 @@ export class MidiVisualizerComponent {
       this.placeNotes(this.noteLayout);
     }
   }
-}
 
-// // Training functions
+  setGuidelines() {
+    this.guidelinesOn = this.stringToBool(this.guidelines.nativeElement.value);
+    this.initVisualizer();
+  }
+
+  stringToBool(str: string) {
+    return str === 'true';
+  }
+}
