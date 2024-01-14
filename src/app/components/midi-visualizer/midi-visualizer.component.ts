@@ -101,8 +101,6 @@ export class MidiVisualizerComponent {
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
-    console.log('init canvas');
-    console.log(canvas);
     canvas.width = cw;
     canvas.height = this.ch;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -180,8 +178,6 @@ export class MidiVisualizerComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.fileName = file.name;
-      console.log(this.fileName);
-      console.log(file.name.endsWith('.mid') || file.type === 'audio/midi');
       return file.name.endsWith('.mid') || file.type === 'audio/midi';
     }
     return false;
@@ -222,7 +218,6 @@ export class MidiVisualizerComponent {
     gridColor: string,
     gridLen: number
   ) {
-    console.log('drawing grid...');
     context.beginPath();
     context.strokeStyle = gridColor;
     // Draw vertical lines
@@ -239,7 +234,6 @@ export class MidiVisualizerComponent {
     if (this.guidelinesOn) {
       this.drawGuidelines(context, gridLen);
     }
-    console.log('grid drawn');
   }
 
   /*
@@ -307,12 +301,6 @@ export class MidiVisualizerComponent {
         context.fillRect(p + i * measureP, p, measureP, this.gh);
       }
     }
-    console.log(
-      'drawing measures of length ' +
-        mlBoxes +
-        ' until measure ' +
-        stripLength / measureP
-    );
   }
 
   setValidNotes(mbt: number) {
@@ -328,7 +316,6 @@ export class MidiVisualizerComponent {
   setBoxType() {
     this.mbt = parseInt(this.boxType.nativeElement.value);
     this.setValidNotes(this.mbt);
-    console.log(this.mbt);
     if (this.mbt == 15) {
       this.gh = 280;
     } else if (this.mbt == 20) {
@@ -347,15 +334,12 @@ export class MidiVisualizerComponent {
         this.validNotes,
         (noteLayout) => {
           this.redrawNoteStrip(noteLayout);
-          console.log('done placing notes for new box type.');
         }
       );
     }
   }
   // Set measure lengths
   setMeasureLength() {
-    console.log('set measure length');
-    console.log(this.measures);
     this.ml = parseInt(this.measures.nativeElement.value);
     if (this.noteLayout) {
       // Redraw grid
@@ -372,7 +356,6 @@ export class MidiVisualizerComponent {
   // Set spacing in between notes
   setSpacing() {
     this.sp = parseFloat(this.spacing.nativeElement.value);
-    console.log('Spacing: ' + this.sp);
     if (this.noteLayout) {
       // Redraw grid
       this.stripLength = this.noteLayout.stripLength;
