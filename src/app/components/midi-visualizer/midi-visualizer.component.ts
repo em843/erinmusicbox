@@ -51,10 +51,7 @@ export class MidiVisualizerComponent {
   public sp: number;
   private stripLength: number;
   public form: FormGroup;
-  constructor(
-    private readonly midiService: MidiVisualizerService,
-    private readonly formBuilder: FormBuilder
-  ) {
+  constructor(private readonly midiService: MidiVisualizerService) {
     this.validNotes = validNotes15;
     this.mbt = 15;
     this.ml = 4; // TODO
@@ -77,11 +74,6 @@ export class MidiVisualizerComponent {
   // Draw initial grid (for aesthetic purposes)
   ngOnInit(): void {
     this.initVisualizer();
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      message: ['', Validators.required],
-    });
     this.listenForMidiFile();
   }
 
@@ -106,17 +98,6 @@ export class MidiVisualizerComponent {
     canvas.height = this.ch;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
     return context;
-  }
-
-  onSubmit(): void {
-    console.log(this.form);
-    this.submitted = true;
-    if (this.form.invalid) {
-      return;
-    } else {
-      console.log('form is valid');
-      console.log(this.form.value);
-    }
   }
 
   get f(): { [key: string]: AbstractControl } {
