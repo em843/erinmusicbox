@@ -21,6 +21,8 @@ import {
   validNotes30,
   letterColor,
   gridColor,
+  gridColor2,
+  guidelineWidth,
   noteColor,
   measureColor2,
   nlFontSize,
@@ -47,10 +49,12 @@ export class MidiVisualizerComponent {
   private ch: number;
   public fileName: string;
   public omittedNoteCount: number;
-  public badFileMessage: boolean;
+  public wrongFileExtensionMessage: boolean;
+  public midiParsingErrorMessage: boolean;
   public mbt: number;
   public ml: number;
   public sp: number;
+  public countdown: number;
   private stripLength: number;
   public form: FormGroup;
   constructor(private readonly midiService: MidiVisualizerService) {
@@ -89,7 +93,7 @@ export class MidiVisualizerComponent {
     const context = this.initializeCanvas(this.canvas.nativeElement);
     this.drawLetters(context, this.mbt);
     this.drawMeasures(context, this.ml, this.stripLength);
-    this.drawGrid(context, gridColor, this.stripLength);
+    this.drawGrid(context, gridColor, gridColor2, this.stripLength);
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
@@ -114,57 +118,75 @@ export class MidiVisualizerComponent {
     let input: HTMLInputElement;
     if (event) {
       input = event.target as HTMLInputElement;
+      if (!this.isValidMidiFile(input)) {
+        this.initVisualizer();
+        this.wrongFileExtensionMessage = true;
+        this.initiateReloadCountdown(8);
+        return;
+      }
+      this.wrongFileExtensionMessage = false;
+      this.midiParsingErrorMessage = false;
     } else {
+      // On page load. This needs to be here for the first file upload to parse.
       // I know this isn't proper Angular, but using ViewChild to refer to this element makes parsing fail for the initial file.
       input = document.getElementById('filereader') as HTMLInputElement;
     }
-    // if (this.validateMidiFile(input)) {
-    try {
-      console.log('try');
-      // Get MIDI object
-      this.midiService
-        .parseMidi(input)
-        .then((midiObject) => {
-          // this.fileName = input.files[0].name;
-          console.log('the blocK');
-          // Process MIDI
-          this.midiObject = midiObject;
-          this.midiService.processMidi(
-            this.midiObject,
-            this.validNotes,
-            (noteLayout) => {
-              this.redrawNoteStrip(noteLayout);
-            }
-          );
-        })
-        .catch((error) => {
-          console.log('Error parsing MIDI: ' + error);
-          // Handle any errors that occurred during parsing
-        });
-    } catch (error) {
-      console.log('Error parsing MIDI: ' + error);
-      // Handle any errors
-    }
-    // }
+    // Get MIDI object
+    this.midiService
+      .parseMidi(input)
+      .then((midiObject) => {
+        // Process MIDI
+        this.midiObject = midiObject;
+        this.midiService.processMidi(
+          this.midiObject,
+          this.validNotes,
+          (noteLayout) => {
+            this.redrawNoteStrip(noteLayout);
+          }
+        );
+      })
+      .catch((error) => {
+        if (!this.wrongFileExtensionMessage) {
+          this.midiParsingErrorMessage = true;
+        }
+        throw new Error('Error parsing MIDI: ' + error);
+      });
   }
 
-  validateMidiFile(input: HTMLInputElement): boolean {
-    if (input.files) {
+  /*
+  Reloads the page after <seconds> seconds. 
+  This function exists because MidiParser's event listener tries to parse bad files and then needs a cooldown before it can parse good MIDI again.
+  */
+  initiateReloadCountdown(seconds: number) {
+    this.countdown = seconds;
+    const intervalId = setInterval(() => {
+      this.countdown--;
+      if (this.countdown === 0) {
+        clearInterval(intervalId);
+        this.reloadNow();
+      }
+    }, 1000);
+  }
+
+  reloadNow() {
+    window.location.reload();
+  }
+
+  isValidMidiFile(input: HTMLInputElement): boolean {
+    if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      return file.type === 'audio/midi' || file.name.endsWith('.mid');
-    } else {
-      this.badFileMessage = true;
-      return false;
+      this.fileName = file.name;
+      console.log(this.fileName);
+      console.log(file.name.endsWith('.mid') || file.type === 'audio/midi');
+      return file.name.endsWith('.mid') || file.type === 'audio/midi';
     }
+    return false;
   }
 
   redrawNoteStrip(noteLayout: NoteLayout) {
-    console.log(noteLayout);
     this.noteLayout = noteLayout;
-    // Redraw grid
     this.stripLength = noteLayout.stripLength;
     this.initVisualizer();
-    // Place notes
     this.placeNotes(noteLayout);
   }
 
@@ -194,18 +216,42 @@ export class MidiVisualizerComponent {
   drawGrid(
     context: CanvasRenderingContext2D,
     gridColor: string,
+    gridColor2: string,
     gridLen: number
   ) {
     console.log('drawing grid...');
     context.beginPath();
     context.strokeStyle = gridColor;
+    // Draw vertical lines
     for (let x = 0; x < gridLen + 1; x += bw) {
       context.moveTo(0.5 + x + p, p);
       context.lineTo(0.5 + x + p, this.gh + p);
     }
+    // Draw horizontal lines
     for (let y = 0; y < this.gh + 1; y += bh) {
       context.moveTo(p, 0.5 + y + p);
       context.lineTo(gridLen + p, 0.5 + y + p);
+    }
+    context.stroke();
+    // Guidelines for each box type
+    context.beginPath();
+    context.strokeStyle = gridColor2;
+    context.lineWidth = guidelineWidth;
+    if (this.mbt == 15) {
+      for (let y = bh * 4; y < this.gh - bh; y += bh * 2) {
+        context.moveTo(p, 0.5 + y + p);
+        context.lineTo(gridLen + p, 0.5 + y + p);
+      }
+    } else if (this.mbt == 20) {
+      for (let y = bh * 2; y < this.gh - bh * 8; y += bh * 2) {
+        context.moveTo(p, 0.5 + y + p);
+        context.lineTo(gridLen + p, 0.5 + y + p);
+      }
+      for (let y = this.gh - bh * 5; y < this.gh; y += bh * 2) {
+        context.moveTo(p, 0.5 + y + p);
+        context.lineTo(gridLen + p, 0.5 + y + p);
+      }
+    } else if (this.mbt == 30) {
     }
     context.stroke();
     console.log('grid drawn');
@@ -305,7 +351,6 @@ export class MidiVisualizerComponent {
       this.initVisualizer();
       // Place notes
       this.placeNotes(this.noteLayout);
-      console.log('done placing notes after new measure length.');
     } else {
       this.initVisualizer();
     }
@@ -322,7 +367,6 @@ export class MidiVisualizerComponent {
       this.initVisualizer();
       // Place notes
       this.placeNotes(this.noteLayout);
-      console.log('done placing notes after new measure length.');
     }
   }
 }

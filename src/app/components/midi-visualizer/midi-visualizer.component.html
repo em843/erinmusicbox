@@ -38,8 +38,19 @@
   <p>File: {{ fileName }}</p>
 </div>
 
-<div *ngIf="badFileMessage">
-  <p>Bad MIDI file. Please select another file with the extension ".mid".</p>
+<div *ngIf="wrongFileExtensionMessage">
+  <p>
+    Bad MIDI file. Please select another file with the extension ".mid" after
+    the page reloads in {{ countdown }} seconds.
+    <a (click)="reloadNow()" class="custom-link">Reload now</a>
+  </p>
+</div>
+
+<div *ngIf="midiParsingErrorMessage">
+  <p>
+    Oh no! Something went wrong with parsing your MIDI file. Please try a
+    different file.
+  </p>
 </div>
 
 <canvas #myCanvas></canvas>
@@ -51,6 +62,6 @@
   Made by <a href="https://bit.ly/erinmusicbox">erinmusicbox.</a>
   <p>
     The demo button isn't working right now, but don't worry, this app is still
-    being updated! Last update: January 13th, 2024
+    being updated! Last update: January 14th, 2024
   </p>
 </div>

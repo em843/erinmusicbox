@@ -8,7 +8,7 @@ export const gw: number = 10500; // default grid width
 // export const gh: number = 280; // grid height
 export const bw: number = 40; // box width
 export const bh: number = 20; // box height
-export const deltaMagic: number = 240
+export const deltaMagic: number = 240;
 
 // Define note parameters
 export const nlFontSize = '14'; // note letter font size
@@ -19,6 +19,8 @@ export const nrad: number = 7; // note circle radius
 
 // Define colors/aesthetics
 export const gridColor = 'black'; // Grid line color
+export const gridColor2 = 'green'; // Grid guideline color
+export const guidelineWidth = 3;
 export const letterColor = 'black'; // Note letter color
 export const noteColor = '#448097'; // Note/hole/circle color
 // measureColor1: defined in the css file
