@@ -4,7 +4,7 @@ March 2021 - Present
 
 Online version hosted here, go check it out! https://erinmusicbox.com
 
-Old Glitch version: https://music-box-visualizer.glitch.me/
+Old Glitch version, in plain JavaScript: https://music-box-visualizer.glitch.me/
 
 ## What is it?
 This web-app takes MIDI files and converts them into a reference for a DIY music box, which is a music box that uses paper strips to play any song. 
