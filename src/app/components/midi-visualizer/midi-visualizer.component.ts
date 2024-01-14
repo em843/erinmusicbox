@@ -111,11 +111,12 @@ export class MidiVisualizerComponent {
   (Yes, it's a little jank, but it works.)
   */
   async listenForMidiFile(event?: Event) {
-    let input;
+    let input: HTMLInputElement;
     if (event) {
       input = event.target as HTMLInputElement;
     } else {
-      input = document.getElementById('filereader') as any as HTMLInputElement;
+      // I know this isn't proper Angular, but using ViewChild to refer to this element makes parsing fail for the initial file.
+      input = document.getElementById('filereader') as HTMLInputElement;
     }
     // if (this.validateMidiFile(input)) {
     try {
@@ -124,6 +125,7 @@ export class MidiVisualizerComponent {
       this.midiService
         .parseMidi(input)
         .then((midiObject) => {
+          // this.fileName = input.files[0].name;
           console.log('the blocK');
           // Process MIDI
           this.midiObject = midiObject;
