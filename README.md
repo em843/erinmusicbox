@@ -1,5 +1,5 @@
 
-# MIDI Visualizer for Music Box
+# [MIDI Visualizer for Music Box](https://erinmusicbox.com)
 March 2021 - Present
 
 Online version hosted here, go check it out! https://erinmusicbox.com
