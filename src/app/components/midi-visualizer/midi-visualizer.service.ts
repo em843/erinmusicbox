@@ -86,14 +86,11 @@ export class MidiVisualizerService {
     for (let i = firstNote; i < events.length - 1; i++) {
       // For each note in track chunk, get note event (either on/off)
       let currEvent = events[i];
-      console.log(currEvent);
       // Add deltaTime to x tracker
       // Increment xPixels
-      this.xPixels += (currEvent.deltaTime / deltaMagic) * bw; 
-      console.log('xSum: ' + this.xPixels);
+      this.xPixels += (currEvent.deltaTime / deltaMagic) * bw;
       // Increment xBoxes
       this.xBoxes += currEvent.deltaTime / deltaMagic;
-      console.log('xBoxesSum: ' + this.xBoxes);
       // If it's a 'note on' event, place it; otherwise ignore it
       if (currEvent.type == 9) {
         if (Array.isArray(currEvent.data)) {
@@ -105,8 +102,6 @@ export class MidiVisualizerService {
               yPositionBoxes: rowNum,
             });
           } else {
-            console.log('Invalid value ' + currEvent.data[0]);
-            console.log('Cannot place note.');
             this.omittedNoteCount++;
           }
         }
