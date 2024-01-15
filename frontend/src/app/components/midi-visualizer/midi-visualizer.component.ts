@@ -83,7 +83,7 @@ export class MidiVisualizerComponent {
 
   // Draw initial grid (for aesthetic purposes)
   ngOnInit(): void {
-    this.initVisualizer();
+    this.initVisualizer(this.stripLength);
     this.listenForMidiFile();
   }
 
@@ -93,11 +93,11 @@ export class MidiVisualizerComponent {
     ) as CanvasRenderingContext2D;
   }
 
-  initVisualizer() {
+  initVisualizer(stripLength: number) {
     const context = this.initializeCanvas(this.canvas.nativeElement);
     this.drawLetters(context, this.mbt);
-    this.drawMeasures(context, this.ml, this.stripLength);
-    this.drawGrid(context, gridColor, this.stripLength);
+    this.drawMeasures(context, this.ml, stripLength);
+    this.drawGrid(context, gridColor, stripLength);
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
@@ -121,7 +121,7 @@ export class MidiVisualizerComponent {
     if (event) {
       input = event.target as HTMLInputElement;
       if (!this.isValidMidiFile(input)) {
-        this.initVisualizer();
+        this.initVisualizer(this.stripLength);
         this.wrongFileExtensionMessage = true;
         this.initiateReloadCountdown(8);
         return;
@@ -186,7 +186,7 @@ export class MidiVisualizerComponent {
   redrawNoteStrip(noteLayout: NoteLayout) {
     this.noteLayout = noteLayout;
     this.stripLength = noteLayout.stripLength;
-    this.initVisualizer();
+    this.initVisualizer(noteLayout.stripLength);
     this.placeNotes(noteLayout);
   }
 
@@ -326,7 +326,7 @@ export class MidiVisualizerComponent {
 
     // Set new canvas height
     this.ch = this.gh + 80;
-    this.initVisualizer();
+    this.initVisualizer(this.stripLength);
     if (this.midiObject) {
       // Reprocess MIDI for new box type
       this.midiService.processMidi(
@@ -344,11 +344,11 @@ export class MidiVisualizerComponent {
     if (this.noteLayout) {
       // Redraw grid
       this.stripLength = this.noteLayout.stripLength;
-      this.initVisualizer();
+      this.initVisualizer(this.noteLayout.stripLength);
       // Place notes
       this.placeNotes(this.noteLayout);
     } else {
-      this.initVisualizer();
+      this.initVisualizer(this.stripLength);
     }
   }
 
@@ -359,7 +359,7 @@ export class MidiVisualizerComponent {
     if (this.noteLayout) {
       // Redraw grid
       this.stripLength = this.noteLayout.stripLength;
-      this.initVisualizer();
+      this.initVisualizer(this.noteLayout.stripLength);
       // Place notes
       this.placeNotes(this.noteLayout);
     }
@@ -367,7 +367,7 @@ export class MidiVisualizerComponent {
 
   setGuidelines() {
     this.guidelinesOn = this.stringToBool(this.guidelines.nativeElement.value);
-    this.initVisualizer();
+    this.initVisualizer(this.stripLength);
   }
 
   stringToBool(str: string) {
