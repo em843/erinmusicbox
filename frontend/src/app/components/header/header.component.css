@@ -5,6 +5,11 @@ header {
   background-color: #feeae6; /* Sample color */
 }
 
+.title {
+  display: flex;
+  flex-direction: row;
+}
+
 .logo {
   width: 100px;
   /* Logo styles */
