@@ -1,0 +1,18 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #feeae6; /* Sample color */
+}
+
+.logo {
+  width: 100px;
+  /* Logo styles */
+}
+
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #000;
+  /* Add more styles */
+}
