@@ -1,15 +1,3 @@
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #feeae6; /* Sample color */
-}
-
-.title {
-  display: flex;
-  flex-direction: row;
-}
-
 .logo {
   width: 100px;
   /* Logo styles */
@@ -20,4 +8,12 @@ nav a {
   text-decoration: none;
   color: #000;
   /* Add more styles */
+}
+
+.nav-link {
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  color: #9bb5ca;
 }

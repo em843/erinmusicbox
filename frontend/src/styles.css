@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   overflow-x: scroll;
 }
@@ -7,6 +11,7 @@ body {
   padding: 60px;
   overflow-x: scroll;
   height: 100%;
+  background-color: #feeae6;
 }
 
 h1 {
