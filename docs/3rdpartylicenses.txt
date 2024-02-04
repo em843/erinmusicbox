@@ -10,6 +10,9 @@ MIT
 @angular/platform-browser
 MIT
 
+@angular/router
+MIT
+
 midi-parser-js
 GPL
                     GNU GENERAL PUBLIC LICENSE
