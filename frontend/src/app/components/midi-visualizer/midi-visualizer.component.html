@@ -1,82 +1,85 @@
-<h1 class="text-2xl">Music Box MIDI Visualizer</h1>
-<div class="dropdown-select">
-  <label for="filereader" class="click-button"> Select a MIDI file </label>
-  <input type="file" id="filereader" (change)="listenForMidiFile($event)" />
-</div>
-<button class="click-button" onclick="runDemo()">Try demo file</button>
+<div class="p-7">
+  <h1 class="text-2xl">Music Box MIDI Visualizer</h1>
+  <div class="dropdown-select">
+    <label for="filereader" class="click-button"> Select a MIDI file </label>
+    <input type="file" id="filereader" (change)="listenForMidiFile($event)" />
+  </div>
+  <button class="click-button" onclick="runDemo()">Try demo file</button>
 
-<div class="dropdown-select">
-  <label for="boxType">Box Type: </label>
-  <select id="boxType" (change)="setBoxType()" #boxType>
-    <option value="15">15</option>
-    <option value="20">20</option>
-    <option value="30">30</option>
-  </select>
-</div>
+  <div class="dropdown-select">
+    <label for="boxType">Box Type: </label>
+    <select id="boxType" (change)="setBoxType()" #boxType>
+      <option value="15">15</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+    </select>
+  </div>
 
-<div class="dropdown-select">
-  <label for="measures">Measures: </label>
-  <select id="measures" (change)="setMeasureLength()" #measures>
-    <option value="3">3/4</option>
-    <option selected value="4">4/4</option>
-    <option value="0">Off</option>
-  </select>
-</div>
+  <div class="dropdown-select">
+    <label for="measures">Measures: </label>
+    <select id="measures" (change)="setMeasureLength()" #measures>
+      <option value="3">3/4</option>
+      <option selected value="4">4/4</option>
+      <option value="0">Off</option>
+    </select>
+  </div>
 
-<div class="dropdown-select">
-  <label for="spacing">Note spacing: </label>
-  <select name="" id="spacing" (change)="setSpacing()" #spacing>
-    <option value="0.5">0.5x</option>
-    <option value="0.67">0.67x</option>
-    <option selected value="1">1x</option>
-    <option value="1.5">1.5x</option>
-    <option value="2">2x</option>
-  </select>
-</div>
+  <div class="dropdown-select">
+    <label for="spacing">Note spacing: </label>
+    <select name="" id="spacing" (change)="setSpacing()" #spacing>
+      <option value="0.5">0.5x</option>
+      <option value="0.67">0.67x</option>
+      <option selected value="1">1x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2x</option>
+    </select>
+  </div>
 
-<div class="dropdown-select">
-  <label for="guidelines">Guidelines: </label>
-  <select id="guidelines" (change)="setGuidelines()" #guidelines>
-    <option selected value="true">On</option>
-    <option value="false">Off</option>
-  </select>
-</div>
+  <div class="dropdown-select">
+    <label for="guidelines">Guidelines: </label>
+    <select id="guidelines" (change)="setGuidelines()" #guidelines>
+      <option selected value="true">On</option>
+      <option value="false">Off</option>
+    </select>
+  </div>
 
-<div *ngIf="fileName">
-  <p>File: {{ fileName }}</p>
-</div>
+  <div *ngIf="fileName">
+    <p>File: {{ fileName }}</p>
+  </div>
 
-<div *ngIf="wrongFileExtensionMessage">
-  <p>
-    Bad MIDI file. Please select another file with the extension ".mid" after
-    the page reloads in {{ countdown }} seconds.
-    <a (click)="reloadNow()" class="custom-link">Reload now</a>
-  </p>
-</div>
+  <div *ngIf="wrongFileExtensionMessage">
+    <p>
+      Bad MIDI file. Please select another file with the extension ".mid" after
+      the page reloads in {{ countdown }} seconds.
+      <a (click)="reloadNow()" class="custom-link">Reload now</a>
+    </p>
+  </div>
 
-<div *ngIf="midiParsingErrorMessage">
-  <p>
-    Oh no! Something went wrong with parsing your MIDI file. Please try a
-    different file.
-  </p>
-</div>
+  <div *ngIf="midiParsingErrorMessage">
+    <p>
+      Oh no! Something went wrong with parsing your MIDI file. Please try a
+      different file.
+    </p>
+  </div>
+  <div class="w-full overflow-x-scroll overflow-y-hidden whitespace-nowrap">
+    <canvas #myCanvas></canvas>
+  </div>
+  <div *ngIf="omittedNoteCount > 0">
+    <p>Warning: {{ omittedNoteCount }} notes omitted.</p>
+  </div>
 
-<canvas #myCanvas></canvas>
-<div *ngIf="omittedNoteCount > 0">
-  <p>Warning: {{ omittedNoteCount }} notes omitted.</p>
-</div>
+  <div class="mt-3 space-y-2">
+    Made by <a href="https://bit.ly/erinmusicbox">erinmusicbox.</a>
+    <p>Last update: January 14th, 2024</p>
 
-<div class="mt-3 space-y-2">
-  Made by <a href="https://bit.ly/erinmusicbox">erinmusicbox.</a>
-  <p>Last update: January 14th, 2024</p>
-
-  <h5>Known Issues:</h5>
-  <ul>
-    <li>Demo button doesn't work (yet!)</li>
-    <li>
-      The strip has a maximum width based on your window size, so you may not be
-      able to see the whole strip for longer tunes (for me, it maxes out at ~288
-      lines)
-    </li>
-  </ul>
+    <h5>Known Issues:</h5>
+    <ul>
+      <li>Demo button doesn't work (yet!)</li>
+      <li>
+        The strip has a maximum width based on your window size, so you may not
+        be able to see the whole strip for longer tunes (for me, it maxes out at
+        ~288 lines)
+      </li>
+    </ul>
+  </div>
 </div>
