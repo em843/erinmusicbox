@@ -2,7 +2,17 @@
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#C8AEDB", // Wisteria
+        secondary: "#91AFCA", // Powder blue
+        background: "#FDF5EC", // Linen
+        "accent-1": "#E15554", // Indian red
+        "accent-2": "#b89f7f", // Taupe
+        "accent-3": "#afb1a6", // Gray-green
+        text: "#000000", // Strong black
+      },
+    },
   },
   plugins: [],
 };
