@@ -1,0 +1,19 @@
+.logo {
+  width: 100px;
+  /* Logo styles */
+}
+
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #000;
+  /* Add more styles */
+}
+
+.nav-link {
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  color: #9bb5ca;
+}
