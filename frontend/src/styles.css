@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap");
 
 html {
   overflow-x: scroll;
@@ -16,12 +17,6 @@ body {
 h1 {
   font-family: Arial, Helvetica, sans-serif;
   /* font-family: 'Open Sans', sans-serif; */
-}
-
-canvas {
-  border: 1px solid black;
-  background: #fdfffe;
-  /* mintcream, #D3FCE8 or #FDFFFE*/
 }
 
 source {

@@ -11,8 +11,16 @@ module.exports = {
         "accent-2": "#b89f7f", // Taupe
         "accent-3": "#afb1a6", // Gray-green
         text: "#000000", // Strong black
+        canvas: "#fdfffe",
+      },
+      fontFamily: {
+        lora: ["Lora", "serif"], // Add Lora with a fallback to serif
       },
     },
   },
   plugins: [],
 };
+
+// Other colors:
+// background: #fdfffe;
+/* mintcream, #D3FCE8 or #FDFFFE*/

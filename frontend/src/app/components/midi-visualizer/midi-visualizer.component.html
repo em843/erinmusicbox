@@ -61,8 +61,10 @@
       different file.
     </p>
   </div>
-  <div class="w-full overflow-x-scroll overflow-y-hidden whitespace-nowrap">
-    <canvas #myCanvas></canvas>
+  <div
+    class="w-full overflow-x-scroll overflow-y-hidden whitespace-nowrap border border-black"
+  >
+    <canvas class="bg-canvas" #myCanvas></canvas>
   </div>
   <div *ngIf="omittedNoteCount > 0">
     <p>Warning: {{ omittedNoteCount }} notes omitted.</p>
