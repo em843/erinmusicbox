@@ -4,17 +4,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#C8AEDB", // Wisteria
-        secondary: "#91AFCA", // Powder blue
-        background: "#FDF5EC", // Linen
-        "accent-1": "#E15554", // Indian red
-        "accent-2": "#b89f7f", // Taupe
-        "accent-3": "#afb1a6", // Gray-green
-        text: "#000000", // Strong black
-        canvas: "#fdfffe",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        background: "var(--background)",
+        "accent-1": "var(--accent-1)",
+        "accent-2": "var(--accent-2)",
+        "accent-3": "var(--accent-3)",
+        text: "var(--text)",
+        "text-2": "var(--text-2)",
+        canvas: "var(--canvas)",
       },
       fontFamily: {
-        lora: ["Lora", "serif"], // Add Lora with a fallback to serif
+        lora: ["Lora", "serif"],
+        sans: ["Open Sans", "sans-serif"],
+      },
+      fontWeight: {
+        normal: 400,
+        bold: 600,
       },
     },
   },
