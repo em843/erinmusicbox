@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { BlogComponent } from './components/blog/blog.component';
-import { MidiVisualizerComponent } from './components/midi-visualizer/midi-visualizer.component';
-import { MelodyCatalogComponent } from './components/melody-catalog/melody-catalog.component';
+import { HomeComponent } from './pages/home/home.component';
+import { BlogComponent } from './pages/blog/blog.component';
+import { MidiVisualizerComponent } from './pages/midi-visualizer/midi-visualizer.component';
+import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },

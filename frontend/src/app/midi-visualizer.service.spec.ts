@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MidiVisualizerService } from './components/midi-visualizer/midi-visualizer.service';
+import { MidiVisualizerService } from './pages/midi-visualizer/midi-visualizer.service';
 
 describe('MidiVisualizerService', () => {
   let service: MidiVisualizerService;

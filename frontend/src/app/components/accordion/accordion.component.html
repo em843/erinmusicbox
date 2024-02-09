@@ -1,0 +1,12 @@
+<div class="accordion" *ngFor="let faq of faqs; let i = index">
+    <div class="accordion-header flex justify-between items-center p-5 bg-gray-100 cursor-pointer" (click)="toggle(i)">
+      <h2 class="font-semibold">{{ faq.question }}</h2>
+      <svg [ngClass]="{'rotate-180': openedIndex === i}" class="h-6 w-6 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+    <div *ngIf="openedIndex === i" class="accordion-content p-5 bg-white border-t border-gray-200">
+      <p>{{ faq.answer }}</p>
+    </div>
+  </div>
+  
