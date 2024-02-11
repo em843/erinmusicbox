@@ -6,10 +6,11 @@ import { HeaderComponent } from './pages/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent, BlogComponent],
-  imports: [BrowserModule, MidiVisualizerModule, AppRoutingModule],
+  imports: [BrowserModule, MidiVisualizerModule, AppRoutingModule, BrowserAnimationsModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

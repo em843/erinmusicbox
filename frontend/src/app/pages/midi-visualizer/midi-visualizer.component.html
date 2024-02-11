@@ -1,12 +1,12 @@
 <div class="p-7">
   <h1 class="font-sans font-bold text-2xl">Music Box MIDI Visualizer</h1>
+  <app-accordion></app-accordion>
+
   <div class="dropdown-select">
     <label for="filereader" class="click-button"> Select a MIDI file </label>
     <input type="file" id="filereader" (change)="listenForMidiFile($event)" />
   </div>
   <button class="click-button" onclick="runDemo()">Try demo file</button>
-
-  <app-accordion></app-accordion>
 
   <div class="dropdown-select">
     <label for="boxType">Box Type: </label>

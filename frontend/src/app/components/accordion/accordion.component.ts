@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-accordion',
   templateUrl: './accordion.component.html',
-  styleUrls: ['./accordion.component.css'],
 })
 export class AccordionComponent {
   faqs = [
@@ -17,10 +16,4 @@ export class AccordionComponent {
     },
     // Add more FAQs as needed
   ];
-
-  openedIndex = -1;
-
-  toggle(index: number): void {
-    this.openedIndex = this.openedIndex === index ? -1 : index;
-  }
 }
