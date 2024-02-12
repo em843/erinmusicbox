@@ -16,7 +16,7 @@ module.exports = {
       },
       fontFamily: {
         lora: ["Lora", "serif"],
-        sans: ["Open Sans", "sans-serif"],
+        sans: ["Roboto", "sans-serif"],
       },
       fontWeight: {
         normal: 400,

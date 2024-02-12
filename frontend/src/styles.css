@@ -125,3 +125,19 @@ ul {
   list-style-type: disc;
   padding-left: 1rem; /* Adjust padding to suit your design */
 }
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+pre {
+  white-space: pre-line; /* Collapses consecutive spaces and allows normal word wrapping */
+  margin: 0; /* Adjust as needed */
+  padding: 0; /* Adjust as needed */
+  font-family: sans-serif;
+}

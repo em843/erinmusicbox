@@ -1,0 +1,12 @@
+<div class="max-w-4xl bg-white border-white mt-3">
+  <mat-accordion class="my-5">
+    <mat-expansion-panel *ngFor="let faq of faqs; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="text-lg font-semibold p-2 text-text-2">
+          {{ faq.question }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <pre class="text-md mt-2">{{ faq.answer }}</pre>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

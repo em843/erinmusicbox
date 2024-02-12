@@ -1,11 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Injectable, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MidiVisualizerService } from 'src/app/components/midi-visualizer/midi-visualizer.service';
+import { MidiVisualizerService } from './midi-visualizer.service';
 import { MidiObject } from 'src/app/interfaces/midi-object.interface';
 import {
   cw,
@@ -39,7 +39,6 @@ import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
   selector: 'midi-visualizer',
   templateUrl: './midi-visualizer.component.html',
 })
-// @Injectable()
 export class MidiVisualizerComponent {
   // Properties
   private midiObject: any; // TODO type
