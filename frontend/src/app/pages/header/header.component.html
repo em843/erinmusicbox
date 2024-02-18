@@ -1,50 +1,41 @@
-<header class="my-2">
-  <div class="flex flex-col items-center justify-center ">
-    <!-- Erin Music Box logo in the upper left-hand corner -->
-    <div class="absolute top-0 left-0 p-4">
-      <a href="/" class="inline-block">
-        <img
-          class="w-16 max-h-16" 
-          src="assets/logo-no-bg.svg"
-          alt="Erin Music Box Logo"
-        />
-      </a>
-    </div>
-
-    <!-- Social Links logos with hover text -->
-    <div class="flex flex-row items-center gap-4 p-4 absolute top-0 right-0 ml-4">
-      <div *ngFor="let item of socialLinks" class="group inline-block relative">
-        <a
-          [href]="item.url"
-          [attr.aria-label]="item.name"
-          target="_blank"
-          class="flex flex-col items-center hover:text-primary transition-colors duration-300 ease-in-out"
-        >
-          <img
-            [src]="item.icon"
-            [alt]="item.name"
-            class="w-12 max-h-12 mb-1"
-            loading="lazy"
-          />
-          <span
-            class="text-text-2 text-sm absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -bottom-6"
-          >
-            {{item.label}}
-          </span>
+<header class="sticky top-0 bg-background  z-50">
+  <div class="max-w-7xl mx-auto px-4 py-2">
+    <div class="grid grid-cols-3 items-center">
+      <!-- Erin Music Box logo in the left corner -->
+      <div class="justify-self-start">
+        <a href="/" class="inline-block">
+          <img class="w-16 max-h-16" src="assets/logo-no-bg.svg" alt="Erin Music Box Logo" />
         </a>
+      </div>
+
+      <!-- Title centered -->
+      <h1 class="text-5xl font-lora font-semibold text-primary drop-shadow-lg text-center justify-self-center">
+        erinmusicbox
+      </h1>
+
+      <!-- Social Links logos with hover text on the right -->
+      <div class="justify-self-end flex gap-4 items-center">
+        <div *ngFor="let item of socialLinks" class="group inline-block relative">
+          <a
+            [href]="item.url"
+            [attr.aria-label]="item.name"
+            target="_blank"
+            class="flex flex-col items-center hover:text-primary transition-colors duration-300 ease-in-out"
+          >
+            <img [src]="item.icon" [alt]="item.name" class="w-12 max-h-12 mb-1 mx-3" loading="lazy" />
+            <span class="text-text-2 text-sm absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -bottom-6">
+              {{item.label}}
+            </span>
+          </a>
+        </div>
       </div>
     </div>
 
-    <!-- Title centered on page -->
-    <h1 class="text-5xl font-lora font-semibold text-primary drop-shadow-lg">
-      erinmusicbox
-    </h1>
-
-    <!-- Navigation links -->
-    <nav class="flex flex-row gap-4 mt-4">
-      <a href="/" class="nav-link">Home</a>
+    <!-- Navigation links centered below the title and logos -->
+    <nav class="flex justify-center gap-4 mt-2">
+      <a href="/" class="nav-link active">Home</a>
       <a href="/melody-catalog" class="nav-link">Melody Catalog</a>
-      <a href="/blog" class="nav-link active">Blog</a>
+      <a href="/blog" class="nav-link">Blog</a>
       <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a>
     </nav>
   </div>
