@@ -1,0 +1,17 @@
+<div class="border rounded-lg overflow-hidden shadow-lg flex m-2">
+  <!-- Play button area -->
+  <div class="bg-gray-200 p-4 flex items-center justify-center">
+    <button
+      (click)="playMelody(melody.url)"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Play
+    </button>
+  </div>
+
+  <!-- Text content area -->
+  <div class="p-4">
+    <h2 class="font-bold text-xl">{{ melody.title }}</h2>
+    <p>{{ melody.description }}</p>
+  </div>
+</div>

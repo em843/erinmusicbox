@@ -7,10 +7,24 @@ import { HomeComponent } from './pages/home/home.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentModule } from './components/component.module';
+import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, HomeComponent, BlogComponent],
-  imports: [BrowserModule, MidiVisualizerModule, AppRoutingModule, BrowserAnimationsModule],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    HomeComponent,
+    BlogComponent,
+    MelodyCatalogComponent,
+  ],
+  imports: [
+    BrowserModule,
+    MidiVisualizerModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ComponentModule,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
