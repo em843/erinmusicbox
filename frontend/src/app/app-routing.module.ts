@@ -6,10 +6,10 @@ import { MidiVisualizerComponent } from './pages/midi-visualizer/midi-visualizer
 import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'melody-catalog', component: MelodyCatalogComponent },
   { path: 'blog', component: BlogComponent },
-  { path: '', component: MidiVisualizerComponent },
+  { path: 'midi-visualizer', component: MidiVisualizerComponent },
 ];
 
 @NgModule({
