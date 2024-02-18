@@ -1,26 +1,18 @@
 <header class="my-2">
-  <div class="flex flex-row justify-between items-center">
-    <div class="flex flex-row items-center gap-1">
-      <a href="/" class="nav-link"
-        ><img
-          class="w-24 max-h-20"
+  <div class="flex flex-col items-center justify-center ">
+    <!-- Erin Music Box logo in the upper left-hand corner -->
+    <div class="absolute top-0 left-0 p-4">
+      <a href="/" class="inline-block">
+        <img
+          class="w-16 max-h-16" 
           src="assets/logo-no-bg.svg"
           alt="Erin Music Box Logo"
-      /></a>
-      <h1 class="text-5xl font-lora font-semibold text-primary drop-shadow-lg">
-        erinmusicbox
-      </h1>
+        />
+      </a>
     </div>
 
-    <nav class="flex justify-center">
-      <!-- <a href="/" class="nav-link">Home</a> -->
-      <!-- <a href="/melody-catalog" class="nav-link">Melody Catalog</a> -->
-      <!-- <a href="/blog" class="nav-link active">Blog</a> -->
-      <!-- <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a> -->
-      <!-- <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a> -->
-    </nav>
-
-    <div class="flex flex-row items-center">
+    <!-- Social Links logos with hover text -->
+    <div class="flex flex-row items-center gap-4 p-4 absolute top-0 right-0 ml-4">
       <div *ngFor="let item of socialLinks" class="group inline-block relative">
         <a
           [href]="item.url"
@@ -31,17 +23,29 @@
           <img
             [src]="item.icon"
             [alt]="item.name"
-            class="w-24 max-h-9 mb-1"
+            class="w-12 max-h-12 mb-1"
             loading="lazy"
           />
           <span
-            class="text-text-2 absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -bottom-6"
+            class="text-text-2 text-sm absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -bottom-6"
           >
             {{item.label}}
           </span>
         </a>
       </div>
     </div>
-    
+
+    <!-- Title centered on page -->
+    <h1 class="text-5xl font-lora font-semibold text-primary drop-shadow-lg">
+      erinmusicbox
+    </h1>
+
+    <!-- Navigation links -->
+    <nav class="flex flex-row gap-4 mt-4">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/melody-catalog" class="nav-link">Melody Catalog</a>
+      <a href="/blog" class="nav-link active">Blog</a>
+      <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a>
+    </nav>
   </div>
 </header>
