@@ -1,47 +1,68 @@
 import { Component } from '@angular/core';
-import { Melody } from "../../interfaces/melody.interface"
+import { Melody } from 'src/app/interfaces/melody.interface';
 
 @Component({
   selector: 'app-melody-catalog',
   templateUrl: './melody-catalog.component.html',
 })
 export class MelodyCatalogComponent {
-  melodies = [
+  melodies: Melody[] = [
     {
       title: 'Melody 1',
-      description: 'Description 1',
       url: 'url_to_melody_1.mp3',
+      description: 'Description 1',
+      type: '15',
+      created: new Date(),
+      length: 100,
+      bpm: 80,
     },
     {
       title: 'Melody 2',
-      description: 'Description 2',
       url: 'url_to_melody_2.mp3',
+      description: 'Description 2',
+      type: '30',
+      created: new Date(),
+      length: 100,
+      bpm: 90,
     },
-    // Add more melodies as needed
   ];
-  filteredMelodies = [...this.melodies];
+  filteredMelodies: Melody[] = [...this.melodies];
+  searchTerm = '';
+  selectedType = '';
 
   onSearch(event: any) {
-    const searchTerm = event.target.value.toLowerCase();
-    this.filteredMelodies = this.melodies.filter(
-      (melody) =>
-        melody.title.toLowerCase().includes(searchTerm) ||
-        melody.description.toLowerCase().includes(searchTerm)
-    );
+    this.applyFilters();
   }
 
-  onFilterChange(event: any, filterType: string) {
-    const filterValue = event.target.value;
-    if (!this.isKeyOfMelody(filterType)) {
-      console.error(`${filterType} is not a key of Melody`);
-      return;
+  onFilterChange() {
+    this.applyFilters();
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.selectedType = '';
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    console.log('applying filters');
+
+    let tempMelodies = this.melodies;
+
+    if (this.searchTerm) {
+      tempMelodies = tempMelodies.filter(
+        (melody) =>
+          melody.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          melody.description
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase())
+      );
     }
-    this.filteredMelodies = this.melodies.filter(
-      (melody) => melody[filterType] === filterValue || filterValue === ''
-    );
-  }
-
-  isKeyOfMelody(key: any): key is keyof Melody {
-    return ['title', 'description', 'url', 'genre', 'mood'].includes(key);
+    if (this.selectedType) {
+      tempMelodies = tempMelodies.filter(
+        (melody) => melody.type === this.selectedType
+      );
+    }
+    this.filteredMelodies = tempMelodies;
   }
 }

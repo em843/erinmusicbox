@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentModule } from './components/component.module';
 import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.co
     AppRoutingModule,
     BrowserAnimationsModule,
     ComponentModule,
+    FormsModule,
   ],
   bootstrap: [AppComponent],
 })
