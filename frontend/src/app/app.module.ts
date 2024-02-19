@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentModule } from './components/component.module';
 import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.component';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from './pages/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     BlogComponent,
     MelodyCatalogComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
