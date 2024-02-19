@@ -1,17 +1,24 @@
 <div class="border rounded-lg overflow-hidden shadow-lg flex m-2">
-  <!-- Play button area -->
+  <!-- Play/Pause button area -->
   <div class="bg-gray-200 p-4 flex items-center justify-center">
     <button
-      (click)="playMelody(melody.url)"
+      (click)="toggleAudioPlayback(audioTag)"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
     >
-      Play
+      {{ isPlaying ? "Stop" : "Play" }}
     </button>
   </div>
 
   <!-- Text content area -->
   <div class="p-4">
-    <h2 class="font-bold text-xl">{{ melody.title }}</h2>
+    <h3>{{ melody.title }}</h3>
+    <h4 *ngIf="melody.artist">{{ melody.artist }}</h4>
     <p>{{ melody.description }}</p>
   </div>
+
+  <!-- Audio tag (hidden from view) -->
+  <audio #audioTag (ended)="audioEnded()">
+    <source src="../../../assets/melodies/{{ melody.url }}" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
 </div>
