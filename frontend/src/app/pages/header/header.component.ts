@@ -51,7 +51,6 @@ export class HeaderComponent {
   onWindowScroll() {
     const scrollPosition =
       document.documentElement.scrollTop || document.body.scrollTop || 0;
-    console.log(scrollPosition);
     this.hasScrolled = scrollPosition > 0;
   }
 }

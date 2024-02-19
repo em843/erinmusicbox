@@ -26,8 +26,6 @@ export class MelodyCatalogComponent {
   }
 
   applyFilters() {
-    console.log('applying filters');
-
     let tempMelodies = melodies;
 
     if (this.searchTerm) {
