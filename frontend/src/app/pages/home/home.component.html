@@ -1,4 +1,79 @@
-<!-- This would be your homepage layout -->
-<div class="home-page">
-  <!-- Add your homepage content here -->
+<div class="home-page px-4 py-8 max-w-7xl mx-auto">
+  <!-- Welcome blurb with link to about me page -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-bold mb-2">Welcome!</h2>
+    <p class="mb-4">
+      Discover the magic of music boxes, explore intriguing melodies, and learn
+      more about the fascinating world of MIDI visualizers.
+    </p>
+    <a href="/about" class="text-blue-600 hover:text-blue-800"
+      >Learn more about me →</a
+    >
+  </section>
+
+  <!-- Content organized in a grid layout -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Featured video section -->
+    <section>
+      <h3 class="text-xl font-semibold mb-2">Featured Video</h3>
+      <div class="w-full overflow-hidden rounded-lg shadow-lg mb-4">
+        <img
+          src="../../../assets/thumbnail base.jpg"
+          alt="Featured Video"
+          class="w-full h-auto"
+        />
+      </div>
+      <p class="mb-2">Check out my latest video, "Snowy" from Undertale!</p>
+    </section>
+
+    <!-- Featured blog post section -->
+    <section>
+      <h3 class="text-xl font-semibold mb-2">Featured Blog Post</h3>
+      <article class="border rounded-lg p-4 shadow-lg mb-4">
+        <h4 class="font-bold">The History of Music Boxes</h4>
+        <p class="mb-2">
+          Music boxes hold a timeless charm. Dive into their rich history and
+          how they've evolved over the years.
+        </p>
+        <a
+          href="/blog/the-history-of-music-boxes"
+          class="text-blue-600 hover:text-blue-800"
+          >Read more →</a
+        >
+      </article>
+    </section>
+
+    <!-- Featured melody card -->
+    <section class="mb-8">
+      <h3 class="text-xl font-semibold mb-2">Featured Melody</h3>
+      <div class="border rounded-lg p-4 shadow-lg flex items-center">
+        <div class="flex-shrink-0 mr-4">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Play
+          </button>
+        </div>
+        <div>
+          <h4 class="font-bold">Moonlight Sonata</h4>
+          <p>
+            Enjoy the serene beauty of Beethoven's masterpiece arranged for a
+            music box.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- About MIDI Visualizer section -->
+  <section>
+    <h3 class="text-xl font-semibold mb-2">About MIDI Visualizer</h3>
+    <p>
+      MIDI Visualizer transforms your musical pieces into stunning visual
+      animations. Discover how it brings a new dimension to your melodies.
+    </p>
+    <a href="/midi-visualizer" class="text-blue-600 hover:text-blue-800"
+      >Explore MIDI Visualizer →</a
+    >
+  </section>
 </div>
