@@ -33,10 +33,12 @@ export class MelodyCatalogComponent {
     if (this.searchTerm) {
       tempMelodies = tempMelodies.filter(
         (melody) =>
-          melody.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          melody.description
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase())
+          melody.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+        // ||
+        // melody.artist
+        //   .toLowerCase()
+        //   .includes(this.searchTerm.toLowerCase())
+        // TODO search by artist also
       );
     }
     if (this.selectedType) {
