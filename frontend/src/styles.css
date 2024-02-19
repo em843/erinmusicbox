@@ -21,13 +21,35 @@ html {
   overflow-x: scroll;
 }
 
-body {
-  overflow-x: scroll;
-  height: 100%;
-}
-
 h1 {
   color: var(--text-2);
+}
+
+h2 {
+  /* text-2xl font-bold mb-2 */
+  font-size: 1.5rem; /* Approximation of text-2xl */
+  font-weight: 700; /* font-bold */
+  margin-bottom: 0.5rem; /* Approximation of mb-2 */
+}
+
+h3 {
+  font-size: 1.25rem; /* Approximation of text-xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 0.5rem; /* Approximation of mb-2 */
+}
+
+h4 {
+  font-weight: 700; /* font-bold */
+}
+
+.page {
+  padding-left: 1rem; /* px-4 */
+  padding-right: 1rem; /* px-4 */
+  padding-top: 2rem; /* py-8 */
+  padding-bottom: 2rem; /* py-8 */
+  max-width: 80rem; /* max-w-7xl, assuming the default Tailwind config where 1rem = 16px */
+  margin-left: auto; /* mx-auto */
+  margin-right: auto; /* mx-auto */
 }
 
 source {
