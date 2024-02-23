@@ -17,10 +17,6 @@
   --canvas: #fdfffe; /* Very light gray */
 }
 
-html {
-  overflow-x: scroll;
-}
-
 h1 {
   color: var(--text-2);
 }
