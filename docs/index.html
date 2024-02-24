@@ -1,4 +1,10 @@
-<html><head>
+<html><head><script>
+  if (sessionStorage.redirect) delete sessionStorage.redirect;
+  if (window.location.hash == "#_=_") window.location.hash = ""; // For Facebook redirect fix
+  sessionStorage.redirect = location.href;
+</script>
+
+  
     <meta charset="utf-8">
     <title>erinmusicbox - MIDI Visualizer</title>
     <base href="/">

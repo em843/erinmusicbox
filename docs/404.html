@@ -1,7 +1,11 @@
 <script>
-  if (sessionStorage.redirect) delete sessionStorage.redirect;
-  if (window.location.hash == "#_=_") window.location.hash = ""; // For Facebook redirect fix
-  sessionStorage.redirect = location.href;
+  document.addEventListener("DOMContentLoaded", () => {
+    var redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    if (redirect && redirect != location.href) {
+      history.replaceState(null, null, redirect);
+    }
+  });
 </script>
 <html>
   <head>
