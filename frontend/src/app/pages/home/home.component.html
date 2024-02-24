@@ -46,22 +46,7 @@
     <!-- Featured melody card -->
     <section>
       <h3>Featured Melody</h3>
-      <div class="border rounded-lg p-4 shadow-lg flex items-center">
-        <div class="flex-shrink-0 mr-4">
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Play
-          </button>
-        </div>
-        <div>
-          <h4>Moonlight Sonata</h4>
-          <p>
-            Enjoy the serene beauty of Beethoven's masterpiece arranged for a
-            music box.
-          </p>
-        </div>
-      </div>
+      <app-melody-card [melody]="featuredMelody"></app-melody-card>
     </section>
     <!-- Commissions -->
     <section class="py-8 px-4 bg-blue-100 rounded-lg shadow-md">
