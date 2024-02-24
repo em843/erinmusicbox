@@ -1,12 +1,3 @@
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    var redirect = sessionStorage.redirect;
-    delete sessionStorage.redirect;
-    if (redirect && redirect != location.href) {
-      history.replaceState(null, null, redirect);
-    }
-  });
-</script>
 <html>
   <head>
     <meta charset="utf-8" />
