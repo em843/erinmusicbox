@@ -1,4 +1,55 @@
-<!-- This would be your blog page layout -->
-<div class="catalog">
-  <!-- Add your blog content here -->
+<div class="page">
+  <section class="my-4">
+    <h2>Melody Catalog</h2>
+    <p class="mb-2">
+      Here, you can find melodies I've created for DIY music boxes in the past.
+      For thousands of other melodies, check out
+      <a
+        class="text-blue-600 hover:text-blue-800"
+        href="https://musicboxmaniacs.com/"
+        >Music Box Maniacs,</a
+      >
+      a website where music box enthusiasts and musicians alike share melodies.
+    </p>
+    <a
+      href="https://musicboxmaniacs.com/"
+      class="text-blue-600 hover:text-blue-800"
+      >Take me there →</a
+    >
+  </section>
+  <div class="flex gap-4 mb-4 items-center">
+    <input
+      type="text"
+      placeholder="Search melodies..."
+      class="border p-2 flex-1"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch($event)"
+    />
+
+    <select
+      class="border p-2"
+      [(ngModel)]="selectedType"
+      (change)="onFilterChange()"
+    >
+      <option value="">Select Type</option>
+      <option value="15">Kikkerland 15 Note</option>
+      <option value="20">Grand Illusions 20 Note</option>
+      <option value="30">Grand Illusions 30 Note</option>
+    </select>
+
+    <button
+      *ngIf="searchTerm || selectedType"
+      class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      (click)="clearFilters()"
+    >
+      Clear Filters
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <app-melody-card
+      *ngFor="let melody of filteredMelodies"
+      [melody]="melody"
+    ></app-melody-card>
+  </div>
 </div>

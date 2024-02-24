@@ -1,47 +1,118 @@
-<header class="my-2">
-  <div class="flex flex-row justify-between items-center">
-    <div class="flex flex-row items-center gap-1">
-      <a href="/" class="nav-link"
-        ><img
-          class="w-24 max-h-20"
-          src="assets/logo-no-bg.svg"
-          alt="Erin Music Box Logo"
-      /></a>
-      <h1 class="text-5xl font-lora font-semibold text-primary drop-shadow-lg">
-        erinmusicbox
-      </h1>
-    </div>
-
-    <nav class="flex justify-center">
-      <!-- <a href="/" class="nav-link">Home</a> -->
-      <!-- <a href="/melody-catalog" class="nav-link">Melody Catalog</a> -->
-      <!-- <a href="/blog" class="nav-link active">Blog</a> -->
-      <!-- <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a> -->
-      <!-- <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a> -->
-    </nav>
-
-    <div class="flex flex-row items-center">
-      <div *ngFor="let item of socialLinks" class="group inline-block relative">
-        <a
-          [href]="item.url"
-          [attr.aria-label]="item.name"
-          target="_blank"
-          class="flex flex-col items-center hover:text-primary transition-colors duration-300 ease-in-out"
-        >
+<header class="sticky top-0 bg-background z-50" [class.shadow-md]="hasScrolled">
+  <div class="max-w-7xl mx-auto px-4 py-2">
+    <div class="grid grid-cols-3 items-center w-full">
+      <!-- Erin Music Box logo in the left corner -->
+      <div class="justify-self-start flex-shrink">
+        <a href="/" class="inline-block">
           <img
-            [src]="item.icon"
-            [alt]="item.name"
-            class="w-24 max-h-9 mb-1"
-            loading="lazy"
+            class="w-16 max-h-16"
+            src="assets/logo-no-bg.svg"
+            alt="Erin Music Box Logo"
           />
-          <span
-            class="text-text-2 absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -bottom-6"
-          >
-            {{item.label}}
-          </span>
         </a>
       </div>
+
+      <!-- Placeholder for visual balance (Invisible duplicate of the logo for alignment) -->
+      <div class="hidden flex-shrink-0 opacity-0 md:opacity-100">
+        <button class="justify-self-end" (click)="toggleMenu()">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          ></svg>
+        </button>
+      </div>
+
+      <div class="flex flex-col justify-center items-center text-center mt-2">
+        <!-- Title centered -->
+        <h1
+          class="text-4xl md:text-5xl flex-shrink-0 font-lora font-semibold text-primary drop-shadow-lg justify-self-center mx-2"
+        >
+          erinmusicbox
+        </h1>
+        <!-- Navigation links centered below the title and logos -->
+        <nav class="flex justify-center gap-4 mt-2 whitespace-nowrap">
+          <a href="/" class="nav-link active">Home</a>
+          <a href="/melody-catalog" class="nav-link">Melody Catalog</a>
+          <a href="/blog" class="nav-link">Blog</a>
+          <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a>
+        </nav>
+      </div>
+
+      <!-- Hamburger Menu Icon -->
+      <button class="lg:hidden justify-self-end" (click)="toggleMenu()">
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Social Links logos with hover text on the right -->
+      <div class="hidden lg:flex justify-self-end flex gap-2 items-center">
+        <div
+          *ngFor="let item of socialLinks"
+          class="group inline-block relative"
+        >
+          <a
+            [href]="item.url"
+            [attr.aria-label]="item.name"
+            target="_blank"
+            class="flex flex-col items-center hover:text-primary transition-colors duration-300 ease-in-out"
+          >
+            <img
+              [src]="item.icon"
+              [alt]="item.name"
+              class="w-12 max-h-12 mb-1 mx-3"
+              loading="lazy"
+            />
+            <span
+              class="text-text-2 text-sm absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -bottom-6"
+            >
+              {{ item.label }}
+            </span>
+          </a>
+        </div>
+      </div>
     </div>
-    
+
+    <!-- Mobile Menu (Hidden by default, shown when menu is toggled) -->
+    <div
+      *ngIf="isMenuOpen"
+      class="absolute top-full right-0 bg-background w-full md:hidden"
+    >
+      <div class="flex flex-col items-center gap-4 p-4">
+        <div
+          *ngFor="let item of socialLinks"
+          class="group inline-block relative"
+        >
+          <a
+            [href]="item.url"
+            [attr.aria-label]="item.name"
+            target="_blank"
+            class="flex flex-col items-center hover:text-primary transition-colors duration-300 ease-in-out"
+          >
+            <img
+              [src]="item.icon"
+              [alt]="item.name"
+              class="w-12 max-h-12 mb-1"
+              loading="lazy"
+            />
+            <span class="text-sm">{{ item.label }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
