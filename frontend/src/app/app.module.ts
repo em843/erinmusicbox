@@ -11,6 +11,7 @@ import { ComponentModule } from './components/component.module';
 import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.component';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './pages/footer/footer.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FooterComponent } from './pages/footer/footer.component';
     BlogComponent,
     MelodyCatalogComponent,
     FooterComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
