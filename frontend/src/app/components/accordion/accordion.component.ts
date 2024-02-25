@@ -23,7 +23,10 @@ export class AccordionComponent {
     },
     {
       question: 'How can I use the Visualizer?',
-      answer: `1. Click "Select a MIDI File" and upload your .mid or .midi file.\n 2. Use the dropdowns to select your box type, desired spacing, and other settings.\n3. Voila! You now have a reference for your DIY music box. Happy punching!`,
+      answer: `1. On Music Box Maniacs, go to your melody > Export > Download .midi file
+      \n2. Click "Select a MIDI File" and upload your .mid or .midi file.
+      \n3. Use the dropdowns to select your box type, desired spacing, and other settings.
+      \n4. Voila! You now have a reference for your DIY music box. Happy punching!`,
     },
   ];
 }
