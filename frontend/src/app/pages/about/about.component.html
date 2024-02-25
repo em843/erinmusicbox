@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="max-w-4xl mx-auto p-5 bg-white rounded-lg shadow">
+    <!-- Profile Picture -->
+    <div class="flex justify-center">
+      <img
+        src="../../../assets/pfp.jpg"
+        alt="Profile Picture"
+        class="rounded-full border-4 border-gray-300"
+        style="width: 200px; height: 200px"
+      />
+    </div>
+
+    <!-- Biography -->
+    <div class="text-center mt-5">
+      <h2>About Me</h2>
+      <p class="mt-3">
+        {{ bioText }}
+      </p>
+      <ul class="list-disc list-inside mt-3 text-left">
+        <li *ngFor="let item of listItems">{{ item }}</li>
+      </ul>
+    </div>
+
+    <!-- Links -->
+    <div class="flex justify-center gap-4 mt-7">
+      <a
+        [href]="item.url"
+        [attr.aria-label]="item.name"
+        target="_blank"
+        *ngFor="let item of socialLinks"
+      >
+        <img
+          [src]="item.icon"
+          [alt]="item.name"
+          class="w-12 max-h-12 mb-1 mx-3"
+          loading="lazy"
+        />
+      </a>
+    </div>
+  </div>
+</div>
