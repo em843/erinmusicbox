@@ -29,14 +29,13 @@ export class MelodyCatalogComponent {
     let tempMelodies = melodies;
 
     if (this.searchTerm) {
-      tempMelodies = tempMelodies.filter(
-        (melody) =>
-          melody.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-        // ||
-        // melody.artist
-        //   .toLowerCase()
-        //   .includes(this.searchTerm.toLowerCase())
-        // TODO search by artist also
+      tempMelodies = tempMelodies.filter((melody) =>
+        melody.artist
+          ? melody.title
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase()) ||
+            melody.artist.toLowerCase().includes(this.searchTerm.toLowerCase())
+          : melody.title.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
     if (this.selectedType) {
