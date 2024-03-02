@@ -1,4 +1,4 @@
-<div class="border rounded-lg overflow-hidden shadow-lg flex m-2">
+<div class="bg-white border rounded-lg overflow-hidden shadow-lg flex m-2">
   <!-- Play/Pause button area -->
   <div class="bg-gray-200 p-4 flex items-center justify-center">
     <button
@@ -11,9 +11,23 @@
 
   <!-- Text content area -->
   <div class="p-4">
-    <h3>{{ melody.title }}</h3>
-    <h4 *ngIf="melody.artist">{{ melody.artist }}</h4>
-    <p>{{ melody.description }}</p>
+    <p class="text-lg font-semibold mb-0">{{ melody.title }}</p>
+    <div *ngIf="melody.artist">
+      <i class="fa-solid fa-user text-primary"></i>
+      {{ melody.artist }}
+    </div>
+    <div>
+      <i class="fa-solid fa-heartbeat text-primary"></i>
+      {{ melody.bpm }} BPM
+    </div>
+    <div>
+      <i class="text-primary fa-solid fa-music"></i>
+      Length: {{ melody.length }}
+    </div>
+    <div class="text-sm mt-1">
+      <i class="text-primary"></i>
+      {{ melody.description }}
+    </div>
   </div>
 
   <!-- Audio tag (hidden from view) -->
