@@ -12,7 +12,8 @@
         </a>
       </div>
 
-      <!-- Placeholder for visual balance (Invisible duplicate of the logo for alignment) -->
+      <!-- Placeholder for visual balance (Invisible duplicate of the logo for
+      alignment) -->
       <div class="hidden flex-shrink-0 opacity-0 md:opacity-100">
         <button class="justify-self-end" (click)="toggleMenu()">
           <svg
@@ -28,26 +29,26 @@
       <div class="flex flex-col justify-center items-center text-center mt-2">
         <!-- Title centered -->
         <h1
-          class="text-4xl md:text-5xl flex-shrink-0 font-lora font-semibold text-primary drop-shadow-lg justify-self-center mx-2"
+          class="text-4xl sm:text-5xl flex-shrink-0 font-lora font-semibold text-primary drop-shadow-lg justify-self-center mx-2"
         >
           erinmusicbox
         </h1>
         <!-- Navigation links centered below the title and logos -->
-        <nav class="flex justify-center gap-4 mt-2 whitespace-nowrap">
-          <a href="/" class="nav-link active">Home</a>
-          <a href="/about" class="nav-link">About</a>
-          <a href="/melody-catalog" class="nav-link">Melody Catalog</a>
-          <a href="/blog" class="nav-link">Blog</a>
-          <a href="/midi-visualizer" class="nav-link">MIDI Visualizer</a>
+        <nav class="hidden md:flex justify-center gap-4 mt-2 whitespace-nowrap">
+          <div *ngFor="let item of navLinks">
+            <a [href]="item.url" class="nav-link {item.active}">{{
+              item.name
+            }}</a>
+          </div>
         </nav>
       </div>
 
       <!-- Hamburger Menu Icon -->
-      <button class="lg:hidden justify-self-end" (click)="toggleMenu()">
+      <button class="md:hidden justify-self-end p-2" (click)="toggleMenu()">
         <svg
-          class="w-6 h-6"
+          class="w-10 h-10"
           fill="none"
-          stroke="currentColor"
+          stroke="#e15554"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -94,24 +95,10 @@
       class="absolute top-full right-0 bg-background w-full md:hidden"
     >
       <div class="flex flex-col items-center gap-4 p-4">
-        <div
-          *ngFor="let item of socialLinks"
-          class="group inline-block relative"
-        >
-          <a
-            [href]="item.url"
-            [attr.aria-label]="item.name"
-            target="_blank"
-            class="flex flex-col items-center hover:text-primary transition-colors duration-300 ease-in-out"
-          >
-            <img
-              [src]="item.icon"
-              [alt]="item.name"
-              class="w-12 max-h-12 mb-1"
-              loading="lazy"
-            />
-            <span class="text-sm">{{ item.label }}</span>
-          </a>
+        <div *ngFor="let item of navLinks" class="group inline-block relative">
+          <a [href]="item.url" class="nav-link {item.active}">{{
+            item.name
+          }}</a>
         </div>
       </div>
     </div>

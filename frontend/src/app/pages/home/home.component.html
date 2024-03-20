@@ -10,6 +10,28 @@
       >Learn more about me →</a
     >
   </section>
+  <section class="mb-8">
+    <div class="md:hidden flex flex gap-2 items-center justify-around">
+      <div *ngFor="let item of socialLinks" class="group inline-block relative">
+        <a
+          [href]="item.url"
+          [attr.aria-label]="item.name"
+          target="_blank"
+          class="flex flex-col items-center hover:text-primary transition-colors"
+        >
+          <img
+            [src]="item.icon"
+            [alt]="item.name"
+            class="w-12 max-h-12 md:w-14 md:max-h-14 mb-1 mx-3"
+            loading="lazy"
+          />
+          <span class="text-black text-sm -bottom-6">
+            {{ item.label }}
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Content organized in a grid layout -->
   <div class="md:columns-2 gap-8">
