@@ -1,4 +1,4 @@
-<header class="sticky top-0 bg-background z-50" [class.shadow-md]="hasScrolled">
+<header [class.shadow-md]="hasScrolled">
   <div class="max-w-7xl mx-auto px-4 py-2">
     <div class="grid grid-cols-3 items-center w-full">
       <!-- Erin Music Box logo in the left corner -->
@@ -91,14 +91,17 @@
 
     <!-- Mobile Menu (Hidden by default, shown when menu is toggled) -->
     <div
-      *ngIf="isMenuOpen"
-      class="absolute top-full right-0 bg-background w-full md:hidden"
+      [@slideInOut]="isMenuOpen"
+      class="absolute top-full right-0 bg-background w-full md:hidden overflow-hidden"
     >
-      <div class="flex flex-col items-center gap-4 p-4">
-        <div *ngFor="let item of navLinks" class="group inline-block relative">
-          <a [href]="item.url" class="nav-link {item.active}">{{
-            item.name
-          }}</a>
+      <div class="flex flex-col items-center w-full shadow-md">
+        <div *ngFor="let item of navLinks" class="w-full">
+          <a
+            [href]="item.url"
+            class="nav-link block w-full {{ item.active }} p-4 text-center"
+          >
+            {{ item.name }}
+          </a>
         </div>
       </div>
     </div>
