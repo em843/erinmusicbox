@@ -1,11 +1,14 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'blog',
   templateUrl: './blog.component.html',
 })
 // @Injectable()
-export class BlogComponent {
+export class BlogComponent implements OnInit {
+  ngOnInit() {
+    this.setIframeStyle(window.innerWidth);
+  }
   @HostListener('window:resize', ['$event'])
   onResize(event: WindowEventMap['resize']) {
     const windowWidth = (event.target as Window).innerWidth;
