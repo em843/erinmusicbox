@@ -13,6 +13,7 @@ export class AboutComponent {
     '🎼 Songs arranged for music box: 1,600+',
     '🙋 YouTube subscribers: 13,300+',
     '💻 YouTube views: 2,191,360+',
+    // '⭐️ 5-star ratings on Fiverr: 450',
   ];
 
   public socialLinks = [
