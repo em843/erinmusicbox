@@ -1,11 +1,39 @@
 // header.component.ts
 import { Component } from '@angular/core';
 import { socialLinks } from 'src/app/const/links.const';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      state(
+        'false',
+        style({
+          transform: 'translateY(-10%)',
+          opacity: 0,
+          display: 'none',
+        })
+      ),
+      state(
+        'true',
+        style({
+          transform: 'translateY(0%)',
+          opacity: 1,
+          display: 'block',
+        })
+      ),
+      transition('false <=> true', animate('300ms ease-in-out')),
+    ]),
+  ],
 })
 export class HeaderComponent {
   hasScrolled = false;
