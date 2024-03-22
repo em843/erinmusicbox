@@ -22,7 +22,7 @@ export class QuizService {
           answer: 'I found a box that plays my song!',
           nextNode: 'noDIYNeeded',
         },
-        { answer: 'Nothing came up.', nextNode: 'checkMusicBoxManiacs' },
+        { answer: 'Nothing came up.', nextNode: 'diyConsideration' },
         {
           answer: 'An arrangement came up on MusicBoxManiacs.',
           nextNode: 'arrangementLike',

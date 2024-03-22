@@ -1,21 +1,9 @@
 import { Component } from '@angular/core';
 import { QuizNode, QuizService } from '../../services/quiz.service';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-quiz',
-  template: `
-    <div class="quiz-container">
-      <h2>{{ currentNode.question }}</h2>
-      <ul>
-        <li *ngFor="let option of currentNode.options">
-          <button (click)="selectOption(option.nextNode)">
-            {{ option.answer }}
-          </button>
-        </li>
-      </ul>
-    </div>
-  `,
+  templateUrl: 'quiz.component.html',
   styles: [
     `
       .quiz-container {
