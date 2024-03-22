@@ -11,8 +11,8 @@
     >
   </section>
   <section class="mb-8">
-    <div class="md:hidden flex flex gap-2 items-center justify-around">
-      <div *ngFor="let item of socialLinks" class="group inline-block relative">
+    <div class="lg:hidden flex items-center justify-around">
+      <div *ngFor="let item of socialLinks" class="flex-grow">
         <a
           [href]="item.url"
           [attr.aria-label]="item.name"
