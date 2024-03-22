@@ -15,12 +15,10 @@ import { AboutComponent } from './pages/about/about.component';
 import { AudioPlaybackService } from './services/audio-playback.service';
 import { QuizService } from './services/quiz.service';
 import { QuizComponent } from './pages/quiz/quiz.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  providers: [
-    AudioPlaybackService,
-    QuizService
-  ],
+  providers: [AudioPlaybackService, QuizService],
   declarations: [
     AppComponent,
     HeaderComponent,
@@ -38,6 +36,7 @@ import { QuizComponent } from './pages/quiz/quiz.component';
     BrowserAnimationsModule,
     ComponentModule,
     FormsModule,
+    MatInputModule,
   ],
   bootstrap: [AppComponent],
 })

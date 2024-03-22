@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { QuizNode, QuizService } from '../../services/quiz.service';
+import { CardComponent } from 'src/app/components/card/card.component';
+
 
 @Component({
   selector: 'app-quiz',
@@ -27,17 +29,36 @@ import { QuizNode, QuizService } from '../../services/quiz.service';
 })
 export class QuizComponent {
   currentNode: QuizNode;
+  currentNodeKey: string;
+  song: string = '';
+  submitted: boolean = false;
 
   constructor(private quizService: QuizService) {
+    this.loadCurrentNode();
+  }
+
+  loadCurrentNode() {
     this.currentNode = this.quizService.getCurrentNode();
+    this.currentNodeKey = this.quizService.getCurrentNodeKey();
   }
 
   selectOption(nextNode: string | undefined): void {
     if (nextNode) {
       this.quizService.goToNextNode(nextNode);
-      this.currentNode = this.quizService.getCurrentNode();
+      this.loadCurrentNode();
+      console.log(this.currentNodeKey);
     } else {
       // Handle end of quiz
     }
+  }
+
+  getEncodedSearchUrl(): string {
+    const baseUrl = 'https://www.google.com/search?q=';
+    const query = encodeURIComponent(`${this.song} music box`);
+    return `${baseUrl}${query}`;
+  }
+
+  onSubmit() {
+    this.submitted = true;
   }
 }

@@ -1,16 +1,35 @@
 <!-- quiz.component.html -->
 <div class="flex flex-col items-center justify-center h-full p-6">
-  <h2 class="text-xl font-semibold mb-6 text-center">
-    {{ currentNode.question }}
-  </h2>
-  <div class="grid gap-4">
-    <ng-container *ngFor="let option of currentNode.options">
-      <button
-        class="transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        (click)="selectOption(option.nextNode)"
-      >
-        {{ option.answer }}
-      </button>
-    </ng-container>
-  </div>
+  <app-card>
+    <h2 class="text-xl font-semibold mb-6 text-center">
+      {{ currentNode.question }}
+    </h2>
+    <div *ngIf="currentNodeKey === 'start'">
+      <form class="w-full min-w-[150px] max-w-[500px]">
+        <mat-form-field class="w-full">
+          <mat-label>Search a song and artist...</mat-label>
+          <input
+            name="song"
+            matInput
+            placeholder="Ex. Let It Go Frozen"
+            [(ngModel)]="song"
+          />
+        </mat-form-field>
+        <a (click)="onSubmit()" [href]="getEncodedSearchUrl()" target="_blank"
+          >Search on Google</a
+        >
+      </form>
+    </div>
+    <div *ngIf="submitted || currentNodeKey !== 'start'" class="grid gap-4">
+      <ng-container *ngFor="let option of currentNode.options">
+        <button
+          class="transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          (click)="selectOption(option.nextNode)"
+        >
+          {{ option.answer }}
+        </button>
+      </ng-container>
+    </div>
+    <!-- <p *ngIf="displayErrorText"></p> -->
+  </app-card>
 </div>

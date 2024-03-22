@@ -9,14 +9,7 @@ export interface QuizNode {
 export class QuizService {
   private quizData: { [key: string]: QuizNode } = {
     start: {
-      question: 'Is your song popular?',
-      options: [
-        { answer: 'Yes', nextNode: 'google' },
-        { answer: 'No', nextNode: 'diyConsideration' },
-      ],
-    },
-    google: {
-      question: 'Google "your song music box"',
+      question: "First, let's search for your song online:",
       options: [
         {
           answer: 'I found a box that plays my song!',
@@ -37,12 +30,12 @@ export class QuizService {
       question: 'Do you like it?',
       options: [
         { answer: "It's perfect!", nextNode: 'purchaseDIY' },
-        { answer: 'Ehh...', nextNode: 'diyConsideration' },
         {
           answer:
             'It’s decent, but I want to see what a professional arranger could do',
           nextNode: 'contactForQuote',
         },
+        { answer: 'Ehh...', nextNode: 'diyConsideration' },
       ],
     },
     purchaseDIY: {
@@ -72,7 +65,14 @@ export class QuizService {
     },
   };
 
+  //   private previousNode: string = '';
   private currentNode: string = 'start';
+  private currentNodeKey = 'start';
+  private displayErrorText = false;
+
+  getCurrentNodeKey(): string {
+    return this.currentNodeKey;
+  }
 
   constructor() {}
 
@@ -82,9 +82,19 @@ export class QuizService {
 
   goToNextNode(nextNode: string): void {
     if (nextNode in this.quizData) {
+      // this.previousNode = this.currentNode;
       this.currentNode = nextNode;
+      this.currentNodeKey = nextNode;
     } else {
-      // Handle end of flow or invalid node
+      this.displayErrorText = true;
     }
   }
+  //   goToPreviousNode(prevNode: string): void {
+  //     if (prevNode in this.quizData) {
+  //       this.currentNode = prevNode;
+  //       this.currentNodeKey = prevNode;
+  //     } else {
+  //       this.displayErrorText = true;
+  //     }
+  //   }
 }
