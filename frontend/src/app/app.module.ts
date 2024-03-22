@@ -12,8 +12,15 @@ import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.co
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './pages/footer/footer.component';
 import { AboutComponent } from './pages/about/about.component';
+import { AudioPlaybackService } from './services/audio-playback.service';
+import { QuizService } from './services/quiz.service';
+import { QuizComponent } from './pages/quiz/quiz.component';
 
 @NgModule({
+  providers: [
+    AudioPlaybackService,
+    QuizService
+  ],
   declarations: [
     AppComponent,
     HeaderComponent,
@@ -22,6 +29,7 @@ import { AboutComponent } from './pages/about/about.component';
     MelodyCatalogComponent,
     FooterComponent,
     AboutComponent,
+    QuizComponent,
   ],
   imports: [
     BrowserModule,
