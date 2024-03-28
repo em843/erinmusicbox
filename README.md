@@ -1,8 +1,10 @@
 
-# [MIDI Visualizer for Music Box](https://erinmusicbox.com)
+# [Music Box Midi Visualizer / erinmusicbox.com](https://erinmusicbox.com/midi-visualizer)
 March 2021 - Present
+> [!NOTE]
+> As of January 2024, this repository contains the Music Box MIDI Visualizer as well as the source code for my website, erinmusicbox.com. 
 
-Online version hosted here, go check it out! https://erinmusicbox.com
+Online version hosted here, go check it out! https://erinmusicbox.com/midi-visualizer
 
 Old Glitch version, in plain JavaScript: https://music-box-visualizer.glitch.me/
 
