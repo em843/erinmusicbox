@@ -14,6 +14,7 @@ export class AboutComponent {
     '🙋 YouTube subscribers: 13,300+',
     '💻 YouTube views: 2,191,360+',
     // '⭐️ 5-star ratings on Fiverr: 450',
+    // making a new change here for deployment reasons
   ];
 
   public socialLinks = [
