@@ -12,7 +12,7 @@ export class AboutComponent {
     '📆 Years in the business: 6',
     '🎼 Songs arranged for music box: 1,600+',
     '🙋 YouTube subscribers: 13,300+',
-    '💻 YouTube views: 2,191,360+',
+    '💻 YouTube views: 2,191,400+',
     // '⭐️ 5-star ratings on Fiverr: 450',
     // making a new change here for deployment reasons
   ];
