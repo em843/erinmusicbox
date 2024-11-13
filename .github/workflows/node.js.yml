@@ -1,0 +1,46 @@
+name: Angular CI/CD to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x] # Use the versions that you need
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: "./frontend/package-lock.json"
+        
+    - name: Install Dependencies
+      run: npm ci
+      working-directory: ./frontend
+    
+    - name: Build Angular App
+      run: npm run build # It will use the build command defined in package.json
+      working-directory: ./frontend
+      
+    # - name: Run Tests
+    #   run: npm test # It will use the test command defined in package.json
+    #   working-directory: ./frontend
+
+    # This step will only run when the workflow is triggered by a push to the main branch
+    # and when the matrix is using the Node.js version 20.x
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main' && matrix.node-version == '20.x'
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages # The branch you are deploying to (GitHub Pages)
+        folder: docs # The folder that your Angular app is outputting to (configured in angular.json)
+        token: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically creates this secret to use in workflows

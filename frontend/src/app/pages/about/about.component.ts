@@ -6,10 +6,10 @@ import { Component } from '@angular/core';
 })
 export class AboutComponent {
   public bioText = `Hi, I'm Erin! 👋 
-  I've been arranging custom music for DIY music boxes for over five years.
-  After graduating with a degree in Computer Science and a minor in Music, I continue to run erinmusicbox alongside my career as a software engineer.`;
+  I've been arranging custom music for DIY music boxes since 2018.
+  I run erinmusicbox alongside my career as a software engineer.`;
   public listItems = [
-    '📆 Years in the business: 5',
+    '📆 Years in the business: 6',
     '🎼 Songs arranged for music box: 1,600+',
     '🙋 YouTube subscribers: 13,300+',
     '💻 YouTube views: 2,191,360+',
