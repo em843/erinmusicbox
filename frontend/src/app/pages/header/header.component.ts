@@ -41,13 +41,13 @@ export class HeaderComponent {
   socialLinks = socialLinks;
 
   navLinks = [
-    { name: 'Home', url: '/', active: 'active' },
-    { name: 'About', url: '/about', active: '' },
-    { name: 'Melody Catalog', url: '/melody-catalog', active: '' },
-    { name: 'Blog', url: '/blog', active: '' },
+    { name: 'Home', url: '/#/', active: 'active' },
+    { name: 'About', url: '/#/about', active: '' },
+    { name: 'Melody Catalog', url: '/#/melody-catalog', active: '' },
+    { name: 'Blog', url: '/#/blog', active: '' },
     {
       name: 'Midi Visualizer',
-      url: '/midi-visualizer',
+      url: '/#/midi-visualizer',
       active: '',
     },
   ];

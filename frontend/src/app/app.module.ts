@@ -12,6 +12,7 @@ import { MelodyCatalogComponent } from './pages/melody-catalog/melody-catalog.co
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './pages/footer/footer.component';
 import { AboutComponent } from './pages/about/about.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,5 +33,7 @@ import { AboutComponent } from './pages/about/about.component';
     FormsModule,
   ],
   bootstrap: [AppComponent],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+
 })
 export class AppModule {}
