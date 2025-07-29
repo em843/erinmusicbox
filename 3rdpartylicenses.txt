@@ -66,6 +66,9 @@ MIT
 @angular/router
 MIT
 
+angular-gtag
+MIT
+
 midi-parser-js
 GPL
                     GNU GENERAL PUBLIC LICENSE
