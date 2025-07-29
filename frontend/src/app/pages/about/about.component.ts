@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
+import { Gtag } from 'angular-gtag';
 
 @Component({
   selector: 'about',
   templateUrl: './about.component.html',
 })
 export class AboutComponent {
-  public bioText = `Hi, I'm Erin! 👋 
-  I've been arranging custom music for DIY music boxes since 2018.
-  I run erinmusicbox alongside my career as a software engineer.`;
   public listItems = [
     '📆 Years in the business: 6',
     '🎼 Songs arranged for music box: 1,600+',
@@ -29,4 +27,11 @@ export class AboutComponent {
       icon: 'assets/github.svg',
     },
   ];
+
+  constructor(private gtag: Gtag) {
+    this.gtag.event('screen_view', {
+      app_name: 'erinmusicbox',
+      screen_name: 'About',
+    });
+  }
 }

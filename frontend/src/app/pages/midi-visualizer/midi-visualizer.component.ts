@@ -1,39 +1,33 @@
-import { Component, ElementRef, Injectable, ViewChild } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
+import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
 import { MidiVisualizerService } from './midi-visualizer.service';
-import { MidiObject } from 'src/app/interfaces/midi-object.interface';
 import {
-  cw,
-  // ch,
-  p,
-  gw,
+  bh,
   // gh,
   bw,
-  bh,
-  nrad,
-  validNotes15,
-  validNotes20,
-  validNotes30,
-  letterColor,
+  cw,
+  font,
   gridColor,
   gridColor2,
   guidelineWidth,
-  noteColor,
+  gw,
+  letterColor,
   measureColor2,
-  nlFontSize,
   mFontSize,
-  fontSize,
-  font,
+  nlFontSize,
+  noteColor,
   noteLetters15,
   noteLetters20,
   noteLetters30,
+  nrad,
+  // ch,
+  p,
+  validNotes15,
+  validNotes20,
+  validNotes30,
 } from './name.const';
-import { NoteLayout } from 'src/app/interfaces/note-layout.interface';
+import { Gtag } from 'angular-gtag';
 
 @Component({
   selector: 'midi-visualizer',
@@ -57,7 +51,10 @@ export class MidiVisualizerComponent {
   public countdown: number;
   private stripLength: number;
   public form: FormGroup;
-  constructor(private readonly midiService: MidiVisualizerService) {
+  constructor(
+    private readonly midiService: MidiVisualizerService,
+    private gtag: Gtag
+  ) {
     this.validNotes = validNotes15;
     this.mbt = 15;
     this.ml = 4; // TODO
@@ -66,6 +63,10 @@ export class MidiVisualizerComponent {
     this.ch = 360;
     this.sp = 1;
     this.guidelinesOn = true;
+    this.gtag.event('screen_view', {
+      app_name: 'erinmusicbox',
+      screen_name: 'MIDI Visualizer',
+    });
   }
   submitted = false;
 

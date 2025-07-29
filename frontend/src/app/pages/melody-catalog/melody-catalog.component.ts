@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Melody } from 'src/app/interfaces/melody.interface';
 import { melodies } from './melody-catalog.const';
+import { Gtag } from 'angular-gtag';
 
 @Component({
   selector: 'app-melody-catalog',
@@ -10,6 +11,13 @@ export class MelodyCatalogComponent {
   filteredMelodies: Melody[] = [...melodies];
   searchTerm = '';
   selectedType = '';
+
+  constructor(private gtag: Gtag) {
+    this.gtag.event('screen_view', {
+      app_name: 'erinmusicbox',
+      screen_name: 'Melody Catalog',
+    });
+  }
 
   onSearch(event: any) {
     this.applyFilters();

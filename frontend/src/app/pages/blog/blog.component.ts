@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Gtag } from 'angular-gtag';
 
 @Component({
   selector: 'blog',
@@ -6,6 +7,13 @@ import { Component, HostListener, OnInit } from '@angular/core';
 })
 // @Injectable()
 export class BlogComponent implements OnInit {
+  constructor(private gtag: Gtag) {
+    this.gtag.event('screen_view', {
+      app_name: 'erinmusicbox',
+      screen_name: 'Blog',
+    });
+  }
+
   ngOnInit() {
     this.setIframeStyle(window.innerWidth);
   }

@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './pages/footer/footer.component';
 import { AboutComponent } from './pages/about/about.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { GtagModule } from 'angular-gtag';
 
 @NgModule({
   declarations: [
@@ -31,9 +32,12 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     BrowserAnimationsModule,
     ComponentModule,
     FormsModule,
+    GtagModule.forRoot({
+      trackingId: 'G-XNQFBDS3WF',
+      trackPageviews: true,
+    }),
   ],
   bootstrap: [AppComponent],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
-
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppModule {}

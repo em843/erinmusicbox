@@ -1,4 +1,8 @@
-# Deployment
+# Readme
+
+## No longer needed - deployment instructions
+
+GH Actions takes care of this now.
 
 1. `cd frontend`
 2. `ng build`
