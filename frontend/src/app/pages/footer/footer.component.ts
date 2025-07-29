@@ -5,7 +5,9 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './footer.component.html',
 })
 export class FooterComponent implements OnInit {
-  currentYear: number = new Date().getFullYear();
+  //NOTE: We don't do this anymore for reasons
+  //@see: https://stackoverflow.com/questions/2390230/do-copyright-dates-need-to-be-updated
+  // currentYear: number = new Date().getFullYear();
 
   constructor() {}
 
