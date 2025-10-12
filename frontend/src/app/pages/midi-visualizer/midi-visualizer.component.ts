@@ -96,8 +96,10 @@ export class MidiVisualizerComponent {
   initVisualizer(stripLength: number) {
     const context = this.initializeCanvas(this.canvas.nativeElement);
     this.drawLetters(context, this.mbt);
-    this.drawMeasures(context, this.ml, stripLength);
-    this.drawGrid(context, gridColor, stripLength);
+    //NOTE stripLength * 2 in case the user selects "x2" spacing
+    //TODO redraw measures + grid based on strip length and spacing 
+    this.drawMeasures(context, this.ml, stripLength * 2);
+    this.drawGrid(context, gridColor, stripLength * 2);
   }
 
   initializeCanvas(canvas: HTMLCanvasElement) {
