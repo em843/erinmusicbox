@@ -1,12 +1,10 @@
 
-# [Music Box Midi Visualizer / erinmusicbox.com](https://erinmusicbox.com/midi-visualizer)
+# [Music Box Midi Visualizer / erinmusicbox.com](https://erinmusicbox.com/#/midi-visualizer)
 March 2021 - Present
 > [!NOTE]
-> As of January 2024, this repository contains the Music Box MIDI Visualizer as well as the source code for my website, erinmusicbox.com. 
+This repository contains the Music Box MIDI Visualizer as well as the source code for my website, erinmusicbox.com. 
 
-Online version hosted here, go check it out! https://erinmusicbox.com/midi-visualizer
-
-Old Glitch version, in plain JavaScript: https://music-box-visualizer.glitch.me/
+Online version hosted here, go check it out! https://erinmusicbox.com/#/midi-visualizer
 
 ## What is it?
 This web-app takes MIDI files and converts them into a reference for a DIY music box, which is a music box that uses paper strips to play any song. 
